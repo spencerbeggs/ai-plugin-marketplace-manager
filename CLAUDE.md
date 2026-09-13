@@ -38,28 +38,31 @@ ref→sha resolution.
   server-side signing is what makes commits verified. The bot identity feeds the
   DCO `Signed-off-by:` trailer (commit message text) only. `@effected/github`'s
   `GitCommit` exposes no such parameter, so the rule is now structural too —
-  don't reintroduce a path that could stamp one.
+  don't reintroduce a path that could stamp one
+  (`@okf/conventions/never-stamp-bot-identity-on-commits.md`).
 - Inputs are a manual/`json` **XOR**, enforced in `inputs.ts`; both normalize to
-  `ParsedInputs.patches`.
+  `ParsedInputs.patches` (`@okf/interfaces/action-inputs.md`).
 - Validate the edited **result** before any commit; no-op guard skips validation
   and landing when the text is byte-stable. Both halves are **type-enforced**:
   `EditResult` is a `NoopEdit | ChangedEdit` union, and `land` requires the
   branded `ValidatedManifestChange` that only `validateEdit` mints — so don't
-  reach for `validateManifest` + a raw string at a call site.
+  reach for `validateManifest` + a raw string at a call site
+  (`@okf/conventions/validate-the-result-before-landing.md`).
 - `pr` mode **force-resets** the head branch onto `base` every run, discarding
   any earlier run's commits. Deliberate: `branch` defaults to a fixed name, and
   without the reset the PR drifts until it conflicts. A human commit on that
   branch is collateral — it's action-owned. The reset is expressed as a **single
   `GitBranch.upsert` to the already-built commit** — never `upsert` to the base
   head followed by a commit, which would leave the head branch briefly equal to
-  base and get the open PR auto-closed for an empty diff.
+  base and get the open PR auto-closed for an empty diff
+  (`@okf/decisions/pr-head-rerooted-in-one-ref-move.md`).
 - The installation token is always revoked in `post` — no opt-out. `pre` mints
   it via `GitHubToken.provision` (App credentials passed explicitly; private key
   stays `Redacted`) and persists it to cross-phase state; `main` reads it back
-  through `GitHubToken.clientLayer()`.
+  through `GitHubToken.clientLayer()` (`@okf/invariants/post-revokes-the-token-first.md`).
 - Failures arrive as a single `GitHubError` with a structured `kind` (plus
   `GitHubGraphQLError` on the auto-merge path). Branch on `kind` — never match
-  error prose.
+  error prose (`@okf/conventions/branch-on-github-error-kind.md`).
 - `src/contract.ts` declares every input/output **name** and every non-empty
   default. `inputs.ts` imports `INPUT_DEFAULTS` outright; the names themselves
   are still string literals at the call sites (`inputs.ts`, `pre.ts`,
@@ -67,52 +70,46 @@ ref→sha resolution.
   literals together is `__test__/action-contract.test.ts`. Adding or renaming
   an input means editing all three — the failure is otherwise silent: a rename
   in `action.yml` alone leaves the code reading an input nobody supplies and
-  quietly taking the default. No compile or runtime error.
+  quietly taking the default. No compile or runtime error
+  (`@okf/conventions/keep-the-action-contract-in-sync.md`,
+  `@okf/gotchas/renamed-input-silently-takes-the-default.md`).
 - Each entry point (`pre.ts`/`main.ts`/`post.ts`) ends in an
   `if (process.env.GITHUB_ACTIONS)` guard, and `vitest.setup.ts` strips the
   runner environment (`GITHUB_*`, `INPUT_*`, `STATE_*`) in `globalSetup` before
   the forks pool spawns. They only work as a pair — drop either and importing
-  an entry point in a test executes a real phase on a runner.
+  an entry point in a test executes a real phase on a runner
+  (`@okf/conventions/entry-point-guard-and-env-strip-are-a-pair.md`).
 - Test doubles must perform the transformations the real implementation
   performs (the `ActionOutputs` `setJson` double encodes through the schema),
   and validation fixtures must be structurally valid except in the field under
   test. Both rules are load-bearing: a double that skipped the encode and a
-  fixture that failed on the wrong field each kept a dead test green.
+  fixture that failed on the wrong field each kept a dead test green
+  (`@okf/conventions/test-doubles-transform-and-fixtures-isolate.md`).
 - Effect Schemas are the source of truth; the root `*.input.json` /
   `*.output.json` schemas are generated and **drift-tested** — regenerate after
-  schema changes, don't hand-edit.
+  schema changes, don't hand-edit (`@okf/models/effect-schemas.md`,
+  `@okf/gotchas/effect-rc113-opened-generated-json-schema-objects.md`).
 
-## Design docs
+## Bundle
 
-Detailed architecture, rationale, and contracts live in
-`.claude/design/marketplace-manager/`. Load the specific doc when working in that
-area.
+Deeper architecture, rationale, and contracts live under `okf/`, an OKF
+knowledge bundle managed with [okfit](https://github.com/spencerbeggs/okfit).
+Start at `@okf/index.md` for the full concept index; the pointers below cover
+the areas the bullets above only summarize.
 
-**For the module index & quick facts:**
-→ `@./.claude/design/marketplace-manager/README.md`
-
-Load first for orientation across the design docs.
-
-**For system architecture:**
-→ `@./.claude/design/marketplace-manager/architecture.md`
-
-Load when working on the pre/main/post phases, `program.ts` orchestration,
-module layout, layer composition, the landing/mode split (decision D-2), or the
-error taxonomy.
-
-**For verified-commit rules:**
-→ `@./.claude/design/marketplace-manager/verified-commits.md`
-
-Load when touching commit landing, author/committer identity, or signing.
-
-**For input/output contracts:**
-→ `@./.claude/design/marketplace-manager/input-output-contracts.md`
-
-Load when changing inputs, the patch shape, `src/contract.ts` and the
-action-contract sync, the JSON Schemas, or the `result` output.
-
-**For manifest validation:**
-→ `@./.claude/design/marketplace-manager/validation.md`
-
-Load when working on structural/semantic validation or the commit-time
-invariant.
+- **Architecture** — `@okf/modules/marketplace-manager.md`: the pre/main/post
+  phases, `program.ts` orchestration, layer composition, and the landing/mode
+  split.
+- **Verified commits** — `@okf/decisions/verified-commits-via-server-side-signing.md`,
+  `@okf/conventions/never-stamp-bot-identity-on-commits.md`,
+  `@okf/invariants/commit-calls-carry-no-identity.md`.
+- **Input/output contracts** — `@okf/interfaces/action-inputs.md`,
+  `@okf/interfaces/result-output.md`, `@okf/models/action-contract.md`,
+  `@okf/models/effect-schemas.md`,
+  `@okf/conventions/keep-the-action-contract-in-sync.md`.
+- **Manifest validation** — `@okf/conventions/validate-the-result-before-landing.md`,
+  `@okf/decisions/ajv-strict-false.md`,
+  `@okf/invariants/landing-requires-a-validated-non-noop-change.md`.
+- **Edges and traps** — `@okf/limitations/`, `@okf/gotchas/`, `@okf/glossary/`
+  (`verified-commit`, `patch`), and the two downstream repos that run this
+  action under `@okf/consumers/`.

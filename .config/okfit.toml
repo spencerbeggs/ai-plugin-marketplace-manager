@@ -1,0 +1,20 @@
+#:schema https://raw.githubusercontent.com/spencerbeggs/okfit/main/schemas/config/okfit-1.0.0.json
+
+[bundle]
+path = "okf"
+profile = "software-project"
+
+[actors]
+agent = "okfit/claude-code"
+humans = ["human:spencer"]
+
+[types.Invariant]
+description = "A property the code holds by construction: enforced by the type system or pinned by a test, not followed by people."
+guidance = "State the property, name the mechanism that enforces it (a brand, a union, a fixture), and say what a refactor would have to break for it to stop holding. Point resource at the type or test that carries the enforcement. Distinct from Convention, which a contributor can choose to ignore."
+
+[types.Invariant.fields.resource]
+description = "A path relative to this concept file to the type, function, or test that enforces the property."
+kind = "path"
+
+[tags.validation]
+description = "Concerns checking that data or a result is well-formed before it is accepted or committed."
