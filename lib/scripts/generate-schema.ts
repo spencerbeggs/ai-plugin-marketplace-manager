@@ -39,11 +39,22 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { NodeServices } from "@effect/platform-node";
 import { SchemaFile, SchemaPipeline, SchemaTarget, SchemaValidator } from "@effected/schemastore";
+import type { Schema } from "effect";
 import { Effect, Layer } from "effect";
 import { INPUT_SCHEMA_URL, JsonInput } from "../../src/schema/input.js";
 import { ReportOutput, SCHEMA_URL } from "../../src/schema/report-output.js";
 
 const REPO_ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url)));
+
+/**
+ * Emit closed objects (`additionalProperties: false`).
+ *
+ * @remarks
+ * effect rc.113 flipped `Schema.toJsonSchemaDocument`'s default to leave
+ * unmodeled properties open; `onExcessProperty: "error"` restores the closed
+ * shape the committed documents have always declared.
+ */
+const CLOSED_OBJECTS: Schema.ToJsonSchemaOptions = { onExcessProperty: "error" };
 
 /**
  * The schema publication targets: one per emitted document.
@@ -58,11 +69,13 @@ export const targets: ReadonlyArray<SchemaTarget> = [
 		schema: ReportOutput,
 		$id: SCHEMA_URL,
 		path: resolve(REPO_ROOT, "claude-code-marketplace-manager.output.json"),
+		jsonSchema: CLOSED_OBJECTS,
 	}),
 	SchemaTarget.make({
 		schema: JsonInput,
 		$id: INPUT_SCHEMA_URL,
 		path: resolve(REPO_ROOT, "claude-code-marketplace-manager.input.json"),
+		jsonSchema: CLOSED_OBJECTS,
 	}),
 ];
 
