@@ -1,5 +1,21 @@
 # claude-code-marketplace-manager
 
+## 1.0.7
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effected/github-actions | dependency | updated | ^0.12.0 | ^0.13.0 |
+
+[#86][#86]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/apps/spencerbeggs) for their contributions!
+
+[#86]: https://github.com/spencerbeggs/claude-code-marketplace-manager/pull/86
+
 ## 1.0.6
 
 ### Maintenance
