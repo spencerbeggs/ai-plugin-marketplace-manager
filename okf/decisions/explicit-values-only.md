@@ -14,6 +14,8 @@ sources:
     title: PluginNotFoundError — an unknown plugin name is an error, not a create
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 272e4167bc441d2a4161362d9594ed15df30c18085c81b8cf7c99ff40f1f3e4c
 ---
 
 # Explicit values only, no release lookup

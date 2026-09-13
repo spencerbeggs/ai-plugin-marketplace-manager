@@ -7,6 +7,8 @@ resource: ../../claude-code-marketplace-manager.output.json
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: e3ed9d2b4aba331e18042591cb7c0cd1bba710b88c99a0e7f76720b9b3df5d32
 tags:
   - architecture
   - observability

@@ -6,6 +6,8 @@ bounds: ../interfaces/action-inputs.md
 tags: [ci]
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 048cec1e1a41c3786d8fd174a14d8b3a0201611af9f91b094150af67db43b27c
 sources:
   - id: manifest-editor
     resource: ../../src/services/ManifestEditor.ts

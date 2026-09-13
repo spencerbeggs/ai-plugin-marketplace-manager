@@ -5,6 +5,8 @@ description: Make a double perform the real transformation, make a fixture inval
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: c5f03eab1ec0760ebc14d3eecac2a1e800f26a4efd69a7d23bf2f0211608d4c6
 tags:
   - testing
 sources:

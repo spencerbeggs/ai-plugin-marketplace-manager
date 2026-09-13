@@ -11,6 +11,8 @@ sources:
     title: "the dry-run guard in runOrchestration (program.ts:99)"
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 64c488cb20a74aaf4013cc00fbe5b708bc11246e4b53c08f0dad80a83dd15d10
 ---
 
 # Dry-run is an early-return guard, not the kit's DryRun service

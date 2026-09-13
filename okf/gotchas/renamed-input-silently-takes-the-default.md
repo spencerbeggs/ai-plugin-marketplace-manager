@@ -7,6 +7,8 @@ stale_after: 2027-03-13T00:00:00Z
 tags: [dx, testing]
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 5aa5597d7adf84de3a96f819da26e47e11f83f0804680ae5625d4af8d877ae89
 sources:
   - id: inputs
     resource: ../../src/inputs.ts

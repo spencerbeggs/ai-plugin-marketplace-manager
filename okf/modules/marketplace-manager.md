@@ -7,6 +7,8 @@ resource: ../../src
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: c536e28d8ea974f7d3d5b5fab9f8ac1eefa6157627c99400036a247414edf4e7
 tags: [architecture]
 ---
 

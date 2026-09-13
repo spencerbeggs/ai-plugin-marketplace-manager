@@ -12,6 +12,8 @@ sources:
     title: "the Ajv construction and semantic re-validation of url"
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 563e979fc2c5e9753a23c18865faab49bc7e8cd6c51fa02781d30101b143e8ae
 ---
 
 # ajv runs with strict false against the bundled SchemaStore schema

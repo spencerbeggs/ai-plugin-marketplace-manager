@@ -5,6 +5,8 @@ description: What this project is, its boundaries, and its non-goals.
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 9506b161d61c3568445db51f19aebcb02e567b73a334762194eaee33952dce88
 ---
 
 # claude-code-marketplace-manager

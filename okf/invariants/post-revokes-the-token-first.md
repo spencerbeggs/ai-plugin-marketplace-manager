@@ -14,6 +14,8 @@ sources:
     resource: ../../__test__/post.test.ts
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: d6cde5433566a42324228b6403c227e4aa9f3c666a5957d34754c3653e27cc55
 ---
 
 # post revokes the installation token first

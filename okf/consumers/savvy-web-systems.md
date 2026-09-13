@@ -6,6 +6,8 @@ repository: savvy-web/systems
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: ea272896e941347876b9a96a53d0b790e294d5398249868c02bf9bd3aed7de9e
 ---
 
 # savvy-web/systems

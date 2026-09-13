@@ -7,6 +7,8 @@ resource: ../../action.yml
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 40e0141dcdb6ba3455b74a221202f17660bead5d58ff0dc68c64a7967fa41f63
 tags:
   - architecture
   - dx

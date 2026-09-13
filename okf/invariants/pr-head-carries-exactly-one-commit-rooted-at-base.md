@@ -14,6 +14,8 @@ sources:
     resource: ../../__test__/services/ManifestCommitter.test.ts
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: f8ee4dd03cdd3280a5c945051471f09cd70253cbef77bdb344894c15c6a2ee6f
 ---
 
 # A pr-mode head carries exactly one commit, rooted at base

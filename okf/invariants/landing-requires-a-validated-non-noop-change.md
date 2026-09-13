@@ -16,6 +16,8 @@ sources:
     resource: ../../src/services/ManifestCommitter.ts
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 7d9c448ad59c78828bbb2ed788599530a4061eb5b2f28140746e23dc372e1f70
 ---
 
 # Landing requires a validated, non-no-op change

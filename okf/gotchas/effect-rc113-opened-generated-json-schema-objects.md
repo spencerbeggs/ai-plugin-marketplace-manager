@@ -7,6 +7,8 @@ stale_after: 2027-03-13T00:00:00Z
 tags: [compat, deps, testing]
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: af255ffd254bdf28f71d819db92ed3554f8e4195d04651f7307f63c6ad8522e7
 ---
 
 # effect rc.113 opened the generated JSON Schema objects

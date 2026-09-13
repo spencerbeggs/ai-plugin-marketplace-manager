@@ -6,6 +6,8 @@ status: draft
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 926e08f01831f85f9455ddd4676ec30633da947c056a714b72a97883a747d0dc
 tags:
   - deps
   - dx

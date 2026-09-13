@@ -7,6 +7,8 @@ stale_after: 2027-03-13T00:00:00Z
 tags: [ci, dx]
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 6f427cad36b1480e99f3c3416354a40bc8c0629b137d0a8b8b66f0202278784f
 sources:
   - id: action-yml
     resource: ../../action.yml

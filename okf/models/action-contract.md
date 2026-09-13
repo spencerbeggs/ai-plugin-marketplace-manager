@@ -6,6 +6,8 @@ resource: ../../src/contract.ts
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 7821c7f1a79e9bc5c963ed7e465bec9903d457186b9aaec883718b931756ee51
 tags:
   - architecture
   - testing

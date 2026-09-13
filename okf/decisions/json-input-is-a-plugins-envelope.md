@@ -15,6 +15,8 @@ sources:
     title: decode failure raises InvalidInputError
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 48fa88752bdf52b80446fd8ba7db08b95ef2754fbcd67f3cca23ebb8f6f7c100
 ---
 
 # The json input is a plugins envelope, not a bare array

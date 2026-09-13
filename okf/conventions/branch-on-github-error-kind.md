@@ -5,6 +5,8 @@ description: Discriminate library failures by their structured kind, match libra
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: dc15bb36a93f7c2241a1ee09b0d8e420f58229902389cc698f12cb4fe3aa3c67
 tags:
   - architecture
 sources:

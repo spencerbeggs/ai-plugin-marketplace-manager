@@ -5,6 +5,8 @@ description: Keep each entry point's GITHUB_ACTIONS guard and vitest.setup.ts's 
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: efc6ae9cf8ae0933787f42c87bbcd7c5ce484d350c0b8eeee49575b426bd856b
 tags:
   - testing
   - ci

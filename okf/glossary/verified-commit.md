@@ -5,6 +5,8 @@ description: What "verified" means for a commit this action lands, and the two t
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: b65858454d9a0233cdd4ac013f696735b466e8980daa518212c605a580dd2714
 tags: [security]
 ---
 

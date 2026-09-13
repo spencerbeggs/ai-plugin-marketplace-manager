@@ -5,6 +5,8 @@ description: Validate the edited manifest before any commit, fail with all reaso
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 09d7354b675f02e2e094cff23a9978b7dd5695675e5bd7940a4b05be9e131ae9
 tags:
   - validation
   - security

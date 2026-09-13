@@ -6,6 +6,8 @@ bounds: ../modules/marketplace-manager.md
 tags: [observability]
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: bde23d1b6082145b4b208ed3a2cb10720516c118641d1b8c25daad79fdf831ec
 sources:
   - id: program
     resource: ../../src/program.ts

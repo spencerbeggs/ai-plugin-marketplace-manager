@@ -5,6 +5,8 @@ description: Never pass author, committer, or signature into a commit call; the 
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 1bd7dbeceb228ce418e8fe79e3cce9e07b28b0b9ec94d836117b309c7dbdf6d9
 tags:
   - security
 sources:

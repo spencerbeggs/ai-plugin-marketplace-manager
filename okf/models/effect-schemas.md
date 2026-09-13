@@ -6,6 +6,8 @@ resource: ../../src/schema
 status: draft
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 7fbee3feb5e2541bff4ae3d712d805bce45ff07c7a2282bfaf38c897856f48e1
 tags:
   - architecture
   - testing

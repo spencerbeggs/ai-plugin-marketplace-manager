@@ -21,6 +21,8 @@ sources:
     title: "user ruling: do not restore parity"
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 6b61dae6147932d352773f37c93f2988d3f92d6c56dfeda3f26b2cca3fc882a4
 ---
 
 # PR head re-rooted onto base in one ref move

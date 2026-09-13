@@ -13,6 +13,8 @@ sources:
     resource: ../../__test__/services/ManifestCommitter.test.ts
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 090228407007384f34441b86d37756c2c03c9db9c71adba21f2e26664924208a
 ---
 
 # Commit calls carry no identity

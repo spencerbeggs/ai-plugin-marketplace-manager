@@ -29,6 +29,8 @@ sources:
     title: savvy-web/silk-update-action as reference implementation
 generated:
   by: okfit/claude-code
+  at: 2026-09-13T21:33:34Z
+  body_sha256: 18414286b95d5080c14ec1776881ddc69e25ec11e40089de6dbca8238a737f6b
 ---
 
 # Verified commits via server-side signing
