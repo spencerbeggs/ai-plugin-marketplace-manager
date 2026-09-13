@@ -3,7 +3,7 @@
 		"effect": {
 			"url": "https://github.com/Effect-TS/effect.git",
 			"ref": "effect@4.0.0-rc.115",
-			"purpose": "Read-only Effect v4 source pinned to the tag matching the installed effect release — the authority on what v4 actually exports, plus the v3→v4 migration notes.",
+			"purpose": "Read-only Effect v4 source pinned to the tag matching the installed effect release \u2014 the authority on what v4 actually exports, plus the v3\u2192v4 migration notes.",
 			"sparse": [
 				"packages/effect",
 				"migration",
@@ -13,8 +13,8 @@
 		},
 		"effected": {
 			"url": "https://github.com/spencerbeggs/effected.git",
-			"ref": "@effected/github-actions@0.11.0",
-			"purpose": "Read-only source for @effected/github-actions, @effected/github and @effected/jsonc — the libraries this action is built on. Pin tracks the installed @effected/github-actions version.",
+			"ref": "@effected/github-actions@0.13.0",
+			"purpose": "Read-only source for @effected/github-actions, @effected/github and @effected/jsonc \u2014 the libraries this action is built on. Pin tracks the installed @effected/github-actions version.",
 			"sparse": [
 				"packages/github-actions",
 				"packages/github",
@@ -24,7 +24,7 @@
 				"README.md"
 			],
 			"orientation": {
-				"layout": "pnpm monorepo, one directory per published package under packages/<name>/ with src/, test files co-located, and its own CLAUDE.md. The sparse checkout materializes only github-actions, github, jsonc and schemastore in full; every OTHER packages/<name>/ directory exists but holds nothing but a README.md (the non-cone `README.md` pattern matches at any depth) — an empty-looking package is out of the sparse set, not missing upstream. This repo carries nine submodules of its OWN (.repos/cmark-gfm, commonmark-js, commonmark-spec, effect, mdast, mdast-util-from-markdown, mdast-util-mdx-expression, mdast-util-mdx-jsx, mdast-util-mdxjs-esm) — leave every one uninitialized. `sparse` cannot evict a nested submodule's worktree, because it belongs to a different repository, so a recursive init materializes .repos/effected/.repos/effect as a SECOND Effect clone that drifts off the top-level .repos/effect pin; an agent reading Effect source through this tree then gets a version nobody pinned, and effected stays permanently dirty. Repair with `savvy repos restore effected`, which deinitializes them. Verify with `git -C .repos/effected submodule status` — every line must start with `-`.",
+				"layout": "pnpm monorepo, one directory per published package under packages/<name>/ with src/, test files co-located, and its own CLAUDE.md. The sparse checkout materializes only github-actions, github, jsonc and schemastore in full; every OTHER packages/<name>/ directory exists but holds nothing but a README.md (the non-cone `README.md` pattern matches at any depth) \u2014 an empty-looking package is out of the sparse set, not missing upstream. This repo carries nine submodules of its OWN (.repos/cmark-gfm, commonmark-js, commonmark-spec, effect, mdast, mdast-util-from-markdown, mdast-util-mdx-expression, mdast-util-mdx-jsx, mdast-util-mdxjs-esm) \u2014 leave every one uninitialized. `sparse` cannot evict a nested submodule's worktree, because it belongs to a different repository, so a recursive init materializes .repos/effected/.repos/effect as a SECOND Effect clone that drifts off the top-level .repos/effect pin; an agent reading Effect source through this tree then gets a version nobody pinned, and effected stays permanently dirty. Repair with `savvy repos restore effected`, which deinitializes them. Verify with `git -C .repos/effected submodule status` \u2014 every line must start with `-`.",
 				"keyPaths": {
 					"packages": "packages",
 					"actions-runtime": "packages/github-actions/src",
@@ -32,26 +32,26 @@
 					"jsonc-edits": "packages/jsonc/src",
 					"schemastore": "packages/schemastore/src"
 				},
-				"startHere": "packages/<name>/src/index.ts for a package's real export surface, and its CLAUDE.md for the intended usage. Pinned to the release tag named by `ref`, so the checkout matches the published version this repo installs — re-pin whenever that version moves. A tag is a monorepo-wide release commit, so github-actions@X and app@Y from the same wave resolve to one commit. node_modules still wins on any disagreement."
+				"startHere": "packages/<name>/src/index.ts for a package's real export surface, and its CLAUDE.md for the intended usage. Pinned to the release tag named by `ref`, so the checkout matches the published version this repo installs \u2014 re-pin whenever that version moves. A tag is a monorepo-wide release commit, so github-actions@X and app@Y from the same wave resolve to one commit. node_modules still wins on any disagreement."
 			},
 			"notes": [
 				{
 					"id": "n-0380",
-					"date": "2026-09-06",
-					"ref": "@effected/github-actions@0.11.0",
-					"note": "`git -C .repos/effected describe --tags` reports `@effected/app@0.14.0`, NOT the `@effected/github-actions@0.11.0` this entry is pinned to. That is not drift — `describe` picks the nearest reachable tag in a monorepo that tags per package, and many packages share a release commit. (It reported a sibling `@effected/app` tag at the previous 0.5.0 pin too, so this is the steady-state behavior, not a one-off.) Check the gitlink against `repos_inspect` or `git rev-parse HEAD` (expect `86f52f5`), never `describe`, before concluding the pin moved."
+					"date": "2026-09-13",
+					"ref": "@effected/github-actions@0.13.0",
+					"note": "`git -C .repos/effected describe --tags` reports `@effected/app@0.14.0`, NOT the `@effected/github-actions@0.13.0` this entry is pinned to. That is not drift \u2014 `describe` picks the nearest reachable tag in a monorepo that tags per package, and many packages share a release commit. (It reported a sibling `@effected/app` tag at the previous 0.5.0 and 0.11.0 pins too, so this is the steady-state behavior, not a one-off.) Check the gitlink against `repos_inspect` or `git rev-parse HEAD` (expect `47683a5`), never `describe`, before concluding the pin moved."
 				},
 				{
 					"id": "n-0b69",
-					"date": "2026-09-06",
-					"ref": "@effected/github-actions@0.11.0",
-					"note": "`.claude/design/marketplace-manager/architecture.md` (Decision D-2) cites this repo by LINE ANCHOR: `packages/github/src/GitBranch.ts:46-69`. Verified at this pin (`86f52f5`): line 46 is the `@remarks` opener, line 69 ends `on the bare target head.`, and `readonly upsert` follows at 71. The range did NOT move across the 0.5.0 -> 0.11.0 re-pin. Verify it with `grep -n '@remarks\\|on the bare target head' <file>` and never by eyeballing a `sed -n 'A,Bp'` range — the first printed line is A, not the line you want, and an off-by-two there already produced one wrong \"correction\" to this anchor. It is the only line-number reference from our design docs into a vendored repo. The surrounding prose quotes the TSDoc's substance, so the doc stays correct either way; only the range can go stale and mislead. Re-check on any re-pin."
+					"date": "2026-09-13",
+					"ref": "@effected/github-actions@0.13.0",
+					"note": "The okf bundle cites this repo by LINE ANCHOR: `okf/decisions/pr-head-rerooted-in-one-ref-move.md` points at `packages/github/src/GitBranch.ts:46-69` (the `@remarks` block on `upsert` describing the reset-then-commit auto-close defect). Verified at this pin (`47683a5`): line 46 is the `@remarks` opener, line 69 ends `on the bare target head.`, and `readonly upsert` follows at 71. The range has survived the 0.5.0 -> 0.11.0 -> 0.13.0 re-pins. Verify it with `grep -n '@remarks\\|on the bare target head' <file>` and never by eyeballing a `sed -n 'A,Bp'` range \u2014 an off-by-two there already produced one wrong \"correction\" to this anchor. `okf/conventions/branch-on-github-error-kind.md` also footnotes `GitBranch.ts:41,207,210`. Re-check both on any re-pin."
 				},
 				{
 					"id": "n-a87a",
-					"date": "2026-09-06",
-					"ref": "@effected/github-actions@0.11.0",
-					"note": "A fetch with `--recurse-submodules` (= yes) prints nine `Could not access submodule '.repos/<name>'` warnings and `Errors during submodule fetch: .repos/effected`, exit 1. This is EXPECTED and harmless — git descends into effected and warns for each of its nine nested gitlinks precisely because they are uninitialized, which is the state we want. The fetch of origin and of both vendored submodules succeeds; nothing is left dirty and `savvy repos status --drift` stays [ok]. Do NOT try to fix it in this repo: verified against git 2.54.0 that `fetch.recurseSubmodules=false` and `submodule..repos/effected.fetchRecurseSubmodules=false` are both overridden by the explicit command-line flag (get_fetch_recurse_config short-circuits on it), and adding `.gitmodules` to this entry's `sparse` changes nothing. `submodule..repos/effected.active=false` would silence it but makes `git submodule status` read uninitialized and every drift report claim missingWorktree — off-limits. `git fetch origin` and `--recurse-submodules=on-demand` are both silent, so the fix belongs in whatever client passes the flag (GitKraken's fetch-submodules setting). Reproduced identically in the sibling silk-update-action checkout, so it is not specific to this repo. Separately: orphaned nested gitdirs can accumulate at `.git/modules/.repos/effected/modules/.repos/*` from some earlier recursive init — they are unversioned local metadata for repos that should have no checkout, safe to `rm -rf`, and NOT the cause of the fetch warnings (removing them did not change the output)."
+					"date": "2026-09-13",
+					"ref": "@effected/github-actions@0.13.0",
+					"note": "A fetch with `--recurse-submodules` (= yes) prints nine `Could not access submodule '.repos/<name>'` warnings and `Errors during submodule fetch: .repos/effected`, exit 1. This is EXPECTED and harmless \u2014 git descends into effected and warns for each of its nine nested gitlinks precisely because they are uninitialized, which is the state we want. The fetch of origin and of both vendored submodules succeeds; nothing is left dirty and `savvy repos status --drift` stays [ok]. Do NOT try to fix it in this repo: verified against git 2.54.0 that `fetch.recurseSubmodules=false` and `submodule..repos/effected.fetchRecurseSubmodules=false` are both overridden by the explicit command-line flag (get_fetch_recurse_config short-circuits on it), and adding `.gitmodules` to this entry's `sparse` changes nothing. `submodule..repos/effected.active=false` would silence it but makes `git submodule status` read uninitialized and every drift report claim missingWorktree \u2014 off-limits. `git fetch origin` and `--recurse-submodules=on-demand` are both silent, so the fix belongs in whatever client passes the flag (GitKraken's fetch-submodules setting). Reproduced identically in the sibling silk-update-action checkout, so it is not specific to this repo. Separately: orphaned nested gitdirs can accumulate at `.git/modules/.repos/effected/modules/.repos/*` from some earlier recursive init \u2014 they are unversioned local metadata for repos that should have no checkout, safe to `rm -rf`, and NOT the cause of the fetch warnings (removing them did not change the output)."
 				}
 			]
 		}
