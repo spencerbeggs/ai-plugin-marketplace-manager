@@ -4,7 +4,7 @@ title: Action Inputs
 description: The consumer-side input contract for the action's manual and json paths.
 kind: config
 resource: ../../action.yml
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-17T19:20:18Z

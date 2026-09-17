@@ -2,7 +2,7 @@
 type: Decision
 title: Version the JSON Schema documents under their own path per label
 description: Both generated JSON Schema documents live at schemas/<version>/output.json and schemas/<version>/input.json, derived from one HostedSchema identity, so a payload's $schema URL keeps resolving to the shape it was written against after the contract moves.
-status: draft
+status: stable
 tags:
   - compat
   - release
@@ -20,6 +20,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-17T19:20:18Z
   body_sha256: 13cabe7c2b778893e7eb53844ae76a69d6ef7c712ef1ed60301e372cb5abc406
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # Version the JSON Schema documents under their own path per label

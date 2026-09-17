@@ -2,7 +2,7 @@
 type: Glossary
 title: patch
 description: What "patch" (or "plugin patch") means in this repository's input model, and what it is not.
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z

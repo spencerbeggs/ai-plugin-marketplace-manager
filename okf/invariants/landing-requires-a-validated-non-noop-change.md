@@ -2,6 +2,7 @@
 title: Landing requires a validated, non-no-op change
 description: Nothing can be committed that is byte-stable or unvalidated — the type system enforces it, not a call-site convention.
 type: Invariant
+status: stable
 resource: ../../src/services/ManifestValidator.ts
 stale_after: 2027-03-13T00:00:00Z
 tags:

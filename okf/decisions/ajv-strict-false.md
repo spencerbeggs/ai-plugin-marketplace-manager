@@ -2,7 +2,7 @@
 type: Decision
 title: ajv runs with strict false against the bundled SchemaStore schema
 description: "new Ajv({ strict: false, allErrors: true, logger: false }) validates third-party manifest DATA, not the schema itself; logger:false silences unknown-format warnings since ajv-formats is not shipped."
-status: draft
+status: stable
 tags:
   - validation
   - deps
@@ -14,6 +14,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
   body_sha256: 563e979fc2c5e9753a23c18865faab49bc7e8cd6c51fa02781d30101b143e8ae
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # ajv runs with strict false against the bundled SchemaStore schema

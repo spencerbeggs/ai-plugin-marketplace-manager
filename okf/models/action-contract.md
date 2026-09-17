@@ -3,7 +3,7 @@ type: DataModel
 title: Action Contract
 description: The maintainer-side names-and-defaults source of truth `action.yml`, `inputs.ts`, and `pre.ts`/`program.ts` are checked against.
 resource: ../../src/contract.ts
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-17T19:20:18Z

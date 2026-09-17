@@ -2,7 +2,7 @@
 type: Decision
 title: Dry-run is an early-return guard, not the kit's DryRun service
 description: Step 6 of the orchestration is a plain early return emitting a different report, not an instance of @effected/github-actions's DryRun service.
-status: draft
+status: stable
 tags:
   - architecture
 sources:
@@ -13,6 +13,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
   body_sha256: 64c488cb20a74aaf4013cc00fbe5b708bc11246e4b53c08f0dad80a83dd15d10
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # Dry-run is an early-return guard, not the kit's DryRun service

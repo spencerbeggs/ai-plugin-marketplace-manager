@@ -2,7 +2,7 @@
 type: Convention
 title: Keep the Action Contract in Sync
 description: Editing an input or output means editing three places, an Effect Schema change means rebuilding the versioned JSON Schema documents, and a schema label bump means updating the prose that quotes the URL.
-status: draft
+status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code

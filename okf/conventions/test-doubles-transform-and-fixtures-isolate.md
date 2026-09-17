@@ -1,5 +1,6 @@
 ---
 type: Convention
+status: stable
 title: Test doubles transform; fixtures isolate one field
 description: Make a double perform the real transformation, make a fixture invalid only in the field under test, and inject the failure an ordering guard actually protects against.
 stale_after: 2027-03-13T00:00:00Z

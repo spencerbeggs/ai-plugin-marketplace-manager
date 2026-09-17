@@ -2,6 +2,7 @@
 title: post revokes the installation token first
 description: The post phase revokes the GitHub App installation token before anything else runs, on success and failure alike, with no opt-out.
 type: Invariant
+status: stable
 resource: ../../__test__/post.test.ts
 stale_after: 2027-03-13T00:00:00Z
 tags:

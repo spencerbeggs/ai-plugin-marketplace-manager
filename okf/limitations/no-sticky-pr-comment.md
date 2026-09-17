@@ -2,6 +2,7 @@
 title: No sticky PR comment in pr mode
 description: pr mode writes only the job summary; a sticky, updatable PR comment was anticipated but is not implemented.
 type: Limitation
+status: stable
 bounds: ../modules/marketplace-manager.md
 tags: [observability]
 generated:

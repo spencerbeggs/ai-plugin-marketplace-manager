@@ -2,7 +2,7 @@
 type: Project
 title: claude-code-marketplace-manager
 description: What this project is, its boundaries, and its non-goals.
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-17T19:20:18Z

@@ -2,6 +2,7 @@
 title: Checkout must be the base branch
 description: base-branch pointed at a ref other than the checked-out one produces a tree derived from the wrong ref.
 type: Limitation
+status: stable
 bounds: ../interfaces/action-inputs.md
 tags: [ci]
 generated:

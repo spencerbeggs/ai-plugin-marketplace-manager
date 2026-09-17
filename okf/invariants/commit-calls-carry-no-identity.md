@@ -2,6 +2,7 @@
 title: Commit calls carry no identity
 description: No commit request sends author, committer, or signature — GitHub server-signs the commit instead.
 type: Invariant
+status: stable
 resource: ../../__test__/services/ManifestCommitter.test.ts
 stale_after: 2027-03-13T00:00:00Z
 tags:

@@ -1,5 +1,6 @@
 ---
 type: Convention
+status: stable
 title: Branch on GitHubError.kind, never on message prose
 description: Discriminate library failures by their structured kind, match library errors rather than wrapping them, and add GitHubGraphQLError on the auto-merge path.
 stale_after: 2027-03-13T00:00:00Z

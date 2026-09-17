@@ -2,6 +2,7 @@
 title: A renamed input silently takes the default
 description: Renaming an input in action.yml or a call site compiles and runs clean, but the code quietly reads nobody's value.
 type: Gotcha
+status: stable
 resource: ../../src/inputs.ts
 stale_after: 2027-03-13T00:00:00Z
 tags: [dx, testing]

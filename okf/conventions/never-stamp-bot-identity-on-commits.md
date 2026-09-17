@@ -1,5 +1,6 @@
 ---
 type: Convention
+status: stable
 title: Never stamp bot identity on commits
 description: Never pass author, committer, or signature into a commit call; the bot identity feeds the DCO trailer only.
 stale_after: 2027-03-13T00:00:00Z

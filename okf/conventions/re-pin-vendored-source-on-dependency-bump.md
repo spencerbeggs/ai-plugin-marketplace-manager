@@ -2,7 +2,7 @@
 type: Convention
 title: Re-pin Vendored Source on Dependency Bump
 description: Bump effect or @effected/github-actions, then re-pin their vendored read-only source so an agent verifies against the installed version.
-status: draft
+status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code

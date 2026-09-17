@@ -2,7 +2,7 @@
 type: Decision
 title: Verified commits via server-side signing
 description: Land commits with a genuine GitHub App installation token and no author/committer/signature, so GitHub server-signs them.
-status: draft
+status: stable
 tags:
   - security
 sources:
@@ -31,6 +31,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
   body_sha256: 18414286b95d5080c14ec1776881ddc69e25ec11e40089de6dbca8238a737f6b
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # Verified commits via server-side signing

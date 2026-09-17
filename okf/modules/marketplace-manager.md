@@ -4,7 +4,7 @@ title: marketplace-manager
 description: The GitHub Action's src/ tree — the three-phase lifecycle, the program.ts orchestration pipeline, layer composition, and the landing/mode split.
 kind: action
 resource: ../../src
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z

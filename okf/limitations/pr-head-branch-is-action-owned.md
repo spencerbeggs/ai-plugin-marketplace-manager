@@ -2,6 +2,7 @@
 title: The pr-mode head branch is action-owned
 description: A commit pushed onto the fixed pr-mode head branch is discarded on the next run, by design.
 type: Limitation
+status: stable
 bounds: ../modules/marketplace-manager.md
 tags: [ci]
 generated:

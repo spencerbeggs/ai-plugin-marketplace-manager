@@ -1,5 +1,16 @@
 # Log
 
+## 2026-09-17
+
+* Updated Action Contract
+* Updated Action Inputs
+* Added Bump the output schema version
+* Updated Effect Schemas
+* Updated Keep the Action Contract in Sync
+* Updated Result Output
+* Added Version the JSON Schema documents under their own path per label
+* Updated claude-code-marketplace-manager
+
 ## 2026-09-13
 
 * Initialized the bundle with the software-project profile

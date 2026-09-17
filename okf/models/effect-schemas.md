@@ -3,7 +3,7 @@ type: DataModel
 title: Effect Schemas
 description: The Effect Schema sources that generate the versioned JSON Schema documents under schemas/, the hosted identities that derive their URLs, and the schemastore CLI walk that keeps them current.
 resource: ../../src/schema
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-17T19:20:18Z

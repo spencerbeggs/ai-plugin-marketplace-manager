@@ -1,5 +1,6 @@
 ---
 type: Convention
+status: stable
 title: Validate the result before landing
 description: Validate the edited manifest before any commit, fail with all reasons on any violation, and mint the branded change only through validateEdit.
 stale_after: 2027-03-13T00:00:00Z

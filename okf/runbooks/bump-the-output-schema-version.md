@@ -3,7 +3,7 @@ type: Runbook
 title: Bump the output schema version
 description: Respond to a contract change in a published JSON Schema label by bumping OUTPUT_SCHEMA_VERSION, keeping the old label frozen in OUTPUT_SCHEMA_VERSIONS, regenerating with the schemastore CLI, and updating the prose Leg 3 pins.
 resource: ../../src/schema/input.ts
-status: draft
+status: stable
 tags:
   - release
   - compat

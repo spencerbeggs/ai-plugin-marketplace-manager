@@ -4,7 +4,7 @@ title: Result Output
 description: The structured `result` output and its convenience scalars.
 kind: wire
 resource: ../../schemas/1.0/output.json
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-17T19:20:18Z

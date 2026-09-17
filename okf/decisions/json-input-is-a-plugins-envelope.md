@@ -2,7 +2,7 @@
 type: Decision
 title: The json input is a plugins envelope, not a bare array
 description: JsonInput is Schema.Struct({ plugins Schema.Array(PluginPatch) }), an object root mirroring marketplace.json's own top-level plugins key.
-status: draft
+status: stable
 tags:
   - architecture
   - dx
@@ -17,6 +17,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
   body_sha256: 48fa88752bdf52b80446fd8ba7db08b95ef2754fbcd67f3cca23ebb8f6f7c100
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # The json input is a plugins envelope, not a bare array

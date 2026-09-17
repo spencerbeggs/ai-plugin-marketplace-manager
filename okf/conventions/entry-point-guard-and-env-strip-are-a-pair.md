@@ -1,5 +1,6 @@
 ---
 type: Convention
+status: stable
 title: Keep the entry-point guard and the env strip together
 description: Keep each entry point's GITHUB_ACTIONS guard and vitest.setup.ts's env strip paired; dropping either lets a test run a real phase on a runner.
 stale_after: 2027-03-13T00:00:00Z

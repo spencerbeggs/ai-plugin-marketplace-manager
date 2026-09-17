@@ -2,6 +2,7 @@
 title: src edits do nothing until dist is rebuilt
 description: The action runs the committed dist/ bundle; editing and committing src/ alone ships no behavior change.
 type: Gotcha
+status: stable
 resource: ../../dist
 stale_after: 2027-03-13T00:00:00Z
 tags: [ci, dx]

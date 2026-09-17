@@ -2,7 +2,7 @@
 type: Decision
 title: PR head re-rooted onto base in one ref move
 description: Every pr-mode run re-roots the head branch at base's current tip, unconditionally, and does so as a single GitBranch.upsert to the already-built commit.
-status: draft
+status: stable
 tags:
   - architecture
   - ci
@@ -23,6 +23,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
   body_sha256: 6b61dae6147932d352773f37c93f2988d3f92d6c56dfeda3f26b2cca3fc882a4
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # PR head re-rooted onto base in one ref move

@@ -2,6 +2,7 @@
 title: A pr-mode head carries exactly one commit, rooted at base
 description: After a pr-mode run the head branch is re-rooted at base's current tip and carries exactly one commit; the ref never rests on the bare base head.
 type: Invariant
+status: stable
 resource: ../../__test__/services/ManifestCommitter.test.ts
 stale_after: 2027-03-13T00:00:00Z
 tags:

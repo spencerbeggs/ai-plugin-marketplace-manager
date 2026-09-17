@@ -2,7 +2,7 @@
 type: Decision
 title: Explicit values only, no release lookup
 description: The action applies only the url/path/sha values a caller supplies; it never resolves a release, a ref, or a "latest" sentinel to a commit SHA on its own.
-status: draft
+status: stable
 tags:
   - architecture
 sources:
@@ -16,6 +16,9 @@ generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
   body_sha256: 272e4167bc441d2a4161362d9594ed15df30c18085c81b8cf7c99ff40f1f3e4c
+verified:
+  - by: human:spencer
+    at: 2026-09-17T19:22:49Z
 ---
 
 # Explicit values only, no release lookup

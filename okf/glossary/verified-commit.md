@@ -2,7 +2,7 @@
 type: Glossary
 title: verified commit
 description: What "verified" means for a commit this action lands, and the two things it is not.
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z

@@ -3,7 +3,7 @@ type: Consumer
 title: savvy-web/systems
 description: A workflow that repins Claude Code plugins via this action on manual dispatch or a repository_dispatch event.
 repository: savvy-web/systems
-status: draft
+status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
