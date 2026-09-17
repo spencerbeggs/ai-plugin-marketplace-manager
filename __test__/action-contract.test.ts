@@ -5,6 +5,8 @@ import { Yaml } from "@effected/yaml";
 import { Result, Schema } from "effect";
 import { describe, expect, it } from "vitest";
 import { INPUT_DEFAULTS, INPUT_NAMES, OUTPUT_NAMES } from "../src/contract.js";
+import { INPUT_SCHEMA_URL, InputSchemaIdentity, OutputSchemaIdentity } from "../src/schema/input.js";
+import { SCHEMA_URL } from "../src/schema/report-output.js";
 
 const REPO_ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const read = (rel: string): string => readFileSync(resolve(REPO_ROOT, rel), "utf8");
@@ -13,9 +15,10 @@ const read = (rel: string): string => readFileSync(resolve(REPO_ROOT, rel), "utf
 // free to carry keys we do not model (`branding`, `runs`) without this decode
 // becoming a second place to maintain the contract.
 const InputDecl = Schema.Struct({ default: Schema.optional(Schema.String) });
+const OutputDecl = Schema.Struct({ description: Schema.optional(Schema.String) });
 const ActionManifest = Schema.Struct({
 	inputs: Schema.Record(Schema.String, InputDecl),
-	outputs: Schema.Record(Schema.String, Schema.Unknown),
+	outputs: Schema.Record(Schema.String, OutputDecl),
 });
 
 const manifest = (() => {
@@ -96,6 +99,36 @@ describe("action contract", () => {
 		// `outputs.setJson`, which the `set\w*` in the pattern already covers.
 		it.each([...OUTPUT_NAMES])('writes output "%s"', (name) => {
 			expect(isWritten(name), `no outputs.set for "${name}"`).toBe(true);
+		});
+	});
+
+	// Leg 3: the hosted schema URLs <-> the prose that quotes them. The code and
+	// the generated documents share one derivation (`HostedSchema.$id`, checked
+	// by `pnpm schema:check`), but action.yml and the README spell the URL and
+	// the file paths by hand, and a version bump that misses them fails nothing.
+	describe("the documentation quotes the derived schema locations", () => {
+		const readme = read("README.md");
+
+		it("action.yml points the result output at SCHEMA_URL", () => {
+			expect(manifest.outputs.result?.description).toContain(SCHEMA_URL);
+		});
+
+		it("README quotes SCHEMA_URL as the example $schema", () => {
+			expect(readme).toContain(`"$schema": "${SCHEMA_URL}"`);
+		});
+
+		it("README links the committed documents at their generated paths", () => {
+			expect(readme).toContain(`(schemas/${OutputSchemaIdentity.fileName})`);
+			expect(readme).toContain(`(schemas/${InputSchemaIdentity.fileName})`);
+		});
+
+		it("derives both URLs from the versioned layout", () => {
+			expect(SCHEMA_URL).toBe(
+				"https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/output.json",
+			);
+			expect(INPUT_SCHEMA_URL).toBe(
+				"https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/input.json",
+			);
 		});
 	});
 });

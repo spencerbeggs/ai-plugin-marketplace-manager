@@ -5,8 +5,8 @@ description: What this project is, its boundaries, and its non-goals.
 status: draft
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 9506b161d61c3568445db51f19aebcb02e567b73a334762194eaee33952dce88
+  at: 2026-09-17T19:20:18Z
+  body_sha256: 823cdbcb0118589b22c10fbbee7ffcaa2024acb13f658d21bc16cc28600eb3d8
 ---
 
 # claude-code-marketplace-manager
@@ -47,7 +47,7 @@ server-signed, verified commits instead.
 ## Boundaries
 
 This repository owns the action's `src/` implementation, its committed
-`dist/` bundle, its input/output JSON Schemas at the repository root, and the
+`dist/` bundle, its versioned input/output JSON Schemas under `schemas/`, and the
 `.claude-plugin/marketplace.json` editing/validation/landing logic. It does
 not own the workflows that invoke it — those live in consumer repositories
 (see [consumers](consumers/index.md)) and decide when to call the action, with

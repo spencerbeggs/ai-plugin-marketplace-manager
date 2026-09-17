@@ -7,8 +7,8 @@ resource: ../../action.yml
 status: draft
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 40e0141dcdb6ba3455b74a221202f17660bead5d58ff0dc68c64a7967fa41f63
+  at: 2026-09-17T19:20:18Z
+  body_sha256: 017455cd6bbf7ab2b56746f164f59c2cfe68bda2b1015c9a765115b0c2c50e7f
 tags:
   - architecture
   - dx
@@ -34,9 +34,12 @@ before anything else runs.
   { "plugins": [{ "name": "vitest-agent", "sha": "8cba76025762cfa1dca24e6daafe2e3dc7c14924" }] }
   ```
 
-  Its schema is the root `claude-code-marketplace-manager.input.json`
-  (`$id` declared at `claude-code-marketplace-manager.input.json:3`, generated
-  from `src/schema/input.ts`'s `JsonInput`).
+  Its schema is `schemas/1.0/input.json` (`$id` declared at
+  `schemas/1.0/input.json:3`, generated from `src/schema/input.ts`'s
+  `JsonInput` by `@effected/schemastore-cli`), published at
+  `https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/input.json`
+  — `INPUT_SCHEMA_URL` (`src/schema/input.ts:52`); see
+  [effect-schemas](../models/effect-schemas.md).
 
 Providing both the manual fields and `json` is an error, and providing
 neither is an error — `hasManual && hasJson` and `!hasManual && !hasJson` are

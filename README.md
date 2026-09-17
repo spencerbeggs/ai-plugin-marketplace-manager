@@ -134,7 +134,7 @@ Provide changes in one of two mutually exclusive ways: the **manual** path (`nam
 | `url` | no | `""` | New `source.url` for the named plugin. |
 | `path` | no | `""` | New `source.path` for the named plugin. |
 | `sha` | no | `""` | New `source.sha` (40-hex commit) for the named plugin. |
-| `json` | programmatic path | `""` | JSON object with a `plugins` array of per-plugin partial-merge patches, `{ "plugins": [{ "name": string, "url"?, "path"?, "sha"? }] }`. Each entry names an existing plugin and changes only the fields it provides. Validated against the committed [input schema](claude-code-marketplace-manager.input.json). |
+| `json` | programmatic path | `""` | JSON object with a `plugins` array of per-plugin partial-merge patches, `{ "plugins": [{ "name": string, "url"?, "path"?, "sha"? }] }`. Each entry names an existing plugin and changes only the fields it provides. Validated against the committed [input schema](schemas/1.0/input.json). |
 | `mode` | no | `commit` | `commit` (commit direct to the base branch) or `pr` (open a pull request). |
 | `base-branch` | no | repo default branch | Branch to commit to (`commit` mode) or the PR base (`pr` mode). |
 | `branch` | no | `chore/repin-plugins` | PR head branch (`pr` mode). Force-reset onto the base branch on every run — any commits an earlier run left on it are discarded. |
@@ -150,7 +150,7 @@ Provide changes in one of two mutually exclusive ways: the **manual** path (`nam
 
 | Output | Description |
 | ------ | ----------- |
-| `result` | Structured JSON describing the run, governed by the committed [output schema](claude-code-marketplace-manager.output.json). The scalars below mirror its common fields. |
+| `result` | Structured JSON describing the run, governed by the committed [output schema](schemas/1.0/output.json). The scalars below mirror its common fields. |
 | `status` | `no-op`, `success`, or `failed`. |
 | `changed` | `true` when the manifest was modified. |
 | `mode` | `commit` or `pr`. |
@@ -164,7 +164,7 @@ The `result` payload carries the full contract:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/claude-code-marketplace-manager.output.json",
+  "$schema": "https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/output.json",
   "schemaVersion": "1",
   "mode": "commit",
   "status": "success",

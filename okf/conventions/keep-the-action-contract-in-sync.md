@@ -1,13 +1,13 @@
 ---
 type: Convention
 title: Keep the Action Contract in Sync
-description: Editing an input or output means editing three places, and an Effect Schema change means regenerating the root JSON Schemas.
+description: Editing an input or output means editing three places, an Effect Schema change means rebuilding the versioned JSON Schema documents, and a schema label bump means updating the prose that quotes the URL.
 status: draft
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 224823c32f17a030c129f247ebc743df9b37bd76e13bce880bb162a3860e6bf2
+  at: 2026-09-17T19:20:18Z
+  body_sha256: 38dd1b1a4723547fc034dec4e91e122e9069b7cde6da01472f2df56901c6f403
 tags:
   - dx
   - testing
@@ -34,9 +34,18 @@ matching `ActionInput.\w+(...)`/`outputs.set\w*(...)` call — see
 
 Separately: after any change to an Effect Schema that feeds a published
 document (`ReportOutput` in `src/schema/report-output.ts`, `JsonInput` in
-`src/schema/input.ts`), run `pnpm generate-schema` and never hand-edit the
-root `claude-code-marketplace-manager.input.json` or
-`claude-code-marketplace-manager.output.json` — both are generated output,
-and `__test__/generate-schema.test.ts` fails the suite on drift rather than
-silently tolerating a hand edit. See
-[effect-schemas](../models/effect-schemas.md).
+`src/schema/input.ts`), run `pnpm schema:build` and never hand-edit
+`schemas/1.0/output.json` or `schemas/1.0/input.json` — both are generated
+by `@effected/schemastore-cli` from `lib/scripts/schemastore.config.ts`, and
+`pnpm schema:check` (run before vitest by `pnpm ci:test`, `package.json:22`)
+fails CI on drift in either direction rather than silently tolerating a hand
+edit. See [effect-schemas](../models/effect-schemas.md).
+
+And when the schema label moves — `OUTPUT_SCHEMA_VERSION` in
+`src/schema/input.ts` — update the prose that spells the URL and paths by
+hand: `action.yml`'s `result` description and the README's example `$schema`
+and document links. The CLI cannot see prose; Leg 3 of
+`__test__/action-contract.test.ts` pins it to `SCHEMA_URL`,
+`INPUT_SCHEMA_URL`, and each identity's `fileName`
+(`__test__/action-contract.test.ts:105-133`). Follow
+[bump-the-output-schema-version](../runbooks/bump-the-output-schema-version.md).

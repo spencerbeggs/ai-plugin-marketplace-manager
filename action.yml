@@ -60,8 +60,7 @@ inputs:
     default: ""
   auto-merge:
     description: >-
-      Merge method to enable auto-merge with on the opened/updated PR: "merge",
-      "squash", or "rebase". Only applies in pr mode; ignored in commit mode.
+      Merge method to enable auto-merge with on the opened/updated PR: "merge", "squash", or "rebase". Only applies in pr mode; ignored in commit mode.
     required: false
     default: "rebase"
   dry-run:
@@ -78,7 +77,7 @@ outputs:
   result:
     description: |
       Structured JSON describing what the run did, validated by
-      https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/claude-code-marketplace-manager.output.json
+      https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/output.json
       Parse it for the full contract; the scalars below mirror the common facts.
   status:
     description: "no-op | success | failed"

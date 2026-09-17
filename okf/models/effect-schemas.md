@@ -1,13 +1,23 @@
 ---
 type: DataModel
 title: Effect Schemas
-description: The Effect Schema sources that generate the committed root JSON Schemas, and the drift/validation pipeline built on them.
+description: The Effect Schema sources that generate the versioned JSON Schema documents under schemas/, the hosted identities that derive their URLs, and the schemastore CLI walk that keeps them current.
 resource: ../../src/schema
 status: draft
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 7fbee3feb5e2541bff4ae3d712d805bce45ff07c7a2282bfaf38c897856f48e1
+  at: 2026-09-17T19:20:18Z
+  body_sha256: 9734e649bc620d90728c556c1b74ad0bf7c38162627d986278c93e4a5bd6a74d
+sources:
+  - id: input-schema
+    resource: ../../src/schema/input.ts
+    title: "the hosted identities, version labels, and JsonInput"
+  - id: schemastore-config
+    resource: ../../lib/scripts/schemastore.config.ts
+    title: "the schemastore CLI target manifest"
+  - id: schemastore-types
+    resource: npm:@effected/schemastore
+    title: "StoreDocumentOptions.jsonSchema in index.d.ts — the closed-object default"
 tags:
   - architecture
   - testing
@@ -22,54 +32,108 @@ different roles:
 
 | File | Origin | Role |
 | --- | --- | --- |
-| `claude-code-marketplace-manager.output.json` | Generated from `ReportOutput` (`src/schema/report-output.ts`) | The `result` output's published, drift-tested contract. |
-| `claude-code-marketplace-manager.input.json` | Generated from `JsonInput` (`src/schema/input.ts`) | The `json` input's published, drift-tested contract. |
+| `schemas/1.0/output.json` | Generated from `ReportOutput` (`src/schema/report-output.ts`) | The `result` output's published contract; every payload carries its URL as `$schema`. |
+| `schemas/1.0/input.json` | Generated from `JsonInput` (`src/schema/input.ts`) | The `json` input's published contract, for editor completion and structured-output validators. |
 | `src/schema/claude-code-marketplace.json` | Vendored SchemaStore asset (65KB, not generated) | Structural validation of the edited manifest, compiled by ajv in `src/services/ManifestValidator.ts:8` (`import marketplaceSchema from "../schema/claude-code-marketplace.json"`). |
 
-The two generated files are produced by `lib/scripts/generate-schema.ts`,
-which exports both `targets` — an array of `SchemaTarget` entries, one per
-document, naming its Effect Schema, its `$id`, and its output path
-(`lib/scripts/generate-schema.ts:67-80`) — and `AppLayer`, the
-`SchemaFile.layer` + `SchemaValidator.layer` wiring the pipeline walk needs
-(`lib/scripts/generate-schema.ts:111`). `__test__/generate-schema.test.ts`
-imports both directly rather than re-declaring them, so the drift check runs
-the generator's own walk against the generator's own wiring — never a copy
-that could quietly diverge (`__test__/generate-schema.test.ts:5`, and the
-generator's own remark at `lib/scripts/generate-schema.ts:33-34`).
+The two generated documents are never hand-edited. Their content comes from
+the Effect Schemas; their location and `$id` come from a `HostedSchema`
+identity; and `@effected/schemastore-cli` is what turns the one into the
+other.
 
-`CLOSED_OBJECTS` (`onExcessProperty: "error"`) is passed to every target
-because `effect` rc.113 flipped `Schema.toJsonSchemaDocument`'s default to
-leave unmodeled properties open; this restores the `additionalProperties:
-false` shape the committed documents have always declared
-(`lib/scripts/generate-schema.ts:49-57`).
+## The identity is constructed once
 
-## `SchemaPipeline.checkOne`'s three signals
+`src/schema/input.ts`[^input-schema] owns every fact about where a generated
+document lives:
 
-`__test__/generate-schema.test.ts` calls `SchemaPipeline.checkOne(target)`
-for each target and asserts on three independent signals, each with a
-different remedy:
+- `OUTPUT_SCHEMA_VERSION = "1.0"` — the label both documents are currently
+  published under, and the one constant a contract break moves
+  (`src/schema/input.ts:13`). It is independent of the action's own version
+  and of `ReportOutput`'s in-band `SCHEMA_VERSION = "1"`
+  (`src/schema/report-output.ts:16`): the label names the hosted
+  **document**, the in-band field is what a payload carries.
+- `OUTPUT_SCHEMA_VERSIONS` — every label ever published, oldest first, with
+  the current one newest; a single entry today (`src/schema/input.ts:20`).
+- A `hosted(name)` helper calling `HostedSchema.github({ repo, path:
+  "schemas", name, versions, current, appendVersion: false })` — the
+  directory carries the label, so the file name does not repeat it
+  (`src/schema/input.ts:32-40`).
+- `OutputSchemaIdentity = hosted("output")` and
+  `InputSchemaIdentity = hosted("input")` (`src/schema/input.ts:43`, `46`).
 
-- **`blocked`** — the document could never have been written at all
-  (a structural lint or ajv strict-mode finding at `warning` severity or
-  above). Remedy: fix the findings; regenerating will not help.
-- **`contractBlocked`** — the pipeline's default contract policy would
-  refuse the write because the change is a breaking one. Remedy: bump
-  `SCHEMA_VERSION`/`INPUT_SCHEMA_VERSION`, not regenerate.
-- **`wouldWrite`** — ordinary drift between the committed file and what the
-  Effect Schema would currently produce. Remedy: run `pnpm generate-schema`.
+The URLs the code emits are those identities' `$id` getters, not string
+literals: `INPUT_SCHEMA_URL: string = InputSchemaIdentity.$id`
+(`src/schema/input.ts:52`) and `SCHEMA_URL: string = OutputSchemaIdentity.$id`
+(`src/schema/report-output.ts:13`). Because `SCHEMA_URL` is a `string` rather
+than a literal type, `ReportOutput`'s `$schema` field decodes as `string`;
+runtime decoding still rejects any other value
+(`src/schema/report-output.ts:41-44`).
 
-(`__test__/generate-schema.test.ts:16-31`.) A fourth assertion,
-`DocumentDiff.isClean(result.change)`, is the content-vs-text distinction
-made explicit: `result.change` classifies what actually differed
-(`"contract"` is a consumer-visible break, `"annotations"` is documentation
-only), and comparing by content rather than raw bytes means a formatter
-reflowing the committed file does not provoke a spurious rewrite on the next
-run (`__test__/generate-schema.test.ts:22-23`, `32`;
-`lib/scripts/generate-schema.ts:20-23`).
+## What is derived from it
 
-`generate.ts`'s own run (`pnpm generate-schema`) uses `SchemaPipeline.run`,
-which performs the identical walk but also writes: it lints, runs the ajv
-strict-mode gate against the default blocking predicate (`severity ===
-"warning"`), fails with a `SchemaGateError` carrying every blocking finding,
-and writes only the documents whose content actually changed
-(`lib/scripts/generate-schema.ts:82-101`).
+`lib/scripts/schemastore.config.ts`[^schemastore-config] is the
+`@effected/schemastore-cli` target manifest: a `defineConfig` with
+`outputDir: "../../schemas"` (relative to the config file, not the repo
+root) and one entry per document, keyed by the identity's `name` and handed
+the identity as `hosted` (`lib/scripts/schemastore.config.ts:49-67`).
+`defineConfig` rejects an entry keyed differently from its identity, so the
+`$id` the CLI writes and the `$schema` a payload carries are one derivation,
+not two that must agree. The config lives under `lib/scripts/` because
+`src/` is action source only, so the package scripts pass its path
+explicitly instead of relying on the CLI's upward discovery.
+
+Both entries are `published: false` (`lib/scripts/schemastore.config.ts:60`,
+`65`): the `1.0` label has never shipped, so a contract change regenerates
+the file in place instead of demanding a bump. Once a label ships, the entry
+flips to `published: true`, and a contract-class change at that label is
+answered by bumping `OUTPUT_SCHEMA_VERSION` and keeping the old label in
+`OUTPUT_SCHEMA_VERSIONS` as a frozen file — see
+[bump-the-output-schema-version](../runbooks/bump-the-output-schema-version.md)
+and
+[versioned-schema-documents](../decisions/versioned-schema-documents.md).
+
+Every object in both documents is emitted closed
+(`additionalProperties: false`). That is the library's own default —
+`StoreDocumentOptions.jsonSchema` documents `onExcessProperty` as defaulting
+to `"error"` because a published document is a contract, where core's
+`Schema.toJsonSchemaDocument` default has been `"ignore"` (open) since
+rc.113 (`node_modules/@effected/schemastore/index.d.ts:267-270`)[^schemastore-types].
+The config passes no `jsonSchema` option, so nothing here has to remember to
+close them. The runtime decoders in `src/schema/` keep core's `"ignore"`
+default and tolerate excess keys; the published documents are deliberately
+the stricter of the two.
+
+## The commands
+
+- `pnpm schema:build` — `schemastore build lib/scripts/schemastore.config.ts`
+  (`package.json:29`): lints each document, runs the ajv strict-mode gate,
+  applies the drift policy, and writes only the documents whose content
+  actually changed. Wired as the turbo `schema:build` task, which depends on
+  `types:check`, outputs `schemas/**`, and is a dependency of `build:prod`
+  (`turbo.json`).
+- `pnpm schema:check` — the identical walk with no writes (`package.json:30`).
+  It reports each document as unchanged, would-write, or drift, and exits
+  non-zero when a build would write or refuse anything. `pnpm ci:test` runs
+  it before vitest (`package.json:22`), so it — not a vitest test — is the
+  drift guard in CI.
+
+## What breaks if an entry is wrong
+
+- An Effect Schema change without `pnpm schema:build` leaves a stale
+  document on disk; `pnpm schema:check` fails `ci:test`.
+- A hand edit to `schemas/1.0/*.json` is drift in the other direction and
+  fails the same check; the CLI compares by content, so a formatter reflow
+  alone does not.
+- A label bump that misses the prose — `action.yml`'s `result` description
+  and the README's example `$schema` and document links — fails nothing in
+  the CLI, which is why `__test__/action-contract.test.ts`'s third leg pins
+  that prose to `SCHEMA_URL`, `INPUT_SCHEMA_URL`, and each identity's
+  `fileName` (`__test__/action-contract.test.ts:105-133`); see
+  [action-contract](action-contract.md).
+- A label listed in `OUTPUT_SCHEMA_VERSIONS` with no file on disk, or a
+  frozen file whose `$id` no longer matches the derived one, fails the CLI's
+  pre-flight before anything is written.
+
+[^input-schema]: `../../src/schema/input.ts`
+[^schemastore-config]: `../../lib/scripts/schemastore.config.ts`
+[^schemastore-types]: `npm:@effected/schemastore` (0.13.0, `index.d.ts`)

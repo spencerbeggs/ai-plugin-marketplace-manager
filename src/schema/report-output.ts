@@ -1,8 +1,16 @@
 import { Schema } from "effect";
+import { OutputSchemaIdentity } from "./input.js";
 
-/** Hosted JSON Schema URL; emitted as the `result`'s `$schema`. */
-export const SCHEMA_URL =
-	"https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/claude-code-marketplace-manager.output.json";
+/**
+ * Hosted JSON Schema URL; emitted as the `result`'s `$schema`.
+ *
+ * @remarks
+ * The `$id` of `OutputSchemaIdentity`'s current document — the same value
+ * `lib/scripts/schemastore.config.ts` writes as the document's `$id`, so the
+ * two cannot disagree. Versioned (`schemas/<version>/output.json`) so a payload
+ * keeps resolving to the shape it was written against after the schema moves.
+ */
+export const SCHEMA_URL: string = OutputSchemaIdentity.$id;
 
 /** In-band schema version; bumped only on a breaking shape change. */
 export const SCHEMA_VERSION = "1";
@@ -30,6 +38,9 @@ const PrInfo = Schema.Struct({
  * `noop`/`succeeded`/`hasFailures`; `status` is a derived human label.
  */
 export const ReportOutput = Schema.Struct({
+	// `SCHEMA_URL` is a `string` (a `HostedSchema` getter, not a literal), so the
+	// decoded `$schema` is typed `string`; runtime decoding still rejects any
+	// other URL.
 	$schema: Schema.Literal(SCHEMA_URL),
 	schemaVersion: Schema.Literal(SCHEMA_VERSION),
 	mode: Schema.Literals(["commit", "pr"]),

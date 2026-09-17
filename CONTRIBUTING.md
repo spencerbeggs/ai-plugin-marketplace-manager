@@ -25,7 +25,7 @@ pnpm install
 | `pnpm ci:build` | Same as `build`, run in CI mode with full log output |
 | `pnpm test` | Run the Vitest suite (no coverage) |
 | `pnpm test:coverage` | Run the Vitest suite with coverage enabled |
-| `pnpm ci:test` | Run the Vitest suite with coverage, `CI=true` |
+| `pnpm ci:test` | Run `pnpm schema:check`, then the Vitest suite with coverage, `CI=true` |
 | `pnpm test:watch` | Run tests in watch mode |
 | `pnpm lint` | Run Biome checks (no auto-fix) |
 | `pnpm lint:fix` | Run Biome with auto-fix (safe fixes only) |
@@ -33,15 +33,20 @@ pnpm install
 | `pnpm lint:md` | Lint markdown files with `markdownlint-cli2` |
 | `pnpm lint:md:fix` | Auto-fix markdown lint issues |
 | `pnpm typecheck` | Type-check the workspace via Turbo (`tsc --noEmit`) |
-| `pnpm generate-schema` | Regenerate the committed root `*.input.json` / `*.output.json` JSON Schemas from the Effect Schemas |
+| `pnpm schema:build` | Regenerate the committed `schemas/<version>/{input,output}.json` JSON Schemas from the Effect Schemas via `@effected/schemastore-cli` |
+| `pnpm schema:check` | Verify the committed JSON Schemas are what `schema:build` would produce, without writing (the CI drift gate) |
 | `pnpm validate` | Validate `action.yml` via `github-action-builder validate` |
 
 Run `pnpm build` before committing any change under `src/` — `dist/` is
 committed and must stay in sync with the source.
 
 If a change touches an Effect Schema that backs an input/output contract, run
-`pnpm generate-schema` afterward; the root schemas are drift-tested and must
-not be hand-edited.
+`pnpm schema:build` afterward; the documents under `schemas/` are generated
+from `lib/scripts/schemastore.config.ts`, checked for drift by
+`pnpm schema:check` in CI, and must not be hand-edited. A contract change at
+a label that has already been published is answered by bumping
+`OUTPUT_SCHEMA_VERSION` in `src/schema/input.ts` rather than regenerating in
+place — see `okf/runbooks/bump-the-output-schema-version.md`.
 
 ## Code Quality Standards
 
@@ -78,7 +83,7 @@ commit:
 
 1. **Branch** — create a feature branch from `main`
 2. **Make changes** — follow the code quality standards above; run
-   `pnpm build` if `src/` changed, and `pnpm generate-schema` if a schema
+   `pnpm build` if `src/` changed, and `pnpm schema:build` if a schema
    changed
 3. **Test** — run `pnpm test` (or `pnpm ci:test` for coverage) and ensure all
    tests pass

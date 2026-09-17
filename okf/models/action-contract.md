@@ -6,8 +6,8 @@ resource: ../../src/contract.ts
 status: draft
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 7821c7f1a79e9bc5c963ed7e465bec9903d457186b9aaec883718b931756ee51
+  at: 2026-09-17T19:20:18Z
+  body_sha256: 08d18999bce97d5f0ec4204fe2d24479d9e4901740a47b1dd3367bd023df3c7a
 tags:
   - architecture
   - testing
@@ -47,22 +47,22 @@ honest; `INPUT_DEFAULTS` is the one place that decision now lives
 
 ## What is derived from it
 
-`__test__/action-contract.test.ts` asserts a three-way agreement, in two
-legs:
+`__test__/action-contract.test.ts` asserts a three-way agreement in two
+legs, plus a third leg that pins the schema URLs the prose quotes:
 
 1. **`action.yml` ↔ `contract.ts`.** `action.yml` is parsed with `@effected/yaml`
    through a `Schema.Record`-based `ActionManifest` that models only
    `inputs`/`outputs` — deliberately loose, so unrelated manifest keys like
    `branding`/`runs` never become a second thing to maintain
-   (`__test__/action-contract.test.ts:12-31`). Three assertions follow: the
+   (`__test__/action-contract.test.ts:14-34`). Three assertions follow: the
    manifest's `inputs` keys equal `INPUT_NAMES` as sets, its `outputs` keys
    equal `OUTPUT_NAMES` as sets, and every input mirrored in `INPUT_DEFAULTS`
-   has exactly that default in the manifest (`__test__/action-contract.test.ts:58-72`).
+   has exactly that default in the manifest (`__test__/action-contract.test.ts:61-75`).
    A fourth assertion guards the reasoning `INPUT_DEFAULTS` is built on: every
    *other* optional input (excluding the two required app-credential inputs)
    still defaults to `""` in the manifest — so an unmirrored input quietly
    acquiring a real default would change behavior with nothing here to notice
-   (`__test__/action-contract.test.ts:74-84`).
+   (`__test__/action-contract.test.ts:77-87`).
 2. **`contract.ts` ↔ the source.** Because a name reaching `ActionInput.<accessor>("name")`
    or `outputs.set("name", ...)` is a string literal that appears in no type,
    the test can only find call sites by reading source text: it concatenates
@@ -70,7 +70,17 @@ legs:
    `INPUT_NAMES` entry against an `ActionInput.\w+(...)` call, and each
    `OUTPUT_NAMES` entry against an `outputs\s*.\s*set\w*(...)` call — the
    whitespace tolerance matters because the formatter breaks the longest of
-   these calls across a line (`__test__/action-contract.test.ts:33-52`, `90-100`).
+   these calls across a line (`__test__/action-contract.test.ts:36-55`, `90-103`).
+3. **The derived schema locations ↔ the prose.** The code and the generated
+   documents share one derivation (`HostedSchema.$id`, checked by
+   `pnpm schema:check`), but `action.yml`'s `result` description and the
+   README spell the URL and the document paths by hand, and a version bump
+   that misses them fails nothing. The test asserts the `result` description
+   contains `SCHEMA_URL`, the README quotes `SCHEMA_URL` as its example
+   `$schema` and links `schemas/<fileName>` for both identities, and both
+   URLs resolve to the versioned `schemas/1.0/` layout
+   (`__test__/action-contract.test.ts:105-133`). See
+   [effect-schemas](effect-schemas.md).
 
 ## What breaks if an entry is wrong
 

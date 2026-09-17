@@ -3,12 +3,12 @@ type: Interface
 title: Result Output
 description: The structured `result` output and its convenience scalars.
 kind: wire
-resource: ../../claude-code-marketplace-manager.output.json
+resource: ../../schemas/1.0/output.json
 status: draft
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: e3ed9d2b4aba331e18042591cb7c0cd1bba710b88c99a0e7f76720b9b3df5d32
+  at: 2026-09-17T19:20:18Z
+  body_sha256: adecad515b11eddb80632a36fb48b6a53cd18f392f1f4bbb99e711f30ea6a42d
 tags:
   - architecture
   - observability
@@ -18,27 +18,34 @@ tags:
 
 ## The `result` output
 
-`result` is `ReportOutput` (`src/schema/report-output.ts:32-51`), built by the
+`result` is `ReportOutput` (`src/schema/report-output.ts:40-62`), built by the
 pure `toReportOutput` projection in `src/schema/projections.ts:38-55`. Its
 shape:
 
 - `$schema` — the hosted schema URL, first field, always
-  `https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/claude-code-marketplace-manager.output.json`
-  (`src/schema/report-output.ts:4-5`, `33`).
+  `https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/output.json`
+  — `SCHEMA_URL`, the `$id` of `OutputSchemaIdentity`'s current document
+  rather than a string literal, so the URL a payload carries and the `$id`
+  the committed document declares are one value
+  (`src/schema/report-output.ts:13`, `44`). The `1.0` in the path is the
+  hosted document's label, a different thing from `schemaVersion`; a
+  contract change at a published label moves it, and an old payload's URL
+  keeps resolving to the shape it was written against — see
+  [versioned-schema-documents](../decisions/versioned-schema-documents.md).
 - `schemaVersion` — an in-band literal `"1"`, bumped only on a breaking shape
-  change (`src/schema/report-output.ts:8`, `34`).
+  change (`src/schema/report-output.ts:16`, `45`).
 - Three orthogonal booleans plus `dryRun`: `noop`, `succeeded`, `hasFailures`,
-  `dryRun` (`src/schema/report-output.ts:37-40`). `noop` is true when the
+  `dryRun` (`src/schema/report-output.ts:48-51`). `noop` is true when the
   change set is empty (`src/schema/projections.ts:40`).
 - `mode` — `"commit" | "pr"`, the mode the run actually used
-  (`src/schema/report-output.ts:35`).
+  (`src/schema/report-output.ts:46`).
 - `status` — a derived human label, never set directly:
   `!succeeded ⇒ "failed"`, else `noop ⇒ "no-op"`, else `"success"`
   (`deriveStatus`, `src/schema/projections.ts:18-19`).
 - Payload: `pluginsUpdated` (count of distinct plugins touched), `plugins`
   (`{ name, fields[] }` grouped per plugin, order preserved), `commit`
   (`{ sha, url } | null`), `pr` (`{ number, url } | null`)
-  (`src/schema/report-output.ts:41-44`; `src/schema/projections.ts:21-53`).
+  (`src/schema/report-output.ts:52-55`; `src/schema/projections.ts:21-53`).
 
 ## Failure states are actually emitted
 
