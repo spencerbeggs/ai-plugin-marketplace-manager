@@ -1,5 +1,26 @@
 # claude-code-marketplace-manager
 
+## 1.1.4
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effect/platform-node | dependency | updated | 4.0.0-rc.115 | 4.0.0-rc.116 |
+| @effected/github | dependency | updated | ^0.10.2 | ^0.11.0 |
+| @effected/github-actions | dependency | updated | ^0.13.4 | ^0.14.0 |
+| @effected/jsonc | dependency | updated | ^0.11.1 | ^0.12.0 |
+| @effected/schemastore | dependency | updated | ^0.13.1 | ^0.14.0 |
+| effect | dependency | updated | 4.0.0-rc.115 | 4.0.0-rc.116 |
+
+[#104][#104]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/apps/spencerbeggs) for their contributions!
+
+[#104]: https://github.com/spencerbeggs/claude-code-marketplace-manager/pull/104
+
 ## 1.1.3
 
 ### Dependencies
