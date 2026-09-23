@@ -23,8 +23,8 @@ sources:
     title: "chose rewriting the frozen 1.0 $ids over dropping 1.0 from the tracked list"
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:30:46Z
-  body_sha256: 810585bb7f0829751bd28f462fb57c3f669b4d6395df5801309abe92a39f86aa
+  at: 2026-09-23T21:55:46Z
+  body_sha256: 3b3df6a57d2e8e20b185e220d284484f8a42941aaa8d459546061364a1f13ffa
 ---
 
 # Repository renamed at v2; frozen 1.0 schema $ids rewritten, not dropped
@@ -79,9 +79,13 @@ already-renamed repository: `curl -I
 https://raw.githubusercontent.com/zeit/next.js/canary/package.json` returns
 `200` after the `zeit` → `vercel` owner rename, confirming
 `raw.githubusercontent.com` does honor a repository/owner rename redirect.
-A direct check of *this* repository's own `1.0` URLs under the new name is
-still owed — it can only happen once the actual GitHub rename has occurred,
-and is the step to run right after that rename, before tagging `v2`.
+This repository's own URLs were checked directly on 2026-09-23, after the
+rename and the push of `5993b81`. `curl -sL` against the old-name URL
+`https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/output.json`
+returned `200`, serving the 1.0 document with its rewritten `$id`. The
+new-name `schemas/1.0/output.json` and `schemas/2.0/output.json` URLs also
+returned `200`. The redirect holds, so the stub-repository fallback below is
+not needed.
 
 ## Alternatives rejected
 
@@ -104,9 +108,8 @@ and is the step to run right after that rename, before tagging `v2`.
   it.
 - **Stand up a stub `claude-code-marketplace-manager` repository** serving
   only `schemas/1.0/`, bypassing reliance on the rename redirect entirely.
-  Deferred rather than rejected outright: the design explicitly calls out
-  verifying the redirect's behavior before release as a prerequisite, with
-  this stub as the fallback if it does not hold.
+  Held in reserve as the fallback in case the redirect failed. The
+  post-rename check above showed it works, so the stub is not needed.
 
 ## Consequences
 
@@ -123,10 +126,10 @@ and is the step to run right after that rename, before tagging `v2`.
   `$id` would be reintroducing the exact mismatch this decision avoids.
 - Every URL a v1 payload's `$schema` field carries depends on GitHub's
   repository-rename redirect continuing to serve `raw.githubusercontent.com`
-  requests against the old owner/repo pair. This is treated as verified
-  behavior to confirm before the v2 release ships, not as a settled fact —
-  hence this Decision is `status: draft` pending that confirmation and
-  human verification.
+  requests against the old owner/repo pair. The post-rename check confirmed
+  the redirect works today. It remains an external dependency GitHub could
+  change; if it ever stops resolving, the fallback is the stub repository.
+  This Decision stays `status: draft` until a human verifies it.
 - A future contract change at `2.0` proceeds exactly as
   [bump-the-output-schema-version](../runbooks/bump-the-output-schema-version.md)
   describes, appending a new label to `OUTPUT_SCHEMA_VERSIONS` while `1.0`
