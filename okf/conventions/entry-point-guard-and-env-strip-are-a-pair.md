@@ -6,8 +6,8 @@ description: Keep each entry point's GITHUB_ACTIONS guard and vitest.setup.ts's 
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: efc6ae9cf8ae0933787f42c87bbcd7c5ce484d350c0b8eeee49575b426bd856b
+  at: 2026-09-29T03:16:59Z
+  body_sha256: b40ccd697091c26633f4cfc1a71b44b15bd7921662775e77656c3c62ea2c8f47
 tags:
   - testing
   - ci
@@ -56,4 +56,4 @@ the deletion code.[^env-test]
 [^main]: ../../src/main.ts:6
 [^post]: ../../src/post.ts:44
 [^vitest-setup]: ../../vitest.setup.ts:6-24,26-52
-[^env-test]: ../../__test__/env.test.ts:3-20
+[^env-test]: `../../__test__/env.test.ts:3-20`

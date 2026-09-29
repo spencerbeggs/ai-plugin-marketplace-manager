@@ -7,8 +7,8 @@ resource: ../../src
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T20:44:15Z
-  body_sha256: 30ed1367596722442af0363996dbce9a517f868f6e2150fee8abeb7f7c4ec3c5
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 575b3a9fe4d7bb93b3d2d64e1ac42f1c009716f1184bbad9dc44176bb3907d21
 tags: [architecture]
 ---
 
@@ -51,11 +51,11 @@ runner environment before the forks pool spawns — see
 
 ## Orchestration (`src/program.ts`)
 
-`program` (`src/program.ts:157-173`) wraps `parseInputs` and the
-orchestration body (`runOrchestration`, `src/program.ts:66-149`) each in
+`program` (`src/program.ts:175-191`) wraps `parseInputs` and the
+orchestration body (`runOrchestration`, `src/program.ts:69-167`) each in
 `Effect.exit`. On a typed failure at either stage it emits a structured
 failed `result` (`status: "failed"`, `hasFailures: true`, `succeeded: false`)
-via `emitFailure` (`src/program.ts:49-63`), then re-raises with
+via `emitFailure` (`src/program.ts:52-66`), then re-raises with
 `Effect.failCause` so the action still exits non-zero.
 
 **`emitFailure` swallows its own failures, and that is enforced in the
@@ -63,17 +63,17 @@ helper rather than assumed at the call sites.** Both callers run it before
 re-raising the cause that actually failed the run, so anything escaping it
 would short-circuit the `yield*` and take the place of that cause — the run
 would report an output-write problem instead of the validation or API error
-it exists to report. `emit` (`src/program.ts:14-30`) guards its own
+it exists to report. `emit` (`src/program.ts:17-33`) guards its own
 `setJson` and `summary` calls, but the eight plain `outputs.set` writes
 between them are unguarded and each touches the runner's file descriptor, so
 this is reachable rather than theoretical. `emitFailure` is therefore
 wrapped in `Effect.catchCause` rather than `Effect.catch`
-(`src/program.ts:63`), because a defect displaces the real cause just as
+(`src/program.ts:66`), because a defect displaces the real cause just as
 effectively as a typed failure — see
 [test-doubles-transform-and-fixtures-isolate](../conventions/test-doubles-transform-and-fixtures-isolate.md)
 for how this is pinned by a fault-injection test.
 
-The full logical pipeline, in order (step 1 in `program`, steps 2–9 in
+The full logical pipeline, in order (step 1 in `program`, steps 2–8 in
 `runOrchestration`):
 
 1. **Parse inputs** (`parseInputs`, `src/inputs.ts`) → a normalized
@@ -195,9 +195,9 @@ committer, or signature — see
   `upsert` subsumes the pre-port `exists` / `create` / re-check-on-failure
   recovery: `GitHubError`'s `kind: "alreadyExists"` is structural, so a
   concurrent creator is recognized by the error's shape rather than by
-  matching its prose (`src/services/ManifestCommitter.ts:75-78`).
+  matching its prose (`src/services/ManifestCommitter.ts:76-79`).
   `setAutoMerge` is a separate call, not an option on `upsert`
-  (`src/services/ManifestCommitter.ts:145-147`): the auto-merge call firing
+  (`src/services/ManifestCommitter.ts:152-154`): the auto-merge call firing
   from a `tap` after the create would let an auto-merge failure surface as
   though opening the PR had failed. `commit` mode never reaches any of this.
 
@@ -232,13 +232,13 @@ call sites discriminate on shape rather than on error prose. The one
 exception is the GraphQL-backed auto-merge path, which adds
 `GitHubGraphQLError` — `land`'s error channel is
 `GitHubError | GitHubGraphQLError | InvalidInputError`
-(`src/services/ManifestCommitter.ts:90-96`), while `resolveBaseBranch`'s is
-just `GitHubError` (`src/services/ManifestCommitter.ts:43`). See
+(`src/services/ManifestCommitter.ts:97-103`), while `resolveBaseBranch`'s is
+just `GitHubError` (`src/services/ManifestCommitter.ts:44`). See
 [branch-on-github-error-kind](../conventions/branch-on-github-error-kind.md).
 
 `land`'s own `InvalidInputError` is the one failure it raises itself:
 **`pr` mode refuses a head branch equal to its base**
-(`src/services/ManifestCommitter.ts:103-110`). `branch` and `base` are
+(`src/services/ManifestCommitter.ts:110-117`). `branch` and `base` are
 independent inputs — the latter resolved from `base-branch` or the repo
 default — so nothing structural prevents them colliding. If they did, the
 single `GitBranch.upsert` would move the *base* branch to the new commit,

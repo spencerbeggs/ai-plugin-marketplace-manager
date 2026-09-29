@@ -8,11 +8,11 @@ tags:
 sources:
   - id: program
     resource: ../../src/program.ts
-    title: "the dry-run guard in runOrchestration (program.ts:99)"
+    title: "the dry-run guard in runOrchestration (program.ts:117)"
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 64c488cb20a74aaf4013cc00fbe5b708bc11246e4b53c08f0dad80a83dd15d10
+  at: 2026-09-29T03:16:59Z
+  body_sha256: dcfcec7464202e797d05814154076de5e118bc346e938852da1ec07861b0d993
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
@@ -33,7 +33,7 @@ decision was made.
 
 Model dry-run as a plain early return in `runOrchestration`, not as an
 instance of the kit's `DryRun` service. After the result is validated
-(step 5), the orchestration checks `inputs.dryRun` (`program.ts:99`) and, if
+(step 5), the orchestration checks `inputs.dryRun` (`program.ts:117`) and, if
 set, emits a report built from the validated changes and returns before
 reaching the landing code at all[^program]. This is not the "wrapped mutation with a
 fallback" shape `DryRun` models: dry-run here emits a **different report**

@@ -6,8 +6,8 @@ repository: savvy-web/systems
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T20:44:15Z
-  body_sha256: 282694bb701aabe9c69fa00d1a7c59d305e440a88a5b87fd79cf745edeb41261
+  at: 2026-09-29T03:16:59Z
+  body_sha256: e647862c767450dfc487b3327a32ea2702fbcfdd49a02202a8c4ad2bb1700a12
 ---
 
 # savvy-web/systems
@@ -40,7 +40,7 @@ keeps resolving through the repository-rename redirect in the meantime.
   restricting auto-merge to `squash`.
 - **Checkout:** `actions/checkout@v7` with `fetch-depth: 0`, no explicit ref
   and no `base-branch` input, so the action resolves the repo's default
-  branch itself (`src/services/ManifestCommitter.ts:43-44`).
+  branch itself (`src/services/ManifestCommitter.ts:44-45`).
 
 ## Edge
 

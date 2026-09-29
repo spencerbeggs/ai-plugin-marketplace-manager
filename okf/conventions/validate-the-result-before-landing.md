@@ -6,8 +6,8 @@ description: Validate the edited manifest before any commit, fail with all reaso
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:08:46Z
-  body_sha256: 618b94de7f003bde0c7e025ea423d70a3c61ba42b3a89d724d7667e6a1d182ac
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 9b3742d64f265d8784e65a905ee5e077037870cc54897d53c996a35643f13160
 tags:
   - validation
   - security
@@ -31,7 +31,7 @@ first, and leave the manifest file untouched.[^manifest-validator]
 
 Validation runs after the no-op guard and before the dry-run guard, in that
 order: the no-op guard returns early on an unchanged edit
-(`runOrchestration` steps 1–4), `validateEdit` runs next, and only then does
+(inside `runOrchestration`'s per-marketplace loop), `validateEdit` runs next, and only then does
 the dry-run check short-circuit landing.[^program] Placing validation ahead
 of the dry-run guard is deliberate — it is what makes a dry run exercise the
 full validation path rather than skip it.
@@ -75,7 +75,7 @@ host, and a plain `http://` GitHub URL; for Copilot, a bare-string source, a
 [^program]: ../../src/program.ts:76-98
 [^manifest-validator]: ../../src/services/ManifestValidator.ts:14-42,49-70
 [^marketplaces]: ../../src/marketplaces.ts:44-81
-[^manifest-validator-test]: ../../**test**/services/ManifestValidator.test.ts:81-103,226-288
+[^manifest-validator-test]: `../../__test__/services/ManifestValidator.test.ts:78-91,184-206`
 
 See [ajv strict:false](../decisions/ajv-strict-false.md) for why the
 structural pass runs with `strict: false`, and

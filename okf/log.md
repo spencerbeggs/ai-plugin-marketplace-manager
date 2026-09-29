@@ -1,5 +1,10 @@
 # Log
 
+## 2026-09-29
+
+* Updated Re-pin Vendored Source on Dependency Bump
+* Updated Version the JSON Schema documents under their own path per label
+
 ## 2026-09-23
 
 * Updated Action Contract
@@ -21,6 +26,7 @@
 * Updated ajv runs with strict false against the bundled SchemaStore schema
 * Updated patch
 * Updated url input and in-band schemaVersion dropped
+* Updated Repository renamed at v2; frozen 1.0 schema $ids rewritten, not dropped
 
 ## 2026-09-17
 
