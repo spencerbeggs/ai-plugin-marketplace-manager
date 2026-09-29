@@ -6,8 +6,8 @@ status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 926e08f01831f85f9455ddd4676ec30633da947c056a714b72a97883a747d0dc
+  at: 2026-09-29T03:06:02Z
+  body_sha256: 32c7022a7474f361e340c297684db3c2ca3accfcdb90a6c3eaba51918da8583b
 tags:
   - deps
   - dx
@@ -24,12 +24,12 @@ silk tool (or `/silk:repos`) to re-pin, not raw `git`.
 
 ## Worked example: both pins re-synced
 
-`.repos/config.json` pinned `effect` at `effect@4.0.0-rc.112` and `effected`
-at `@effected/github-actions@0.11.0`, while `pnpm-lock.yaml` had already
-moved to `effect@4.0.0-rc.115` (`pnpm-lock.yaml:1866`) and
-`@effected/github-actions@0.13.0` (`pnpm-lock.yaml:485`). Both pins have
-since been re-synced: `.repos/config.json` now reads `effect@4.0.0-rc.115`
-(`.repos/config.json:5`) and `@effected/github-actions@0.13.0`
+`.repos/config.json` pinned `effect` at `effect@4.0.0-rc.115` and `effected`
+at `@effected/github-actions@0.13.0`, while `pnpm-lock.yaml` had already
+moved to `effect@4.0.0-rc.118` (`pnpm-lock.yaml:2057`) and
+`@effected/github-actions@0.19.0` (`pnpm-lock.yaml:643`). Both pins have
+since been re-synced: `.repos/config.json` now reads `effect@4.0.0-rc.118`
+(`.repos/config.json:5`) and `@effected/github-actions@0.19.0`
 (`.repos/config.json:16`), matching the lockfile in both cases. This is the
 rule in practice — check `.repos/config.json`'s `ref` fields against
 `pnpm-lock.yaml`'s installed versions, and let the vendored checkout follow
@@ -45,6 +45,9 @@ specific commit, and a re-pin moves that commit out from under it. The
 `effected` entry's `n-0b69` note is the concrete case: it asserts a line
 anchor, `packages/github/src/GitBranch.ts:46-69`, that
 [pr-head-rerooted-in-one-ref-move](../decisions/pr-head-rerooted-in-one-ref-move.md)
-cites by line number. The 0.11.0 → 0.13.0 re-pin flagged it as stale, and it
-was re-verified at the new pin (`47683a5`) rather than assumed unchanged —
-the range held, but that has to be re-checked each time, not presumed.
+cites by line number. The 0.13.0 → 0.19.0 re-pin flagged it as stale, and it
+was re-verified at the new pin (`9a8beda`) rather than assumed unchanged —
+the range held, but that has to be re-checked each time, not presumed. The
+same re-pin moved `GitHubError.ts`, whose footnoted anchors in
+[branch-on-github-error-kind](branch-on-github-error-kind.md) had to be
+re-pointed — a line anchor into vendored source is only as good as its pin.

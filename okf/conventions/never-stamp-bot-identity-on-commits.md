@@ -6,8 +6,8 @@ description: Never pass author, committer, or signature into a commit call; the 
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 1bd7dbeceb228ce418e8fe79e3cce9e07b28b0b9ec94d836117b309c7dbdf6d9
+  at: 2026-09-29T03:16:59Z
+  body_sha256: af58fb69e05ab8f8b01682f709b47d6807ca0ed62e311e16a81203de11e8a327
 tags:
   - security
 sources:
@@ -46,6 +46,6 @@ request, so it catches a regression the type signature alone would not.
 See [Verified commits via server-side signing](../decisions/verified-commits-via-server-side-signing.md)
 for why an unsigned commit from an installation token arrives verified at all.
 
-[^manifest-committer]: ../../src/services/ManifestCommitter.ts:50-54,129-133
-[^manifest-committer-test]: ../../__test__/services/ManifestCommitter.test.ts:64-68,119-121,323
-[^report]: ../../src/report.ts:40,44
+[^manifest-committer]: ../../src/services/ManifestCommitter.ts:51-55,136-140
+[^manifest-committer-test]: `../../__test__/services/ManifestCommitter.test.ts:84-89,136-141,344`
+[^report]: ../../src/report.ts:56,60

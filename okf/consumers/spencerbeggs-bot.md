@@ -6,8 +6,8 @@ repository: spencerbeggs/bot
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T20:44:15Z
-  body_sha256: 29c0bcab5f3b768331f9abc0228a64f087968da46b0cbe1a190b816f0ac4ca0b
+  at: 2026-09-29T03:16:59Z
+  body_sha256: ba60c9aa14447b2c3bc01c80ba4b0592327e13c8030f22708eaa1ec7fd814a05
 sources:
   - id: owner-plan
     resource: conversation with the repository owner
@@ -39,7 +39,7 @@ by a `repository_dispatch` event of type `plugin-release`.
 - **Checkout:** `actions/checkout@v7` with `fetch-depth: 0`, no explicit ref
   — the default branch is checked out, and no `base-branch` input is set, so
   the action resolves the repo's default branch itself
-  (`src/services/ManifestCommitter.ts:43-44`).
+  (`src/services/ManifestCommitter.ts:44-45`).
 
 ## Edge
 

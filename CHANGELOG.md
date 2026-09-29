@@ -1,5 +1,48 @@
 # claude-code-marketplace-manager
 
+## 2.0.4
+
+### Build System
+
+- Adds the `name` field that `@effected/schemastore-cli` 0.17 now requires in `schemastore.config.ts`. The published JSON Schema documents are unchanged.
+- Rebuilds the bundled `dist/` against `@effected/github-actions` 0.19.0. [#131][#131]
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effected/pnpm-plugin-effect | config | updated | 0.12.1 | 0.12.4 |
+| @effected/github-actions | dependency | updated | 0.18.1 | 0.19.0 |
+| @effected/schemastore | dependency | updated | 0.16.0 | 0.17.0 |
+| @effected/schemastore-cli | devDependency | updated | 0.16.0 | 0.17.0 |
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/spencerbeggs) for their contributions!
+
+[#131]: https://github.com/spencerbeggs/ai-plugin-marketplace-manager/pull/131
+
+## 2.0.3
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effect/platform-node | dependency | updated | 4.0.0-rc.117 | 4.0.0-rc.118 |
+| @effected/github | dependency | updated | ^0.13.0 | ^0.14.0 |
+| @effected/github-actions | dependency | updated | ^0.17.0 | ^0.18.1 |
+| @effected/jsonc | dependency | updated | ^0.13.0 | ^0.14.0 |
+| @effected/schemastore | dependency | updated | ^0.15.2 | ^0.16.0 |
+| effect | dependency | updated | 4.0.0-rc.117 | 4.0.0-rc.118 |
+
+[#129][#129]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/apps/spencerbeggs) for their contributions!
+
+[#129]: https://github.com/spencerbeggs/ai-plugin-marketplace-manager/pull/129
+
 ## 2.0.2
 
 ### Dependencies

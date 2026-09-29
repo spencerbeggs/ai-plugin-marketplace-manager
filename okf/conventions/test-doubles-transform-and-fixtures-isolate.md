@@ -6,8 +6,8 @@ description: Make a double perform the real transformation, make a fixture inval
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: c5f03eab1ec0760ebc14d3eecac2a1e800f26a4efd69a7d23bf2f0211608d4c6
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 7c1ea90ee6002d4889014820ec1a28693e86e0590653be4ae82cc1231ab7d690
 tags:
   - testing
 sources:
@@ -75,6 +75,6 @@ reordering, since `post` already catches those elsewhere; only a defect
 exposes whether revocation still runs first if someone reorders the two
 reads.[^post-test]
 
-[^program-test]: ../../__test__/program.test.ts:39-71
-[^manifest-validator-test]: ../../__test__/services/ManifestValidator.test.ts:18-37,78-100,123-134
-[^post-test]: ../../__test__/post.test.ts:73-90
+[^program-test]: `../../__test__/program.test.ts:103-124`
+[^manifest-validator-test]: `../../__test__/services/ManifestValidator.test.ts:18-37,78-100,102-113`
+[^post-test]: `../../__test__/post.test.ts:73-90`

@@ -8,8 +8,8 @@ stale_after: 2027-03-13T00:00:00Z
 tags: [ci, dx]
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 6f427cad36b1480e99f3c3416354a40bc8c0629b137d0a8b8b66f0202278784f
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 68089e8d7034db10a9ff142ee68d2bbd3ec8528f674dae046721d8c7624ae296
 sources:
   - id: action-yml
     resource: ../../action.yml
@@ -17,6 +17,8 @@ sources:
   - id: package-json
     resource: ../../package.json
     last_modified: 2026-09-13T00:00:00Z
+  - id: silk-update-workflow
+    resource: ../../.github/workflows/silk-update.yml
 ---
 
 # src edits do nothing until dist is rebuilt
@@ -47,8 +49,11 @@ nothing about whether `dist/` reflects it.
 
 ## CI does not guard this
 
-No workflow under `.github/workflows/` runs `pnpm build` or diffs `dist/`
-against a fresh build; the release workflow here is a thin `uses:` wrapper
+No workflow under `.github/workflows/` diffs `dist/` against a fresh build.
+The one that runs `pnpm build` at all is `silk-update.yml`,[^silk-update-workflow] and only inside
+the dependency-update run it hands `savvy-web/silk-update-action`, so that
+bot's own PR ships a rebuilt `dist/`; a human or agent change to `src/` gets
+no such step. The release workflow here is a thin `uses:` wrapper
 around a reusable workflow and does not itself invoke a build/dist-freshness
 check, and no pre-commit hook in this repository runs a build either — lint-
 staged formats and typechecks staged files, nothing more. So a stale `dist/`
@@ -58,3 +63,4 @@ agent making the change remembering to do it.
 
 [^action-yml]: `../../action.yml`
 [^package-json]: `../../package.json`
+[^silk-update-workflow]: `../../.github/workflows/silk-update.yml`

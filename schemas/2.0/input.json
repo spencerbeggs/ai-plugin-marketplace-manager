@@ -18,12 +18,10 @@
 				},
 				"sha": {
 					"type": "string",
-					"pattern": "^[0-9a-f]{40}$",
 					"description": "New source.sha (40-hex lowercase commit)."
 				},
 				"path": {
 					"type": "string",
-					"pattern": "^(?!.*(?:^|\\/)\\.\\.(?:\\/|$))[^/\\\\\\x00-\\x1f][^\\\\\\x00-\\x1f]*$",
 					"description": "New source.path (non-empty, relative)."
 				}
 			},

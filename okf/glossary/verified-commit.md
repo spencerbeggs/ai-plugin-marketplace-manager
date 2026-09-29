@@ -5,8 +5,8 @@ description: What "verified" means for a commit this action lands, and the two t
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: b65858454d9a0233cdd4ac013f696735b466e8980daa518212c605a580dd2714
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 60fbfa0c4c1835753f12487fbf0fa2fc09c4a11b1ab319f345b509a4964d8e56
 tags: [security]
 ---
 
@@ -18,7 +18,7 @@ installation token — the state GitHub shows when it can attest the commit
 came from the identity the token represents, which is what satisfies a
 branch protection rule requiring signed commits.
 
-`land` (`src/services/ManifestCommitter.ts:90-155`) achieves this by never
+`land` (`src/services/ManifestCommitter.ts:97-162`) achieves this by never
 passing an author, committer, or signature to `GitCommit`; `@effected/github`
 exposes no parameter for any of the three, so the rule is structural rather
 than a convention someone has to remember not to break. Omitting them is
@@ -29,7 +29,7 @@ installation.
 
 - **Not a DCO `Signed-off-by:` trailer.** This repository's commits also
   carry a `Signed-off-by:` line generated from `GitHubToken.botIdentity()`
-  (`src/program.ts:116-122`), but that trailer is plain commit-message
+  (`src/program.ts:134-140`), but that trailer is plain commit-message
   text — a Developer Certificate of Origin attestation this repository
   separately requires, with no bearing on whether GitHub marks the commit
   verified.
