@@ -19,8 +19,8 @@ sources:
     title: "drift policy, frozen labels, and exit codes"
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:30:46Z
-  body_sha256: 32be14ae569782628e9750fa1c46857b8b996d34ddcefb651b16e229f2211a23
+  at: 2026-09-29T03:06:02Z
+  body_sha256: de03730b34d9e53e7dca57d2582e5b9c43ead2ccb34fcaf075423aa73fd9f24a
 ---
 
 # Bump the output schema version
@@ -43,8 +43,8 @@ Either of:
   depend on.
 
 While the current label is **unpublished** (`published: false`, the state
-today — `1.0` has never shipped; `lib/scripts/schemastore.config.ts:60`,
-`65`), no bump is needed: `pnpm schema:build` rewrites the document in
+today — `1.0` has never shipped; `lib/scripts/schemastore.config.ts:66`,
+`71`), no bump is needed: `pnpm schema:build` rewrites the document in
 place at the same label. This runbook is for the moment a label has
 shipped.
 

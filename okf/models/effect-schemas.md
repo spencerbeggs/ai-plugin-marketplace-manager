@@ -6,8 +6,8 @@ resource: ../../src/schema
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:30:46Z
-  body_sha256: c7bb62420bf561e2507fac4317acdbbc24fbee199192f8a06d1a182b5010aa4c
+  at: 2026-09-29T03:06:02Z
+  body_sha256: 6f326602d952ef149eb5ce5a044fa9dd7561460d6c8f3cedcb76396880e0b2de
 sources:
   - id: input-schema
     resource: ../../src/schema/input.ts
@@ -99,9 +99,11 @@ silently stripped.
 ## What is derived from it
 
 `lib/scripts/schemastore.config.ts`[^schemastore-config] is the
-`@effected/schemastore-cli` target manifest: a `defineConfig` with
-`outputDir: "../../schemas"` (relative to the config file, not the repo
-root) and one entry per document, keyed by the identity's `name` and handed
+`@effected/schemastore-cli` target manifest: a `defineConfig` with the
+required config `name` (`"ai-plugin-marketplace-manager"`, the base name of
+its catalog slice — none is written, since no entry declares a `catalog`
+block), `outputDir: "../../schemas"` (relative to the config file, not the
+repo root) and one entry per document, keyed by the identity's `name` and handed
 the identity as `hosted`. `defineConfig` rejects an entry keyed differently
 from its identity, so the `$id` the CLI writes and the `$schema` a payload
 carries are one derivation, not two that must agree. The config lives under

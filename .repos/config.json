@@ -2,7 +2,7 @@
 	"repos": {
 		"effect": {
 			"url": "https://github.com/Effect-TS/effect.git",
-			"ref": "effect@4.0.0-rc.115",
+			"ref": "effect@4.0.0-rc.118",
 			"purpose": "Read-only Effect v4 source pinned to the tag matching the installed effect release \u2014 the authority on what v4 actually exports, plus the v3\u2192v4 migration notes.",
 			"sparse": [
 				"packages/effect",
@@ -13,7 +13,7 @@
 		},
 		"effected": {
 			"url": "https://github.com/spencerbeggs/effected.git",
-			"ref": "@effected/github-actions@0.13.0",
+			"ref": "@effected/github-actions@0.19.0",
 			"purpose": "Read-only source for @effected/github-actions, @effected/github and @effected/jsonc \u2014 the libraries this action is built on. Pin tracks the installed @effected/github-actions version.",
 			"sparse": [
 				"packages/github-actions",
@@ -37,20 +37,20 @@
 			"notes": [
 				{
 					"id": "n-0380",
-					"date": "2026-09-13",
-					"ref": "@effected/github-actions@0.13.0",
-					"note": "`git -C .repos/effected describe --tags` reports `@effected/app@0.14.0`, NOT the `@effected/github-actions@0.13.0` this entry is pinned to. That is not drift \u2014 `describe` picks the nearest reachable tag in a monorepo that tags per package, and many packages share a release commit. (It reported a sibling `@effected/app` tag at the previous 0.5.0 and 0.11.0 pins too, so this is the steady-state behavior, not a one-off.) Check the gitlink against `repos_inspect` or `git rev-parse HEAD` (expect `47683a5`), never `describe`, before concluding the pin moved."
+					"date": "2026-09-28",
+					"ref": "@effected/github-actions@0.19.0",
+					"note": "`git -C .repos/effected describe --tags` reports a sibling package's tag (`@effected/claude-code-plugin@0.24.3` at this pin), NOT the `@effected/github-actions@0.13.0` this entry is pinned to. That is not drift \u2014 `describe` picks the nearest reachable tag in a monorepo that tags per package, and many packages share a release commit. (It reported a sibling `@effected/app` tag at the previous 0.5.0 and 0.11.0 pins too, so this is the steady-state behavior, not a one-off.) Check the gitlink against `repos_inspect` or `git rev-parse HEAD` (expect `9a8beda`), never `describe`, before concluding the pin moved."
 				},
 				{
 					"id": "n-0b69",
-					"date": "2026-09-13",
-					"ref": "@effected/github-actions@0.13.0",
-					"note": "The okf bundle cites this repo by LINE ANCHOR: `okf/decisions/pr-head-rerooted-in-one-ref-move.md` points at `packages/github/src/GitBranch.ts:46-69` (the `@remarks` block on `upsert` describing the reset-then-commit auto-close defect). Verified at this pin (`47683a5`): line 46 is the `@remarks` opener, line 69 ends `on the bare target head.`, and `readonly upsert` follows at 71. The range has survived the 0.5.0 -> 0.11.0 -> 0.13.0 re-pins. Verify it with `grep -n '@remarks\\|on the bare target head' <file>` and never by eyeballing a `sed -n 'A,Bp'` range \u2014 an off-by-two there already produced one wrong \"correction\" to this anchor. `okf/conventions/branch-on-github-error-kind.md` also footnotes `GitBranch.ts:41,207,210`. Re-check both on any re-pin."
+					"date": "2026-09-28",
+					"ref": "@effected/github-actions@0.19.0",
+					"note": "The okf bundle cites this repo by LINE ANCHOR: `okf/decisions/pr-head-rerooted-in-one-ref-move.md` points at `packages/github/src/GitBranch.ts:46-69` (the `@remarks` block on `upsert` describing the reset-then-commit auto-close defect). Verified at this pin (`9a8beda`): line 46 is the `@remarks` opener, line 69 ends `on the bare target head.`, and `readonly upsert` follows at 71. The range has survived the 0.5.0 -> 0.11.0 -> 0.13.0 -> 0.19.0 re-pins. Verify it with `grep -n '@remarks\\|on the bare target head' <file>` and never by eyeballing a `sed -n 'A,Bp'` range \u2014 an off-by-two there already produced one wrong \"correction\" to this anchor. `okf/conventions/branch-on-github-error-kind.md` also footnotes `GitBranch.ts:41,207,210` (unchanged at this pin) and `GitHubError.ts:108,158,164,173,179` (re-pointed at this pin; they were 53,94,100,109,115 at 0.13.0). Re-check both on any re-pin."
 				},
 				{
 					"id": "n-a87a",
-					"date": "2026-09-13",
-					"ref": "@effected/github-actions@0.13.0",
+					"date": "2026-09-28",
+					"ref": "@effected/github-actions@0.19.0",
 					"note": "A fetch with `--recurse-submodules` (= yes) prints nine `Could not access submodule '.repos/<name>'` warnings and `Errors during submodule fetch: .repos/effected`, exit 1. This is EXPECTED and harmless \u2014 git descends into effected and warns for each of its nine nested gitlinks precisely because they are uninitialized, which is the state we want. The fetch of origin and of both vendored submodules succeeds; nothing is left dirty and `savvy repos status --drift` stays [ok]. Do NOT try to fix it in this repo: verified against git 2.54.0 that `fetch.recurseSubmodules=false` and `submodule..repos/effected.fetchRecurseSubmodules=false` are both overridden by the explicit command-line flag (get_fetch_recurse_config short-circuits on it), and adding `.gitmodules` to this entry's `sparse` changes nothing. `submodule..repos/effected.active=false` would silence it but makes `git submodule status` read uninitialized and every drift report claim missingWorktree \u2014 off-limits. `git fetch origin` and `--recurse-submodules=on-demand` are both silent, so the fix belongs in whatever client passes the flag (GitKraken's fetch-submodules setting). Reproduced identically in the sibling silk-update-action checkout, so it is not specific to this repo. Separately: orphaned nested gitdirs can accumulate at `.git/modules/.repos/effected/modules/.repos/*` from some earlier recursive init \u2014 they are unversioned local metadata for repos that should have no checkout, safe to `rm -rf`, and NOT the cause of the fetch warnings (removing them did not change the output)."
 				}
 			]

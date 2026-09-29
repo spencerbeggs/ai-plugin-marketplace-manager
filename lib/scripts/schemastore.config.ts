@@ -48,6 +48,11 @@ import { InputSchemaIdentity, JsonInput, OutputSchemaIdentity } from "../../src/
 import { ReportOutput } from "../../src/schema/report-output.js";
 
 export default defineConfig({
+	// The config's identity: the base name of its catalog slice
+	// (`<catalogDir>/<name>.json`). No entry declares a `catalog` block (neither
+	// document is submitted to SchemaStore), so no slice or merged
+	// `catalog.json` is written — but `defineConfig` requires the name anyway.
+	name: "ai-plugin-marketplace-manager",
 	// Relative paths resolve against this file's directory, not the repo root.
 	outputDir: "../../schemas",
 	schemas: {

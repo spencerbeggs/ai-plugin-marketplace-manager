@@ -18,8 +18,8 @@ sources:
     title: "Leg 3 — the prose that quotes the derived URLs"
 generated:
   by: okfit/claude-code
-  at: 2026-09-17T19:20:18Z
-  body_sha256: 13cabe7c2b778893e7eb53844ae76a69d6ef7c712ef1ed60301e372cb5abc406
+  at: 2026-09-29T03:06:02Z
+  body_sha256: aa943ff4098757b3b9f11c9c786b230eebf3f070682310a08e6dae4f8b8fb30b
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
@@ -61,7 +61,7 @@ name, versions, current, appendVersion: false })`
 values' `$id` getters (`src/schema/report-output.ts:13`,
 `src/schema/input.ts:52`), and `lib/scripts/schemastore.config.ts`[^schemastore-config]
 receives the same values as each entry's `hosted`
-(`lib/scripts/schemastore.config.ts:53-66`) — so the URL a payload carries
+(`lib/scripts/schemastore.config.ts:58-73`) — so the URL a payload carries
 and the `$id` the CLI writes are one derivation rather than two that must
 agree. `defineConfig` rejects an entry keyed by anything other than its
 identity's `name`.
@@ -79,7 +79,7 @@ label together) while keeping the old label in `OUTPUT_SCHEMA_VERSIONS`,
 which writes new files at the new version's path and leaves the published
 ones untouched as frozen files the CLI verifies but never regenerates.
 `published: false` — the state today, since `1.0` has never shipped
-(`lib/scripts/schemastore.config.ts:60`, `65`) — lets the current label
+(`lib/scripts/schemastore.config.ts:66`, `71`) — lets the current label
 iterate in place.
 
 The move itself is a breaking change to the published `$schema` URL: the
