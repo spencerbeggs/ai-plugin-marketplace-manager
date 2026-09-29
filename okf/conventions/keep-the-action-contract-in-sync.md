@@ -6,8 +6,8 @@ status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-17T19:20:18Z
-  body_sha256: 38dd1b1a4723547fc034dec4e91e122e9069b7cde6da01472f2df56901c6f403
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 2f1fa87b3a5620a7250587c0d551d395d1cfe4c302f8a589be45dc770de5c713
 tags:
   - dx
   - testing
@@ -35,8 +35,9 @@ matching `ActionInput.\w+(...)`/`outputs.set\w*(...)` call — see
 Separately: after any change to an Effect Schema that feeds a published
 document (`ReportOutput` in `src/schema/report-output.ts`, `JsonInput` in
 `src/schema/input.ts`), run `pnpm schema:build` and never hand-edit
-`schemas/1.0/output.json` or `schemas/1.0/input.json` — both are generated
-by `@effected/schemastore-cli` from `lib/scripts/schemastore.config.ts`, and
+`schemas/2.0/output.json` or `schemas/2.0/input.json` — both are generated
+by `@effected/schemastore-cli` from `lib/scripts/schemastore.config.ts`
+(`schemas/1.0/` is a frozen label the CLI checks but never regenerates), and
 `pnpm schema:check` (run before vitest by `pnpm ci:test`, `package.json:22`)
 fails CI on drift in either direction rather than silently tolerating a hand
 edit. See [effect-schemas](../models/effect-schemas.md).

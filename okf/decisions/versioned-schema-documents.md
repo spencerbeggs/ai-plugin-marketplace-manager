@@ -18,11 +18,13 @@ sources:
     title: "Leg 3 — the prose that quotes the derived URLs"
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:06:02Z
-  body_sha256: aa943ff4098757b3b9f11c9c786b230eebf3f070682310a08e6dae4f8b8fb30b
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 89053c85c1813b3a7f1618e18f71fc15111a53e67ca367370d71583987dcf712
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-09-29T03:15:43Z
 ---
 
 # Version the JSON Schema documents under their own path per label
@@ -31,7 +33,7 @@ verified:
 
 The action emits a structured `result` output on every run, and every
 payload carries a `$schema` pointing at the document that describes its
-shape (`SCHEMA_URL`, `src/schema/report-output.ts:13`). A consumer that
+shape (`SCHEMA_URL`, `src/schema/report-output.ts:14`). A consumer that
 stores or replays an old payload relies on that URL continuing to resolve
 to the schema the payload was actually written against — a URL that a
 later, incompatible schema silently took over would misdescribe every
@@ -44,22 +46,25 @@ repository-owned `lib/scripts/generate-schema.ts` that also had to pin
 
 ## Decision
 
-Both documents live under `schemas/<version>/`, today
-`schemas/1.0/output.json` and `schemas/1.0/input.json`, and are published at
-`https://raw.githubusercontent.com/spencerbeggs/claude-code-marketplace-manager/main/schemas/1.0/output.json`
-and `.../schemas/1.0/input.json`. The input document has no payload-replay
+Both documents live under `schemas/<version>/`: the current label is
+`2.0` (`schemas/2.0/output.json` and `schemas/2.0/input.json`, published at
+`https://raw.githubusercontent.com/spencerbeggs/ai-plugin-marketplace-manager/main/schemas/2.0/output.json`
+and `.../schemas/2.0/input.json`), and `1.0` is kept alongside it as a
+frozen label. The `1.0` files' `$id` was hand-rewritten to the new
+repository name at the rename; see
+[repository-renamed-1-0-schema-ids-rewritten](repository-renamed-1-0-schema-ids-rewritten.md). The input document has no payload-replay
 problem of its own — it describes the action's input, not something the
 action emits — but one layout and one label for both keeps the config and
 the constants that name them to a single version.
 
 The identity is constructed once. `src/schema/input.ts`[^input-schema]
-declares `OUTPUT_SCHEMA_VERSION = "1.0"` and `OUTPUT_SCHEMA_VERSIONS`
-(`src/schema/input.ts:13`, `20`) and builds `OutputSchemaIdentity` /
+declares `OUTPUT_SCHEMA_VERSION = "2.0"` and `OUTPUT_SCHEMA_VERSIONS =
+["1.0", OUTPUT_SCHEMA_VERSION]` (`src/schema/input.ts:8`, `23`) and builds `OutputSchemaIdentity` /
 `InputSchemaIdentity` with `HostedSchema.github({ repo, path: "schemas",
 name, versions, current, appendVersion: false })`
-(`src/schema/input.ts:32-46`). `SCHEMA_URL` and `INPUT_SCHEMA_URL` are those
-values' `$id` getters (`src/schema/report-output.ts:13`,
-`src/schema/input.ts:52`), and `lib/scripts/schemastore.config.ts`[^schemastore-config]
+(`src/schema/input.ts:35-43`). `SCHEMA_URL` and `INPUT_SCHEMA_URL` are those
+values' `$id` getters (`src/schema/report-output.ts:14`,
+`src/schema/input.ts:55`), and `lib/scripts/schemastore.config.ts`[^schemastore-config]
 receives the same values as each entry's `hosted`
 (`lib/scripts/schemastore.config.ts:58-73`) — so the URL a payload carries
 and the `$id` the CLI writes are one derivation rather than two that must
@@ -78,9 +83,9 @@ response to a genuine contract break is bumping `OUTPUT_SCHEMA_VERSION`
 label together) while keeping the old label in `OUTPUT_SCHEMA_VERSIONS`,
 which writes new files at the new version's path and leaves the published
 ones untouched as frozen files the CLI verifies but never regenerates.
-`published: false` — the state today, since `1.0` has never shipped
-(`lib/scripts/schemastore.config.ts:66`, `71`) — lets the current label
-iterate in place.
+`published: false` — the state today, since the `2.0` documents have not
+been published yet (`lib/scripts/schemastore.config.ts:66`, `71`) — lets the
+current label iterate in place; `1.0` is frozen regardless of the flag.
 
 The move itself is a breaking change to the published `$schema` URL: the
 old root-level URL is not preserved as a frozen label, because no payload

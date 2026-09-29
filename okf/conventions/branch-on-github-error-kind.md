@@ -6,8 +6,8 @@ description: Discriminate library failures by their structured kind, match libra
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:06:02Z
-  body_sha256: 75692ce9b7115297785fc218996b93c21219541f914956a465e7af8c2a509edd
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 1ce3da663f33dbc9991e5708258725024859af4024520fb457cb936e147729ce
 tags:
   - architecture
 sources:
@@ -46,7 +46,7 @@ for example by wrapping the error before it reaches `upsert`, or by
 special-casing on the error's message instead — would turn an expected,
 recoverable race into a hard failure.
 
-[^manifest-committer]: ../../src/services/ManifestCommitter.ts:1,76-78,94-96
+[^manifest-committer]: ../../src/services/ManifestCommitter.ts:1,76-79,101-103
 [^github-error]: ../../.repos/effected/packages/github/src/GitHubError.ts:108,158,164,173,179
 [^git-branch]: ../../.repos/effected/packages/github/src/GitBranch.ts:41,207,210
 [^pull-request]: ../../.repos/effected/packages/github/src/PullRequest.ts:201-204

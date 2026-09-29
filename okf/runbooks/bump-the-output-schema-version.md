@@ -19,8 +19,8 @@ sources:
     title: "drift policy, frozen labels, and exit codes"
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:06:02Z
-  body_sha256: de03730b34d9e53e7dca57d2582e5b9c43ead2ccb34fcaf075423aa73fd9f24a
+  at: 2026-09-29T03:16:59Z
+  body_sha256: e244345484aeff48f8cf5e3b466554f165c01e06a37ece60d9ebe4bd9468b697
 ---
 
 # Bump the output schema version
@@ -42,11 +42,13 @@ Either of:
   `"contract"` rather than `"annotations"` — at a label consumers already
   depend on.
 
-While the current label is **unpublished** (`published: false`, the state
-today — `1.0` has never shipped; `lib/scripts/schemastore.config.ts:66`,
-`71`), no bump is needed: `pnpm schema:build` rewrites the document in
-place at the same label. This runbook is for the moment a label has
-shipped.
+For a label no payload has been emitted against, no bump is needed:
+`published: false` lets `pnpm schema:build` rewrite the document in place at
+the same label. That is the state today: the `2.0` documents have not been
+published yet, so both config entries are `published: false`
+(`lib/scripts/schemastore.config.ts:66`, `71`) and `1.0` is the frozen v1
+label. This runbook is for the moment a label has been published and its
+entry flipped to `published: true`.
 
 ## Steps
 
@@ -78,9 +80,9 @@ shipped.
    `schemas/<version>/output.json` and `schemas/<version>/input.json`; the
    previous label's files under `schemas/<old-version>/` are untouched.
 4. Update the prose that spells the URL and paths by hand: `action.yml`'s
-   `result` description (`action.yml:79-82`) and the README's example
+   `result` description (`action.yml:78-81`) and the README's example
    `$schema` and the two `schemas/<version>/…` document links
-   (`README.md:137`, `153`, `167`). Leg 3 of
+   (`README.md:174`, `142`, `160`). Leg 3 of
    `__test__/action-contract.test.ts` fails until they match `SCHEMA_URL`,
    `INPUT_SCHEMA_URL`, and each identity's `fileName`
    (`__test__/action-contract.test.ts:105-133`).

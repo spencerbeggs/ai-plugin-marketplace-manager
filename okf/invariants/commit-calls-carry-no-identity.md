@@ -14,8 +14,8 @@ sources:
     resource: ../../__test__/services/ManifestCommitter.test.ts
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 090228407007384f34441b86d37756c2c03c9db9c71adba21f2e26664924208a
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 4d0f5464237cebe412ba08de61919e1047deb24b266de4e7ae57f7144b8fda44
 ---
 
 # Commit calls carry no identity
@@ -46,7 +46,7 @@ signature information to a commit created through this action would
 require `@effected/github`'s `GitCommitShape.createCommit` to grow a new
 parameter — a change to a dependency this repository does not own — and
 would still fail the keys assertion in
-`../../__test__/services/ManifestCommitter.test.ts:313-327` the moment a
+`../../__test__/services/ManifestCommitter.test.ts:334-348` the moment a
 caller here passed it, since that test asserts the *exact* key set rather
 than a subset.
 
@@ -62,7 +62,7 @@ invariant makes structural.
     `../../.repos/effected/packages/github/src/GitCommit.ts:72-113`.
 [^manifest-committer-test]: "B1: never passes an author, committer or
     signature field" is at
-    `../../__test__/services/ManifestCommitter.test.ts:313-327`; the
+    `../../__test__/services/ManifestCommitter.test.ts:334-348`; the
     `commitRequestKeys` recording mechanism is defined at
-    `../../__test__/services/ManifestCommitter.test.ts:63-68,115-123`.
+    `../../__test__/services/ManifestCommitter.test.ts:84-89,136-141`.
 </content>

@@ -15,8 +15,8 @@ sources:
     title: decode failure raises InvalidInputError
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:08:46Z
-  body_sha256: 49e9a4f45aa50baee94f0e3b784e1b8a22a4822a5484219dc0bf58333782d2ca
+  at: 2026-09-29T03:16:59Z
+  body_sha256: 47924d64502c96955c1a77f3479ec3c56d8c75362e1a98d8d493093bfe1a3a4e
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
@@ -86,4 +86,4 @@ input contract.
   require one.
 
 [^schema]: `schema/input.ts` — `JsonInput`
-[^inputs]: `inputs.ts:73-76` — `decodeJsonInput` failure raises `InvalidInputError`
+[^inputs]: `inputs.ts:123-128` — `decodeJsonInput` failure raises `InvalidInputError`

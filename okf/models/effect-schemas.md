@@ -6,8 +6,8 @@ resource: ../../src/schema
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:06:02Z
-  body_sha256: 6f326602d952ef149eb5ce5a044fa9dd7561460d6c8f3cedcb76396880e0b2de
+  at: 2026-09-29T03:16:59Z
+  body_sha256: cf9116dc6ac950e54b76a1bc4744f5f25edccfe525b0cda3bf0d6e6f7037c0fb
 sources:
   - id: input-schema
     resource: ../../src/schema/input.ts
@@ -110,9 +110,9 @@ carries are one derivation, not two that must agree. The config lives under
 `lib/scripts/` because `src/` is action source only, so the package scripts
 pass its path explicitly instead of relying on the CLI's upward discovery.
 
-Both entries are `published: false`: the `2.0` label has never shipped, so
-a contract change regenerates the file in place instead of demanding a
-bump. Once a label ships, the entry flips to `published: true`, and a
+Both entries are `published: false`, because the `2.0` documents have not
+been published yet, so a contract change regenerates the file in place
+instead of demanding a bump. Once an entry is `published: true`, a
 contract-class change at that label is answered by bumping
 `OUTPUT_SCHEMA_VERSION` and keeping the old label in `OUTPUT_SCHEMA_VERSIONS`
 as a frozen file — see
@@ -171,4 +171,4 @@ above); the published documents are deliberately the stricter default.
 [^input-schema]: `../../src/schema/input.ts`
 [^marketplaces]: `../../src/marketplaces.ts`
 [^schemastore-config]: `../../lib/scripts/schemastore.config.ts`
-[^schemastore-types]: `npm:@effected/schemastore` (0.13.0, `index.d.ts`)
+[^schemastore-types]: `npm:@effected/schemastore` (0.17.0, `index.d.ts`)
