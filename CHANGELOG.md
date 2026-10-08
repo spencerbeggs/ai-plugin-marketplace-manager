@@ -1,5 +1,21 @@
 # claude-code-marketplace-manager
 
+## 2.0.9
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effected/schemastore | dependency | updated | ^0.21.2 | ^0.21.3 |
+
+[#151][#151]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/apps/spencerbeggs) for their contributions!
+
+[#151]: https://github.com/spencerbeggs/ai-plugin-marketplace-manager/pull/151
+
 ## 2.0.8
 
 ### Dependencies
