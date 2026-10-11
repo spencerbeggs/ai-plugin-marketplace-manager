@@ -54,7 +54,9 @@
 			"type": "object",
 			"properties": {
 				"number": {
-					"type": "integer"
+					"type": "integer",
+					"minimum": -9007199254740991,
+					"maximum": 9007199254740991
 				},
 				"url": {
 					"anyOf": [
@@ -100,7 +102,9 @@
 					"type": "boolean"
 				},
 				"pluginsUpdated": {
-					"type": "integer"
+					"type": "integer",
+					"minimum": -9007199254740991,
+					"maximum": 9007199254740991
 				},
 				"plugins": {
 					"type": "array",
