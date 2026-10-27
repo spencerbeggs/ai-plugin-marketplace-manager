@@ -14,8 +14,10 @@ sources:
     resource: ../../__test__/services/ManifestCommitter.test.ts
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 4d0f5464237cebe412ba08de61919e1047deb24b266de4e7ae57f7144b8fda44
+  at: 2026-10-27T19:42:51Z
+integrity:
+  generated:
+    body: 84baa83da5db5a74
 ---
 
 # Commit calls carry no identity
@@ -57,9 +59,9 @@ invariant makes structural.
 
 [^git-commit-shape]: `GitCommitShape.createCommit`'s three-field options
     type is declared at
-    `../../.repos/effected/packages/github/src/GitCommit.ts:81-85`, inside
+    `../../.repos/effected/packages/github/src/GitCommit.ts:80-84`, inside
     the wider interface at
-    `../../.repos/effected/packages/github/src/GitCommit.ts:72-113`.
+    `../../.repos/effected/packages/github/src/GitCommit.ts:71-110`.
 [^manifest-committer-test]: "B1: never passes an author, committer or
     signature field" is at
     `../../__test__/services/ManifestCommitter.test.ts:334-348`; the

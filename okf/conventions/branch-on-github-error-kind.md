@@ -6,8 +6,7 @@ description: Discriminate library failures by their structured kind, match libra
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 1ce3da663f33dbc9991e5708258725024859af4024520fb457cb936e147729ce
+  at: 2026-10-27T19:42:51Z
 tags:
   - architecture
 sources:
@@ -19,6 +18,9 @@ sources:
     resource: ../../.repos/effected/packages/github/src/GitBranch.ts
   - id: pull-request
     resource: ../../.repos/effected/packages/github/src/PullRequest.ts
+integrity:
+  generated:
+    body: 9358abbb9db3529d
 ---
 
 # Branch on GitHubError.kind, never on message prose
@@ -47,6 +49,6 @@ special-casing on the error's message instead — would turn an expected,
 recoverable race into a hard failure.
 
 [^manifest-committer]: ../../src/services/ManifestCommitter.ts:1,76-79,101-103
-[^github-error]: ../../.repos/effected/packages/github/src/GitHubError.ts:108,158,164,173,179
-[^git-branch]: ../../.repos/effected/packages/github/src/GitBranch.ts:41,207,210
-[^pull-request]: ../../.repos/effected/packages/github/src/PullRequest.ts:201-204
+[^github-error]: ../../.repos/effected/packages/github/src/GitHubError.ts:98,148,154,163,169
+[^git-branch]: ../../.repos/effected/packages/github/src/GitBranch.ts:42,219,222
+[^pull-request]: ../../.repos/effected/packages/github/src/PullRequest.ts:274-277
