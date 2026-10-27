@@ -1,5 +1,11 @@
 # Log
 
+## 2026-10-27
+
+* Updated Branch on GitHubError.kind, never on message prose
+* Updated Commit calls carry no identity
+* Updated Re-pin Vendored Source on Dependency Bump
+
 ## 2026-09-29
 
 * Updated Re-pin Vendored Source on Dependency Bump

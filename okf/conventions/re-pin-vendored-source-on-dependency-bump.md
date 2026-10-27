@@ -6,11 +6,13 @@ status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:06:02Z
-  body_sha256: 32c7022a7474f361e340c297684db3c2ca3accfcdb90a6c3eaba51918da8583b
+  at: 2026-10-27T19:42:51Z
 tags:
   - deps
   - dx
+integrity:
+  generated:
+    body: 21a9a4621dea6fd3
 ---
 
 # Re-pin Vendored Source on Dependency Bump
@@ -43,11 +45,12 @@ the entry being re-pinned. Each flagged note must be read and re-stamped
 checkout) rather than carried forward unread — a note is evidence tied to a
 specific commit, and a re-pin moves that commit out from under it. The
 `effected` entry's `n-0b69` note is the concrete case: it asserts a line
-anchor, `packages/github/src/GitBranch.ts:46-69`, that
+anchor, `packages/github/src/GitBranch.ts:47-64`, that
 [pr-head-rerooted-in-one-ref-move](../decisions/pr-head-rerooted-in-one-ref-move.md)
 cites by line number. The 0.13.0 → 0.19.0 re-pin flagged it as stale, and it
 was re-verified at the new pin (`9a8beda`) rather than assumed unchanged —
-the range held, but that has to be re-checked each time, not presumed. The
-same re-pin moved `GitHubError.ts`, whose footnoted anchors in
+the range held, but that has to be re-checked each time, not presumed: the
+0.19.0 → 0.28.2 re-pin (`74bdfb5`) did move it, from 46-69 to 47-64. The
+0.13.0 → 0.19.0 re-pin also moved `GitHubError.ts`, whose footnoted anchors in
 [branch-on-github-error-kind](branch-on-github-error-kind.md) had to be
 re-pointed — a line anchor into vendored source is only as good as its pin.

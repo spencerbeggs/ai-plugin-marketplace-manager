@@ -1,4 +1,4 @@
-import type { JsoncModificationError, JsoncParseError } from "@effected/jsonc";
+import type { JsoncModificationError, JsoncParseError, JsoncStringifyError } from "@effected/jsonc";
 import { Jsonc, JsoncEdit, JsoncModifier } from "@effected/jsonc";
 import { Effect, FileSystem } from "effect";
 import { ManifestNotFoundError, ManifestValidationError, PluginNotFoundError } from "../errors/errors.js";
@@ -74,7 +74,7 @@ export const applyPatches = (
 	patches: ReadonlyArray<EntryPatch>,
 ): Effect.Effect<
 	EditResult,
-	PluginNotFoundError | JsoncParseError | JsoncModificationError | ManifestValidationError
+	PluginNotFoundError | JsoncParseError | JsoncModificationError | JsoncStringifyError | ManifestValidationError
 > =>
 	Effect.gen(function* () {
 		let parsed = yield* Jsonc.parse(text);
