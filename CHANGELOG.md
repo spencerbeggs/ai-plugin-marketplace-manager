@@ -1,5 +1,24 @@
 # claude-code-marketplace-manager
 
+## 2.0.16
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effected/github | dependency | updated | ^0.23.0 | ^0.25.1 |
+| @effected/github-actions | dependency | updated | ^0.25.0 | ^0.28.2 |
+| @effected/jsonc | dependency | updated | ^0.19.0 | ^0.20.1 |
+| @effected/schemastore | dependency | updated | ^0.25.0 | ^0.26.3 |
+
+[#191][#191]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/spencerbeggs) for their contributions!
+
+[#191]: https://github.com/spencerbeggs/ai-plugin-marketplace-manager/pull/191
+
 ## 2.0.15
 
 ### Dependencies
@@ -598,8 +617,6 @@ Thanks to [@spencerbeggs](https://github.com/spencerbeggs) for their contributio
 - | Dependency | Type | Action | From | To |  |
   | --- | --- | --- | --- | --- | --- |
   | @savvy-web/github-action-effects | dependency | updated | ^3.0.5 | ^3.1.0 | [#8][#8] Thanks [@spencerbeggs](https://github.com/apps/spencerbeggs)! |
-
-### Patch Changes
 
 [#8]: https://github.com/spencerbeggs/claude-code-marketplace-manager/pull/8
 
