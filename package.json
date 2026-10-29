@@ -51,7 +51,7 @@
 		"@okfit/plugin": "^0.5.27",
 		"@savvy-web/github-action-builder": "^2.4.23",
 		"@savvy-web/silk": "^4.5.4",
-		"@vitest-agent/plugin": "^6.0.2"
+		"@vitest-agent/plugin": "^6.0.3"
 	},
 	"engines": {
 		"node": ">=24.11.0"
