@@ -22,10 +22,18 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
-  body_sha256: 6b61dae6147932d352773f37c93f2988d3f92d6c56dfeda3f26b2cca3fc882a4
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: 6b61dae6147932d3
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 1b1cfbb4f3f8a8d3
 ---
 
 # PR head re-rooted onto base in one ref move

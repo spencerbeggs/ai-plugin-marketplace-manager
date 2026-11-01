@@ -2,7 +2,7 @@
 type: Decision
 title: url input and in-band schemaVersion dropped
 description: v2 removes the url input/patch field entirely (only sha and path can be repinned) and removes ReportOutput's in-band schemaVersion field, leaving the schema version expressed only in the $schema URL's schemas/<version>/ path.
-status: draft
+status: stable
 tags:
   - architecture
   - compat
@@ -19,7 +19,16 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T21:08:46Z
-  body_sha256: 301b46944f1bb875d2cef5c1a69ad9e698bbcb829987481d65150ed193948b71
+verified:
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: 301b46944f1bb875
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 29fd0f37af1abde5
 ---
 
 # `url` input and in-band `schemaVersion` dropped

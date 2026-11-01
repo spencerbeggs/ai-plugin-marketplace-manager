@@ -20,6 +20,26 @@
 * Updated savvy-web/systems
 * Updated spencerbeggs/bot
 * Updated verified commit
+* Updated Checkout must be the base branch
+* Updated Dry-run is an early-return guard, not the kit's DryRun service
+* Updated Explicit values only, no release lookup
+* Updated Fixed manifest paths per marketplace, no discovery
+* Updated Landing requires a non-empty array of validated, non-no-op changes
+* Updated Multi-marketplace repins land as one commit, not one per file
+* Updated No sticky PR comment in pr mode
+* Updated PR head re-rooted onto base in one ref move
+* Updated Repository renamed at v2; frozen 1.0 schema $ids rewritten, not dropped
+* Updated The json input is a plugins envelope, not a bare array
+* Updated The pr-mode head branch is action-owned
+* Updated Validate the result before landing
+* Updated Verified commits via server-side signing
+* Updated ai-plugin-marketplace-manager
+* Updated ajv runs with strict false against the bundled SchemaStore schema
+* Updated marketplace looks like a manual-path signal and isn't
+* Updated patch
+* Updated post revokes the installation token first
+* Updated src edits do nothing until dist is rebuilt
+* Updated url input and in-band schemaVersion dropped
 
 ## 2026-10-27
 

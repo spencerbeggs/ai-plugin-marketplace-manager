@@ -2,7 +2,7 @@
 type: Decision
 title: Repository renamed at v2; frozen 1.0 schema $ids rewritten, not dropped
 description: The repository is renamed claude-code-marketplace-manager to ai-plugin-marketplace-manager at v2; rather than dropping 1.0 from OUTPUT_SCHEMA_VERSIONS, the frozen schemas/1.0/{input,output}.json files have their $id hand-rewritten to the new repo name once, at the rename, keeping 1.0 tracked and drift-checked.
-status: draft
+status: stable
 tags:
   - compat
   - release
@@ -24,7 +24,16 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T21:55:46Z
-  body_sha256: 3b3df6a57d2e8e20b185e220d284484f8a42941aaa8d459546061364a1f13ffa
+verified:
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: 3b3df6a57d2e8e20
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: c50727caee30fb5a
 ---
 
 # Repository renamed at v2; frozen 1.0 schema $ids rewritten, not dropped

@@ -24,9 +24,15 @@ verified:
     at: 2026-09-17T19:22:49Z
   - by: human:spencer
     at: 2026-09-29T03:15:43Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
 integrity:
   generated:
     body: 38fcfbd175d37db8
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: efafe8fbe1eb9171
 ---
 
 # Version the JSON Schema documents under their own path per label

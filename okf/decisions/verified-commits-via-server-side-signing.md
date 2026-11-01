@@ -29,11 +29,21 @@ sources:
     title: savvy-web/silk-update-action as reference implementation
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 18414286b95d5080c14ec1776881ddc69e25ec11e40089de6dbca8238a737f6b
+  at: 2026-11-01T19:25:35Z
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+  - by: human:spencer
+    at: 2026-11-01T19:24:45Z
+integrity:
+  generated:
+    body: 0085c71ffb420d06
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:24:45Z
+    content: 314d0dc7288e0e7d
 ---
 
 # Verified commits via server-side signing
@@ -59,7 +69,7 @@ hold together at once:
    bound to a `const` so the parameterized factory is not called more than
    once per composition (layers memoize by reference)[^layers].
 2. **The commit call sends no custom author, committer, or signature.**
-   `ManifestCommitter.land` builds `changes = [new FileContent({ path,
+   `ManifestCommitter.land` builds `changes = [FileContent.make({ path,
    content })]` and passes them to `commit.commitFiles` (commit mode) or the
    `commit.get` → `commit.createTree` → `commit.createCommit` sequence (pr
    mode) with no identity arguments[^committer]. This is enforced structurally

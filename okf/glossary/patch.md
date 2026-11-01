@@ -6,8 +6,10 @@ status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-23T21:08:46Z
-  body_sha256: 835eb74417681802f25c954098232a31d0a8654b061c015180963cb9d9ee11bd
 tags: [validation]
+integrity:
+  generated:
+    body: 835eb74417681802
 ---
 
 # patch

@@ -2,7 +2,7 @@
 type: Decision
 title: Fixed manifest paths per marketplace, no discovery
 description: claude-code and copilot each map to exactly one hardcoded manifest path; a path input per marketplace and Copilot's four-location discovery were both rejected.
-status: draft
+status: stable
 tags:
   - architecture
 sources:
@@ -15,7 +15,16 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T20:44:15Z
-  body_sha256: dd86d86c936b8f23bc6bdd4e6dbdd98969d4527cec017e9622a7bf3c9cd3a5e0
+verified:
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: dd86d86c936b8f23
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 5a10384913888332
 ---
 
 # Fixed manifest paths per marketplace, no discovery

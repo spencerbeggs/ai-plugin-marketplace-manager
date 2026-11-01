@@ -15,10 +15,18 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T21:08:46Z
-  body_sha256: d8092d7219fafc23f12e055da1ae642ffa47827fd85646b040bb91eb0c9617c3
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: d8092d7219fafc23
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 2f5f5282de2e8f8f
 ---
 
 # Explicit values only, no release lookup

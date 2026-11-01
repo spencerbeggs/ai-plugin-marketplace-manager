@@ -12,10 +12,18 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-29T03:16:59Z
-  body_sha256: dcfcec7464202e797d05814154076de5e118bc346e938852da1ec07861b0d993
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: dcfcec7464202e79
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 3d6a1b5b9dbeed73
 ---
 
 # Dry-run is an early-return guard, not the kit's DryRun service

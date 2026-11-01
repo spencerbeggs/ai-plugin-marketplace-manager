@@ -20,7 +20,9 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T21:08:46Z
-  body_sha256: 5ca6b0e4fe29a0aa3ef76ff3c6ba5d9dd2c363eee2a0430a912e64d1da812919
+integrity:
+  generated:
+    body: 5ca6b0e4fe29a0aa
 ---
 
 # Landing requires a non-empty array of validated, non-no-op changes

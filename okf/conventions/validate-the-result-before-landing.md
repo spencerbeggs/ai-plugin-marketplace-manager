@@ -7,7 +7,6 @@ stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
   at: 2026-09-29T03:16:59Z
-  body_sha256: 9b3742d64f265d8784e65a905ee5e077037870cc54897d53c996a35643f13160
 tags:
   - validation
   - security
@@ -20,6 +19,9 @@ sources:
     resource: ../../src/marketplaces.ts
   - id: manifest-validator-test
     resource: ../../__test__/services/ManifestValidator.test.ts
+integrity:
+  generated:
+    body: 9b3742d64f265d87
 ---
 
 # Validate the result before landing
