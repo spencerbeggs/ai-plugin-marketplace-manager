@@ -26,8 +26,8 @@ ref→sha resolution.
   the lockfile, and re-pin the vendored source in `.repos/config.json` (which
   tracks the installed `effect` / `@effected/github-actions`) when they bump.
 - Bundled to a committed `dist/` by `@savvy-web/github-action-builder`.
-- Node ≥ 24.11; pnpm; Biome; Vitest (`@effected/yaml` is test-only — it parses
-  `action.yml`).
+- Node ≥ 24.11; pnpm; Biome; Vitest (`@effected/memfs` is test-only — the
+  in-memory checkout the filesystem tests run against).
 
 ## Commands
 
@@ -98,7 +98,8 @@ ref→sha resolution.
   an entry point in a test executes a real phase on a runner
   (`@okf/conventions/entry-point-guard-and-env-strip-are-a-pair.md`).
 - Test doubles must perform the transformations the real implementation
-  performs (the `ActionOutputs` `setJson` double encodes through the schema),
+  performs (outputs are recorded with the kit's `ActionOutputs.recording()`,
+  whose `setJson` encodes through the schema — never a hand-written override),
   and validation fixtures must be structurally valid except in the field under
   test. Both rules are load-bearing: a double that skipped the encode and a
   fixture that failed on the wrong field each kept a dead test green

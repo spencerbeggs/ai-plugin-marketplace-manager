@@ -1,9 +1,5 @@
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { NodeFileSystem } from "@effect/platform-node";
 import { assert, describe, it } from "@effect/vitest";
-import type { FileSystem } from "effect";
+import { MemoryFileSystem } from "@effected/memfs";
 import { Effect } from "effect";
 import { CLAUDE_CODE, COPILOT } from "../../src/marketplaces.js";
 import { applyPatches, readManifest } from "../../src/services/ManifestEditor.js";
@@ -24,16 +20,6 @@ const shaRecord = (marketplace: keyof typeof PATHS, value: string) => ({
 	field: "sha" as const,
 	value,
 });
-
-/** Run `effect` with `dir` as the cwd, on the real filesystem. */
-const inDir = <A, E>(dir: string, effect: Effect.Effect<A, E, FileSystem.FileSystem>) => {
-	const cwd = process.cwd();
-	return Effect.sync(() => process.chdir(dir)).pipe(
-		Effect.andThen(effect),
-		Effect.ensuring(Effect.sync(() => process.chdir(cwd))),
-		Effect.provide(NodeFileSystem.layer),
-	);
-};
 
 const MANIFEST = `{
 	// marketplace
@@ -205,18 +191,18 @@ describe("applyPatches (copilot)", () => {
 describe("readManifest", () => {
 	it.effect("reads the marketplace's fixed path", () =>
 		Effect.gen(function* () {
-			const dir = mkdtempSync(join(tmpdir(), "mm-read-"));
-			mkdirSync(join(dir, ".github/plugin"), { recursive: true });
-			writeFileSync(join(dir, ".github/plugin/marketplace.json"), COPILOT_MANIFEST);
-			const text = yield* inDir(dir, readManifest(COPILOT));
+			// memfs resolves a relative path from its root, as the action's
+			// relative manifest paths resolve from the checkout.
+			const text = yield* readManifest(COPILOT).pipe(
+				Effect.provide(MemoryFileSystem.layerWith({ [PATHS.copilot]: COPILOT_MANIFEST })),
+			);
 			assert.strictEqual(text, COPILOT_MANIFEST);
 		}),
 	);
 
 	it.effect("fails with ManifestNotFoundError when the file is missing", () =>
 		Effect.gen(function* () {
-			const dir = mkdtempSync(join(tmpdir(), "mm-read-"));
-			const error = yield* Effect.flip(inDir(dir, readManifest(COPILOT)));
+			const error = yield* Effect.flip(readManifest(COPILOT).pipe(Effect.provide(MemoryFileSystem.layer)));
 			assert.strictEqual(error._tag, "ManifestNotFoundError");
 		}),
 	);

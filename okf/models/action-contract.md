@@ -6,11 +6,13 @@ resource: ../../src/contract.ts
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T20:44:15Z
-  body_sha256: 123a308acac609640ad253497f51d891fa174fac49c8706210b851f85e8b7f76
+  at: 2026-11-01T19:08:50Z
 tags:
   - architecture
   - testing
+integrity:
+  generated:
+    body: f5e9748c7ada18b0
 ---
 
 # Action Contract
@@ -51,27 +53,40 @@ honest; `INPUT_DEFAULTS` is the one place that decision now lives
 `__test__/action-contract.test.ts` asserts a three-way agreement in two
 legs, plus a third leg that pins the schema URLs the prose quotes:
 
-1. **`action.yml` ↔ `contract.ts`.** `action.yml` is parsed with `@effected/yaml`
-   through a `Schema.Record`-based `ActionManifest` that models only
-   `inputs`/`outputs` — deliberately loose, so unrelated manifest keys like
-   `branding`/`runs` never become a second thing to maintain
-   (`__test__/action-contract.test.ts:14-34`). Three assertions follow: the
-   manifest's `inputs` keys equal `INPUT_NAMES` as sets, its `outputs` keys
-   equal `OUTPUT_NAMES` as sets, and every input mirrored in `INPUT_DEFAULTS`
-   has exactly that default in the manifest (`__test__/action-contract.test.ts:61-75`).
+1. **`action.yml` ↔ `contract.ts`.** `action.yml` is decoded with the kit's
+   `ActionManifest.decodeResult` from `@effected/github-actions`, which models
+   the manifest's `inputs`/`outputs` maps without this test maintaining a
+   schema of its own (`__test__/action-contract.test.ts:20-30`). Three
+   assertions follow: the manifest's `inputs` keys equal `INPUT_NAMES` as
+   sets, its `outputs` keys equal `OUTPUT_NAMES` as sets, and every input
+   mirrored in `INPUT_DEFAULTS` has exactly that default in the manifest
+   (`__test__/action-contract.test.ts:91-105`).
    A fourth assertion guards the reasoning `INPUT_DEFAULTS` is built on: every
    *other* optional input (excluding the two required app-credential inputs)
    still defaults to `""` in the manifest — so an unmirrored input quietly
    acquiring a real default would change behavior with nothing here to notice
-   (`__test__/action-contract.test.ts:77-87`).
-2. **`contract.ts` ↔ the source.** Because a name reaching `ActionInput.<accessor>("name")`
+   (`__test__/action-contract.test.ts:107-117`).
+2. **`action.yml` ↔ the code.** A name reaching `ActionInput.<accessor>("name")`
    or `outputs.set("name", ...)` is a string literal that appears in no type,
-   the test can only find call sites by reading source text: it concatenates
-   `src/inputs.ts`, `src/pre.ts`, and `src/program.ts` and regex-matches each
-   `INPUT_NAMES` entry against an `ActionInput.\w+(...)` call, and each
-   `OUTPUT_NAMES` entry against an `outputs\s*.\s*set\w*(...)` call — the
-   whitespace tolerance matters because the formatter breaks the longest of
-   these calls across a line (`__test__/action-contract.test.ts:36-55`, `90-103`).
+   so the test observes the calls by running the code rather than reading its
+   source. Reads are recorded with
+   `ActionInput.recording(ActionManifest.runnerInputs(manifest, supplied))`
+   while `parseInputs` runs on the manual path with one valid patch, followed
+   by `readAppCredentials` — the effect `src/pre.ts` exports and `pre` yields,
+   so the two credential reads are recorded without minting a token. Writes
+   are recorded with `ActionOutputs.recording()` while `program` runs with no
+   inputs at all: the XOR check fails first, and the failure path emits all
+   nine outputs through the same `emit` the success path uses, with every
+   other service a `layerTest()` double that dies if reached
+   (`__test__/action-contract.test.ts:31-85`). The test then asserts
+   `ActionManifest.diff(...)` reports empty `unreadInputs`/`undeclaredInputs`
+   and `unwrittenOutputs`/`undeclaredOutputs` lists, so the failure names the
+   offending input or output (`__test__/action-contract.test.ts:120-140`).
+   Recording is dynamic: it sees only the reads and writes on the path the
+   run actually takes. That is why the input run uses the manual path with a
+   valid patch — it carries `parseInputs` past every later read — and why a
+   new input read only on some other branch would need the recorded run
+   steered onto that branch too.
 3. **The derived schema locations ↔ the prose.** The code and the generated
    documents share one derivation (`HostedSchema.$id`, checked by
    `pnpm schema:check`), but `action.yml`'s `result` description and the
@@ -80,7 +95,7 @@ legs, plus a third leg that pins the schema URLs the prose quotes:
    contains `SCHEMA_URL`, the README quotes `SCHEMA_URL` as its example
    `$schema` and links `schemas/<fileName>` for both identities, and both
    URLs resolve to the versioned `schemas/2.0/` layout
-   (`__test__/action-contract.test.ts:105-133`). See
+   (`__test__/action-contract.test.ts:142-170`). See
    [effect-schemas](effect-schemas.md).
 
 ## What breaks if an entry is wrong
@@ -91,5 +106,9 @@ and `action.yml` together but missing the call site in `inputs.ts`/`pre.ts`/
 `program.ts` fails leg 2 — and is the failure mode `src/contract.ts:7-12`
 calls out by name: "a perfectly type-correct action that reads an input
 nobody supplies and quietly takes the default. There is no compile error and
-no runtime error — just wrong behavior." See
+no runtime error — just wrong behavior." Leg 2 has been mutation-checked
+against both halves: renaming the `pr-body` read in `inputs.ts` and deleting
+the `pr-url` write in `program.ts` each fail it, naming the input or output.
+A call site reached only off the recorded paths would not, which is the
+dynamic-recording caveat above. See
 [renamed-input-silently-takes-the-default](../gotchas/renamed-input-silently-takes-the-default.md).

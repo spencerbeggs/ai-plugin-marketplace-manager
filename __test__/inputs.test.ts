@@ -97,8 +97,11 @@ describe("parseInputs", () => {
 	it.effect("rejects an invalid auto-merge method", () =>
 		Effect.gen(function* () {
 			const error = yield* Effect.flip(withInputs({ ...MANUAL, "auto-merge": "octopus" }));
-			assertInvalidInput(error);
-			assert.strictEqual(error.field, "auto-merge");
+			// `ActionInput.literals` fails a value outside the set as a `ConfigError`
+			// naming the input and the offending value, never swallowed by the default.
+			assert.strictEqual(error._tag, "ConfigError");
+			assert.include(String(error), "auto-merge");
+			assert.include(String(error), "octopus");
 		}),
 	);
 
@@ -195,8 +198,9 @@ describe("parseInputs", () => {
 	it.effect("rejects an invalid mode", () =>
 		Effect.gen(function* () {
 			const error = yield* Effect.flip(withInputs({ ...MANUAL, mode: "sideways" }));
-			assertInvalidInput(error);
-			assert.strictEqual(error.field, "mode");
+			assert.strictEqual(error._tag, "ConfigError");
+			assert.include(String(error), "mode");
+			assert.include(String(error), "sideways");
 		}),
 	);
 

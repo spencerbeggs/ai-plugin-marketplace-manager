@@ -1,7 +1,3 @@
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { NodeFileSystem } from "@effect/platform-node";
 import { assert, describe, it } from "@effect/vitest";
 import {
 	GitBranch,
@@ -14,6 +10,8 @@ import {
 } from "@effected/github";
 import type { ActionStateShape } from "@effected/github-actions";
 import { ActionInput, ActionOutputs, ActionState } from "@effected/github-actions";
+import { MemoryFileSystem } from "@effected/memfs";
+import type { FileSystem } from "effect";
 import { Cause, ConfigProvider, DateTime, Effect, Exit, Layer, Option, Redacted, Schema } from "effect";
 import { program } from "../src/program.js";
 
@@ -42,19 +40,16 @@ const COPILOT_MANIFEST = `{
 }
 `;
 
-/** A fresh checkout holding whichever manifests are asked for (both by default). */
-const setup = ({ claude = true, copilot = true } = {}) => {
-	const dir = mkdtempSync(join(tmpdir(), "mm-"));
-	if (claude) {
-		mkdirSync(join(dir, ".claude-plugin"), { recursive: true });
-		writeFileSync(join(dir, ".claude-plugin/marketplace.json"), MANIFEST);
-	}
-	if (copilot) {
-		mkdirSync(join(dir, ".github/plugin"), { recursive: true });
-		writeFileSync(join(dir, ".github/plugin/marketplace.json"), COPILOT_MANIFEST);
-	}
-	return dir;
-};
+/**
+ * A fresh in-memory checkout holding whichever manifests are asked for (both
+ * by default). memfs resolves the action's relative manifest paths from its
+ * root, so no `process.chdir` is needed.
+ */
+const setup = ({ claude = true, copilot = true } = {}) =>
+	MemoryFileSystem.layerWith({
+		...(claude ? { ".claude-plugin/marketplace.json": MANIFEST } : {}),
+		...(copilot ? { ".github/plugin/marketplace.json": COPILOT_MANIFEST } : {}),
+	});
 
 const liveToken = InstallationToken.make({
 	token: Redacted.make("ghs_live"),
@@ -88,46 +83,20 @@ interface HarnessOptions {
  * `ActionState` is bare for the same reason: reaching it would mean
  * `GitHubToken.botIdentity()` ran, which only happens past the dry-run guard.
  */
-const withProgram = (inputs: Record<string, string>, dir: string, options: HarnessOptions = {}) => {
-	const recorded: Array<{ readonly name: string; readonly value: string }> = [];
-	const summaries: Array<string> = [];
+const withProgram = (
+	inputs: Record<string, string>,
+	checkout: Layer.Layer<FileSystem.FileSystem>,
+	options: HarnessOptions = {},
+) => {
 	const commits: Array<{ readonly paths: ReadonlyArray<string>; readonly message: string }> = [];
 
-	const outputs =
-		options.outputs ??
-		ActionOutputs.layerTest({
-			set: (name, value) =>
-				Effect.sync(() => {
-					recorded.push({ name, value });
-				}),
-			// This double MUST encode through `schema`, exactly as the real
-			// `setJson` does (ActionOutputs.ts:196). A double that accepts the
-			// schema and ignores it makes every assertion below structurally
-			// incapable of catching a projection/schema drift: the real
-			// implementation would fail to encode, `program.ts` would swallow that
-			// into a `logWarning`, and the machine-readable `result` output would
-			// silently vanish in production with this suite green.
-			//
-			// `orDie` rather than a typed failure is deliberate, and is the one
-			// place this double is stricter than production. Production degrades
-			// gracefully — losing `result` should not fail a run that already did
-			// its work. In a test the same event is a contract bug, and it has to
-			// be loud, so it is raised as a defect that no `Effect.catch` in
-			// `program.ts` will absorb.
-			setJson: (name, value, schema) =>
-				Schema.encodeUnknownEffect(schema)(value).pipe(
-					Effect.orDie,
-					Effect.flatMap((encoded) =>
-						Effect.sync(() => {
-							recorded.push({ name, value: JSON.stringify(encoded) });
-						}),
-					),
-				),
-			summary: (content) =>
-				Effect.sync(() => {
-					summaries.push(content);
-				}),
-		});
+	// The kit's recording double, which encodes `setJson` through its schema
+	// exactly as the real layer does and records the encoded text. A drift is a
+	// typed `OutputEncodeError` that `program` degrades to a warning, as in
+	// production — so it surfaces here as a missing `result`, which every test
+	// that reaches an emit asserts on.
+	const recording = ActionOutputs.recording();
+	const outputs = options.outputs ?? recording.layer;
 
 	const layer = Layer.mergeAll(
 		outputs,
@@ -149,15 +118,10 @@ const withProgram = (inputs: Record<string, string>, dir: string, options: Harne
 		PullRequest.layerTest(),
 		GitHubRepository.layerTest(),
 		Layer.succeed(Repo, RepoRef.make({ owner: "test-owner", repo: "test-repo" })),
-		NodeFileSystem.layer,
+		checkout,
 	);
 
-	const cwd = process.cwd();
-	const run = Effect.gen(function* () {
-		process.chdir(dir);
-		return yield* program;
-	}).pipe(
-		Effect.ensuring(Effect.sync(() => process.chdir(cwd))),
+	const run = program.pipe(
 		Effect.provide(layer),
 		// `ActionInput.provider`, never `ConfigProvider.fromEnv`/`fromUnknown`:
 		// `parseInputs` reads through `ActionInput.string`, which resolves
@@ -166,7 +130,26 @@ const withProgram = (inputs: Record<string, string>, dir: string, options: Harne
 		Effect.provide(ConfigProvider.layer(ActionInput.provider(inputs))),
 	);
 
-	return { run, recorded, summaries, commits };
+	return {
+		run,
+		commits,
+		/** Every `set`/`setJson` write so far, `setJson` as its encoded JSON text. */
+		get recorded(): ReadonlyArray<{ readonly name: string; readonly value: string }> {
+			return recording
+				.entries()
+				.flatMap((e) =>
+					(e.member === "set" || e.member === "setJson") && e.name !== undefined
+						? [{ name: e.name, value: e.value }]
+						: [],
+				);
+		},
+		get summaries(): ReadonlyArray<string> {
+			return recording
+				.entries()
+				.filter((e) => e.member === "summary")
+				.map((e) => e.value);
+		},
+	};
 };
 
 const outputValue = (recorded: ReadonlyArray<{ name: string; value: string }>, name: string) =>

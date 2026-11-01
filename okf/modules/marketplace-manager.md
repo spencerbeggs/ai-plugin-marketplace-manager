@@ -7,11 +7,11 @@ resource: ../../src
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T18:56:03Z
+  at: 2026-11-01T19:08:50Z
 tags: [architecture]
 integrity:
   generated:
-    body: 4b1b1d3c6d188975
+    body: 040453b542ce9188
 ---
 
 # marketplace-manager
@@ -36,7 +36,10 @@ instead of failing mid-`main` on a bare 403. The App credentials
 (`app-client-id`, `app-private-key`) are explicit arguments to
 `GitHubToken.provision`; the private key is read with `ActionInput.redacted`
 and stays `Redacted` end to end — `provision` takes the wrapper directly, so
-it is never unwrapped in this module (`src/pre.ts:38-42`).
+it is never unwrapped in this module (`src/pre.ts:39-50`). The two reads
+live in the exported `readAppCredentials` (`src/pre.ts:22-29`), which `pre`
+yields and the contract test runs on its own to record them without minting
+a token.
 
 The installation token is always revoked in `post`, with no opt-out
 (`src/post.ts:10-16`): revocation runs first and is sequenced ahead of the
@@ -46,7 +49,7 @@ revocation, and the whole phase is wrapped in `Effect.catchDefect`
 out.
 
 Every entry point ends in `if (process.env.GITHUB_ACTIONS) { await
-Action.run(…) }` (`src/pre.ts:47-49`, `src/main.ts:6-8`, `src/post.ts:44-46`).
+Action.run(…) }` (`src/pre.ts:55-57`, `src/main.ts:6-8`, `src/post.ts:44-46`).
 This is a pair with `vitest.setup.ts`'s `globalSetup`, which strips the
 runner environment before the forks pool spawns — see
 [entry-point-guard-and-env-strip-are-a-pair](../conventions/entry-point-guard-and-env-strip-are-a-pair.md).
@@ -87,8 +90,10 @@ The full logical pipeline, in order (step 1 in `program`, steps 2–8 in
    patches targeting that marketplace; skip the marketplace entirely if it
    has none. For each targeted marketplace —
    **read manifest** (`readManifest`, `src/services/ManifestEditor.ts`)
-   from the checkout, failing with `ManifestNotFoundError` if the fixed
-   path is missing, then
+   from the checkout in a single `readFileString`, mapping only a
+   `PlatformError` of reason `NotFound` to `ManifestNotFoundError` via
+   `Effect.catchReason` — no exists-then-read window, and any other
+   platform failure surfaces as itself — then
    **apply patches** (`applyPatches`, `src/services/ManifestEditor.ts`) —
    format-preserving partial-merge via `@effected/jsonc`, matched by entry
    name within that manifest, inserting a field absent from `source`

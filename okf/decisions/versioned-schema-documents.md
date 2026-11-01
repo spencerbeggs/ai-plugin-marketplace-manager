@@ -18,13 +18,15 @@ sources:
     title: "Leg 3 — the prose that quotes the derived URLs"
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 89053c85c1813b3a7f1618e18f71fc15111a53e67ca367370d71583987dcf712
+  at: 2026-11-01T19:08:50Z
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
   - by: human:spencer
     at: 2026-09-29T03:15:43Z
+integrity:
+  generated:
+    body: 38fcfbd175d37db8
 ---
 
 # Version the JSON Schema documents under their own path per label
@@ -126,7 +128,7 @@ documents were removed rather than relabelled.
   by hand, and a bump that misses them fails nothing. Leg 3 of
   `__test__/action-contract.test.ts`[^contract-test] pins those to
   `SCHEMA_URL`, `INPUT_SCHEMA_URL`, and each identity's `fileName`
-  (`__test__/action-contract.test.ts:105-133`).
+  (`__test__/action-contract.test.ts:142-170`).
 - Bumping the version is one constant plus keeping the old label in
   `OUTPUT_SCHEMA_VERSIONS`; the procedure is
   [bump-the-output-schema-version](../runbooks/bump-the-output-schema-version.md).

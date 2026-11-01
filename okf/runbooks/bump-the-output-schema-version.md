@@ -19,8 +19,10 @@ sources:
     title: "drift policy, frozen labels, and exit codes"
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: e244345484aeff48f8cf5e3b466554f165c01e06a37ece60d9ebe4bd9468b697
+  at: 2026-11-01T19:08:50Z
+integrity:
+  generated:
+    body: 29a605da745df846
 ---
 
 # Bump the output schema version
@@ -85,7 +87,7 @@ entry flipped to `published: true`.
    (`README.md:174`, `142`, `160`). Leg 3 of
    `__test__/action-contract.test.ts` fails until they match `SCHEMA_URL`,
    `INPUT_SCHEMA_URL`, and each identity's `fileName`
-   (`__test__/action-contract.test.ts:105-133`).
+   (`__test__/action-contract.test.ts:142-170`).
 5. Run `pnpm schema:check` again and `pnpm test`. The check fails on a stale
    or missing document, on a frozen file whose `$id` is absent or differs
    from the derived one, and on any gate failure; the test pins the prose.

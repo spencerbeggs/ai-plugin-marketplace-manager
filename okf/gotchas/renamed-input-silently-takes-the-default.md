@@ -8,8 +8,7 @@ stale_after: 2027-03-13T00:00:00Z
 tags: [dx, testing]
 generated:
   by: okfit/claude-code
-  at: 2026-09-13T21:33:34Z
-  body_sha256: 5aa5597d7adf84de3a96f819da26e47e11f83f0804680ae5625d4af8d877ae89
+  at: 2026-11-01T19:08:50Z
 sources:
   - id: inputs
     resource: ../../src/inputs.ts
@@ -17,6 +16,9 @@ sources:
   - id: action-contract-test
     resource: ../../__test__/action-contract.test.ts
     last_modified: 2026-09-13T00:00:00Z
+integrity:
+  generated:
+    body: 6d278e53d576f9f8
 ---
 
 # A renamed input silently takes the default
@@ -36,8 +38,8 @@ anywhere that matters.
 
 ## What is true
 
-Every input read goes through `ActionInput.string("name")` (or `.boolean`),
-each keyed by a bare string literal — there is no shared enum or union type
+Every input read goes through `ActionInput.string("name")` (or `.boolean`,
+`.literals`, `.redacted`), each keyed by a bare string literal — there is no shared enum or union type
 tying a name at the call site to a name in `action.yml`, so a mismatch between
 the two is invisible to both the compiler and the runtime. Every optional
 input is read with `Config.withDefault(...)`, because the runner writes `""`
@@ -52,19 +54,25 @@ proceeds using a default instead of the value a caller thought they were
 passing.
 
 The one thing that does catch it is
-`__test__/action-contract.test.ts`: it decodes `action.yml`, and for every
-name in `INPUT_NAMES`/`OUTPUT_NAMES` asserts by regex that some
-`ActionInput.\w+(name)` (or `outputs.set...(name`) call exists somewhere in
-the concatenated source of `src/inputs.ts`, `src/pre.ts`, and
-`src/program.ts`.[^action-contract-test] That test is the only mechanism in
-the repository that would fail here — nothing else notices.
+`__test__/action-contract.test.ts`: it decodes `action.yml` with the kit's
+`ActionManifest.decodeResult`, records every input the code actually reads
+(`ActionInput.recording` while `parseInputs` and `pre.ts`'s
+`readAppCredentials` run) and every output it actually writes
+(`ActionOutputs.recording()` while `program` runs its failure path), and
+asserts `ActionManifest.diff` finds no declared input unread, no read input
+undeclared, and the same for outputs.[^action-contract-test] A rename on
+either side then fails naming the input. That test is the only mechanism in
+the repository that would fail here — nothing else notices. Its one blind
+spot is inherited from recording: it sees only reads on the path the
+recorded run takes, so an input read solely on some other branch is
+invisible to it.
 
 ## Related
 
 [keep-the-action-contract-in-sync](../conventions/keep-the-action-contract-in-sync.md)
 states the rule this gotcha explains the consequence of breaking;
 [action-contract](../models/action-contract.md) documents the `contract.ts`
-source of truth the regex test is checked against.
+source of truth the recording test is checked against.
 
 [^inputs]: `../../src/inputs.ts`
 [^action-contract-test]: `../../__test__/action-contract.test.ts`

@@ -6,11 +6,13 @@ status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 2f1fa87b3a5620a7250587c0d551d395d1cfe4c302f8a589be45dc770de5c713
+  at: 2026-11-01T19:08:50Z
 tags:
   - dx
   - testing
+integrity:
+  generated:
+    body: 72ab48b7ab811dae
 ---
 
 # Keep the Action Contract in Sync
@@ -28,9 +30,13 @@ manifest and in `contract.ts` but misses the call site is a perfectly
 type-correct action that reads an input nobody supplies and quietly takes
 the default — no compile error, no runtime error, just wrong behavior
 (`src/contract.ts:7-12`). `__test__/action-contract.test.ts` is what catches
-it, by reading the source text of `inputs.ts`/`pre.ts`/`program.ts` for the
-matching `ActionInput.\w+(...)`/`outputs.set\w*(...)` call — see
-[action-contract](../models/action-contract.md).
+it, by running the code with the kit's recording doubles
+(`ActionInput.recording`, `ActionOutputs.recording()`) and asserting
+`ActionManifest.diff` against `action.yml` finds nothing unread, unwritten,
+or undeclared — see [action-contract](../models/action-contract.md).
+Recording sees only the path the run takes, so a new input read off that
+path (outside `parseInputs`'s manual path or `pre.ts`'s
+`readAppCredentials`) needs the test's recorded run extended to reach it.
 
 Separately: after any change to an Effect Schema that feeds a published
 document (`ReportOutput` in `src/schema/report-output.ts`, `JsonInput` in
@@ -48,5 +54,5 @@ hand: `action.yml`'s `result` description and the README's example `$schema`
 and document links. The CLI cannot see prose; Leg 3 of
 `__test__/action-contract.test.ts` pins it to `SCHEMA_URL`,
 `INPUT_SCHEMA_URL`, and each identity's `fileName`
-(`__test__/action-contract.test.ts:105-133`). Follow
+(`__test__/action-contract.test.ts:142-170`). Follow
 [bump-the-output-schema-version](../runbooks/bump-the-output-schema-version.md).

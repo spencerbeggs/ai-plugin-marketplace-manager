@@ -6,6 +6,13 @@
 * Updated Action Inputs
 * Updated Effect Schemas
 * Updated Schema.NonEmptyArray no longer fails the ajv strict gate (resolved upstream)
+* Updated A renamed input silently takes the default
+* Updated Action Contract
+* Updated Bump the output schema version
+* Updated Keep the Action Contract in Sync
+* Updated Keep the entry-point guard and the env strip together
+* Updated Test doubles transform; fixtures isolate one field
+* Updated Version the JSON Schema documents under their own path per label
 
 ## 2026-10-27
 

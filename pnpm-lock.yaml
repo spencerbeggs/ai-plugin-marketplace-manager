@@ -195,15 +195,15 @@ catalogs:
     '@effected/jsonc':
       specifier: ^0.22.0
       version: 0.22.0
+    '@effected/memfs':
+      specifier: ^0.22.0
+      version: 0.22.0
     '@effected/schemastore':
       specifier: ^0.28.0
       version: 0.28.0
     '@effected/schemastore-cli':
       specifier: ^0.28.0
       version: 0.28.0
-    '@effected/yaml':
-      specifier: ^0.27.0
-      version: 0.27.0
     effect:
       specifier: ~4.1.1
       version: 4.1.1
@@ -272,12 +272,12 @@ importers:
       '@effect/vitest':
         specifier: catalog:effected
         version: 4.1.1(effect@4.1.1)(vitest@5.0.5)
+      '@effected/memfs':
+        specifier: catalog:effected
+        version: 0.22.0(effect@4.1.1)
       '@effected/schemastore-cli':
         specifier: catalog:effected
         version: 0.28.0(@effected/config-file@0.23.0(@effected/glob@0.17.0(effect@4.1.1))(@effected/jsonc@0.22.0(effect@4.1.1))(@effected/toml@0.18.0(effect@4.1.1))(@effected/walker@0.24.0(@effected/glob@0.17.0(effect@4.1.1))(effect@4.1.1))(@effected/yaml@0.27.0(effect@4.1.1))(effect@4.1.1))(@effected/schemastore@0.28.0(effect@4.1.1))(effect@4.1.1)(ink@8.0.0(react@19.3.1))(react@19.3.1)(redis@6.3.1)
-      '@effected/yaml':
-        specifier: catalog:effected
-        version: 0.27.0(effect@4.1.1)
       '@okfit/plugin':
         specifier: ^0.5.28
         version: 0.5.28(@effected/memfs@0.22.0(effect@4.1.1))(redis@6.3.1)

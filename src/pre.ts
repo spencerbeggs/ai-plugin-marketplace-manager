@@ -20,6 +20,15 @@ export const REQUIRED_PERMISSIONS = {
 } as const;
 
 /**
+ * The App credentials `pre` reads — split out so the contract test can record
+ * these reads without minting a token.
+ */
+export const readAppCredentials = Effect.all({
+	appId: ActionInput.string("app-client-id"),
+	privateKey: ActionInput.redacted("app-private-key"),
+});
+
+/**
  * pre: record the start time and provision the GitHub App installation token.
  *
  * @remarks
@@ -35,8 +44,7 @@ export const pre = Effect.gen(function* () {
 	const state = yield* ActionState;
 	yield* state.save(STATE_KEYS.startTime, new StartTimeState({ startedAt: Date.now() }), StartTimeState);
 
-	const appId = yield* ActionInput.string("app-client-id");
-	const privateKey = yield* ActionInput.redacted("app-private-key");
+	const { appId, privateKey } = yield* readAppCredentials;
 
 	yield* Effect.logInfo("Generating GitHub App installation token...");
 	const token = yield* GitHubToken.provision({ appId, privateKey, required: REQUIRED_PERMISSIONS });
