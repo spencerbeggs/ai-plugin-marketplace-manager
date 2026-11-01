@@ -6,13 +6,15 @@ repository: spencerbeggs/bot
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: ba60c9aa14447b2c3bc01c80ba4b0592327e13c8030f22708eaa1ec7fd814a05
+  at: 2026-11-01T19:21:18Z
 sources:
   - id: owner-plan
     resource: conversation with the repository owner
     title: "v2 design doc's consumer follow-up list"
     last_modified: 2026-09-23T00:00:00Z
+integrity:
+  generated:
+    body: d0d83cd0d71f1d0b
 ---
 
 # spencerbeggs/bot
@@ -39,7 +41,7 @@ by a `repository_dispatch` event of type `plugin-release`.
 - **Checkout:** `actions/checkout@v7` with `fetch-depth: 0`, no explicit ref
   — the default branch is checked out, and no `base-branch` input is set, so
   the action resolves the repo's default branch itself
-  (`src/services/ManifestCommitter.ts:44-45`).
+  (`src/services/ManifestCommitter.ts:46-47`).
 
 ## Edge
 

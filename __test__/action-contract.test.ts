@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { assert, it as effectIt } from "@effect/vitest";
 import { GitBranch, GitCommit, GitHubRepository, PullRequest, Repo, RepoRef } from "@effected/github";
-import { ActionInput, ActionManifest, ActionOutputs, ActionState } from "@effected/github-actions";
+import { ActionEnvironment, ActionInput, ActionManifest, ActionOutputs, ActionState } from "@effected/github-actions";
 import { MemoryFileSystem } from "@effected/memfs";
 import { ConfigProvider, Effect, Layer, Result } from "effect";
 import { describe, expect, it } from "vitest";
@@ -76,6 +76,7 @@ const recordOutputWrites = Effect.gen(function* () {
 				PullRequest.layerTest(),
 				GitHubRepository.layerTest(),
 				Layer.succeed(Repo, RepoRef.make({ owner: "o", repo: "r" })),
+				ActionEnvironment.layerTest(),
 				MemoryFileSystem.layer,
 			),
 		),

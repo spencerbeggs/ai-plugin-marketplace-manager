@@ -1,5 +1,5 @@
 import { Action, ActionInput, ActionState, GitHubToken } from "@effected/github-actions";
-import { Effect } from "effect";
+import { Clock, Effect } from "effect";
 import { PreLive } from "./layers/app.js";
 import { STATE_KEYS, StartTimeState } from "./state.js";
 
@@ -42,7 +42,8 @@ export const readAppCredentials = Effect.all({
  */
 export const pre = Effect.gen(function* () {
 	const state = yield* ActionState;
-	yield* state.save(STATE_KEYS.startTime, new StartTimeState({ startedAt: Date.now() }), StartTimeState);
+	const startedAt = yield* Clock.currentTimeMillis;
+	yield* state.save(STATE_KEYS.startTime, StartTimeState.make({ startedAt }), StartTimeState);
 
 	const { appId, privateKey } = yield* readAppCredentials;
 

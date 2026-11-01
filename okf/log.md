@@ -13,6 +13,13 @@
 * Updated Keep the entry-point guard and the env strip together
 * Updated Test doubles transform; fixtures isolate one field
 * Updated Version the JSON Schema documents under their own path per label
+* Updated A pr-mode head carries exactly one commit, rooted at base
+* Updated Branch on GitHubError.kind, never on message prose
+* Updated Never stamp bot identity on commits
+* Updated Result Output
+* Updated savvy-web/systems
+* Updated spencerbeggs/bot
+* Updated verified commit
 
 ## 2026-10-27
 

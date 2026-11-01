@@ -6,7 +6,7 @@ description: Discriminate library failures by their structured kind, match libra
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-10-27T19:42:51Z
+  at: 2026-11-01T19:21:18Z
 tags:
   - architecture
 sources:
@@ -20,7 +20,7 @@ sources:
     resource: ../../.repos/effected/packages/github/src/PullRequest.ts
 integrity:
   generated:
-    body: 9358abbb9db3529d
+    body: b61cc8b1afe3888a
 ---
 
 # Branch on GitHubError.kind, never on message prose
@@ -48,7 +48,7 @@ for example by wrapping the error before it reaches `upsert`, or by
 special-casing on the error's message instead — would turn an expected,
 recoverable race into a hard failure.
 
-[^manifest-committer]: ../../src/services/ManifestCommitter.ts:1,76-79,101-103
+[^manifest-committer]: ../../src/services/ManifestCommitter.ts:1,78-81,103-105
 [^github-error]: ../../.repos/effected/packages/github/src/GitHubError.ts:98,148,154,163,169
 [^git-branch]: ../../.repos/effected/packages/github/src/GitBranch.ts:42,219,222
 [^pull-request]: ../../.repos/effected/packages/github/src/PullRequest.ts:274-277

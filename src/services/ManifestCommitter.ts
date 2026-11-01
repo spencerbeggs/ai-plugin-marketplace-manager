@@ -1,5 +1,7 @@
 import type { GitHubError, GitHubGraphQLError } from "@effected/github";
 import { FileContent, GitBranch, GitCommit, GitHubRepository, PullRequest, Repo } from "@effected/github";
+import type { ActionEnvironmentError } from "@effected/github-actions";
+import { ActionEnvironment } from "@effected/github-actions";
 import type { Array as Arr } from "effect";
 import { Effect } from "effect";
 import { InvalidInputError } from "../errors/errors.js";
@@ -98,14 +100,17 @@ export const land = (
 	params: LandParams,
 ): Effect.Effect<
 	LandResult,
-	GitHubError | GitHubGraphQLError | InvalidInputError,
-	GitCommit | GitBranch | PullRequest | Repo
+	GitHubError | GitHubGraphQLError | InvalidInputError | ActionEnvironmentError,
+	GitCommit | GitBranch | PullRequest | Repo | ActionEnvironment
 > =>
 	Effect.gen(function* () {
 		const commit = yield* GitCommit;
 		const { owner, repo } = yield* Repo;
-		const changes = params.changes.map((c) => new FileContent({ path: c.path, content: c.editedText }));
-		const commitUrl = (sha: string): string => `https://github.com/${owner}/${repo}/commit/${sha}`;
+		// The runner's own server URL, read before any write: on GitHub
+		// Enterprise Server a hard-coded github.com would link nowhere.
+		const { serverUrl } = yield* (yield* ActionEnvironment).github;
+		const changes = params.changes.map((c) => FileContent.make({ path: c.path, content: c.editedText }));
+		const commitUrl = (sha: string): string => `${serverUrl}/${owner}/${repo}/commit/${sha}`;
 
 		if (params.mode === "pr" && params.base === params.branch) {
 			return yield* Effect.fail(

@@ -9,7 +9,7 @@ import {
 	RepoRef,
 } from "@effected/github";
 import type { ActionStateShape } from "@effected/github-actions";
-import { ActionInput, ActionOutputs, ActionState } from "@effected/github-actions";
+import { ActionEnvironment, ActionInput, ActionOutputs, ActionState } from "@effected/github-actions";
 import { MemoryFileSystem } from "@effected/memfs";
 import type { FileSystem } from "effect";
 import { Cause, ConfigProvider, DateTime, Effect, Exit, Layer, Option, Redacted, Schema } from "effect";
@@ -118,6 +118,7 @@ const withProgram = (
 		PullRequest.layerTest(),
 		GitHubRepository.layerTest(),
 		Layer.succeed(Repo, RepoRef.make({ owner: "test-owner", repo: "test-repo" })),
+		ActionEnvironment.layerTest(),
 		checkout,
 	);
 

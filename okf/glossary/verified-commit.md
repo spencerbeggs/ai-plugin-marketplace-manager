@@ -5,9 +5,11 @@ description: What "verified" means for a commit this action lands, and the two t
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 60fbfa0c4c1835753f12487fbf0fa2fc09c4a11b1ab319f345b509a4964d8e56
+  at: 2026-11-01T19:21:18Z
 tags: [security]
+integrity:
+  generated:
+    body: 1889aed0de551db4
 ---
 
 # verified commit
@@ -18,7 +20,7 @@ installation token — the state GitHub shows when it can attest the commit
 came from the identity the token represents, which is what satisfies a
 branch protection rule requiring signed commits.
 
-`land` (`src/services/ManifestCommitter.ts:97-162`) achieves this by never
+`land` (`src/services/ManifestCommitter.ts:99-167`) achieves this by never
 passing an author, committer, or signature to `GitCommit`; `@effected/github`
 exposes no parameter for any of the three, so the rule is structural rather
 than a convention someone has to remember not to break. Omitting them is

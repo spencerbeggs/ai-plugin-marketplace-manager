@@ -7,11 +7,11 @@ resource: ../../src
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:08:50Z
+  at: 2026-11-01T19:21:18Z
 tags: [architecture]
 integrity:
   generated:
-    body: 040453b542ce9188
+    body: fdd3d0a4813f9fdf
 ---
 
 # marketplace-manager
@@ -36,7 +36,7 @@ instead of failing mid-`main` on a bare 403. The App credentials
 (`app-client-id`, `app-private-key`) are explicit arguments to
 `GitHubToken.provision`; the private key is read with `ActionInput.redacted`
 and stays `Redacted` end to end — `provision` takes the wrapper directly, so
-it is never unwrapped in this module (`src/pre.ts:39-50`). The two reads
+it is never unwrapped in this module (`src/pre.ts:39-51`). The two reads
 live in the exported `readAppCredentials` (`src/pre.ts:22-29`), which `pre`
 yields and the contract test runs on its own to record them without minting
 a token.
@@ -49,7 +49,7 @@ revocation, and the whole phase is wrapped in `Effect.catchDefect`
 out.
 
 Every entry point ends in `if (process.env.GITHUB_ACTIONS) { await
-Action.run(…) }` (`src/pre.ts:55-57`, `src/main.ts:6-8`, `src/post.ts:44-46`).
+Action.run(…) }` (`src/pre.ts:56-58`, `src/main.ts:6-8`, `src/post.ts:44-46`).
 This is a pair with `vitest.setup.ts`'s `globalSetup`, which strips the
 runner environment before the forks pool spawns — see
 [entry-point-guard-and-env-strip-are-a-pair](../conventions/entry-point-guard-and-env-strip-are-a-pair.md).
@@ -189,6 +189,12 @@ tree and one commit (or one PR head move). It never passes author,
 committer, or signature — see
 [verified-commit](../glossary/verified-commit.md).
 
+Before any write, `land` reads the runner's server URL from
+`ActionEnvironment` (`GITHUB_SERVER_URL`) and builds every `commit-url` as
+`${serverUrl}/${owner}/${repo}/commit/${sha}`
+(`src/services/ManifestCommitter.ts:111-113`), so the link is correct on
+GitHub Enterprise Server rather than hard-coded to `github.com`.
+
 - **commit mode**: `commit.commitFiles({ branch: base, message, changes })`
   directly on the base branch — `commitFiles` reads the base head as parent
   itself. `changes` is the array of `FileContent` instances built from
@@ -205,9 +211,9 @@ committer, or signature — see
   `upsert` subsumes the pre-port `exists` / `create` / re-check-on-failure
   recovery: `GitHubError`'s `kind: "alreadyExists"` is structural, so a
   concurrent creator is recognized by the error's shape rather than by
-  matching its prose (`src/services/ManifestCommitter.ts:76-79`).
+  matching its prose (`src/services/ManifestCommitter.ts:78-81`).
   `setAutoMerge` is a separate call, not an option on `upsert`
-  (`src/services/ManifestCommitter.ts:152-154`): the auto-merge call firing
+  (`src/services/ManifestCommitter.ts:157-159`): the auto-merge call firing
   from a `tap` after the create would let an auto-merge failure surface as
   though opening the PR had failed. `commit` mode never reaches any of this.
 
@@ -241,14 +247,19 @@ which carries a structured `kind` (e.g. `"alreadyExists"`, `"notFound"`) so
 call sites discriminate on shape rather than on error prose. The one
 exception is the GraphQL-backed auto-merge path, which adds
 `GitHubGraphQLError` — `land`'s error channel is
-`GitHubError | GitHubGraphQLError | InvalidInputError`
-(`src/services/ManifestCommitter.ts:97-103`), while `resolveBaseBranch`'s is
-just `GitHubError` (`src/services/ManifestCommitter.ts:44`). See
+`GitHubError | GitHubGraphQLError | InvalidInputError | ActionEnvironmentError`
+and its requirements are
+`GitCommit | GitBranch | PullRequest | Repo | ActionEnvironment`
+(`src/services/ManifestCommitter.ts:99-105`); `ActionEnvironmentError` is
+the runner-environment read for the commit URL's server (see Landing), and
+`ActionEnvironment` is provided in production by `ActionRuntime.layer`,
+which `Action.run` composes. `resolveBaseBranch`'s error channel is
+just `GitHubError` (`src/services/ManifestCommitter.ts:46`). See
 [branch-on-github-error-kind](../conventions/branch-on-github-error-kind.md).
 
 `land`'s own `InvalidInputError` is the one failure it raises itself:
 **`pr` mode refuses a head branch equal to its base**
-(`src/services/ManifestCommitter.ts:110-117`). `branch` and `base` are
+(`src/services/ManifestCommitter.ts:115-122`). `branch` and `base` are
 independent inputs — the latter resolved from `base-branch` or the repo
 default — so nothing structural prevents them colliding. If they did, the
 single `GitBranch.upsert` would move the *base* branch to the new commit,
