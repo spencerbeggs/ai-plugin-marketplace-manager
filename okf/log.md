@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-01
+
+* Updated marketplace-manager
+
 ## 2026-10-27
 
 * Updated Branch on GitHubError.kind, never on message prose

@@ -7,9 +7,11 @@ resource: ../../src
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 575b3a9fe4d7bb93b3d2d64e1ac42f1c009716f1184bbad9dc44176bb3907d21
+  at: 2026-11-01T18:56:03Z
 tags: [architecture]
+integrity:
+  generated:
+    body: 4b1b1d3c6d188975
 ---
 
 # marketplace-manager
@@ -145,27 +147,30 @@ The full logical pipeline, in order (step 1 in `program`, steps 2–8 in
 
 ## Layer composition (`src/layers/app.ts`)
 
-`PreLive` and `PostLive` are one layer, not two: `PreLive = GitHubApp.layer`
-and `PostLive = PreLive` (`src/layers/app.ts:22-23`). `GitHubApp.layer`
-requires nothing — it signs the app JWT itself — and `ActionRuntime.layer`,
-which `Action.run` always composes, already provides `FileSystem`,
-`HttpClient`, `ActionState` and `ActionOutputs`.
+`PreLive` and `PostLive` are one layer, not two: `PreLive` is
+`GitHubApp.layer` provided with `NodeCrypto.layerSignature`, and
+`PostLive = PreLive` (`src/layers/app.ts:25-26`). `GitHubApp.layer` signs the
+app JWT itself through core's `Signature` service (`effect/crypto`), which it
+requires since `@effected/github` 0.27 (Effect 4.1). `ActionRuntime.layer`,
+which `Action.run` always composes, provides `Digest`, `Mac` and
+`SecureRandom` but not `Signature`, so the layer is supplied here; it already
+provides `FileSystem`, `HttpClient`, `ActionState` and `ActionOutputs`.
 
-`MainLive` (`src/layers/app.ts:48-54`) reads the installation token
+`MainLive` (`src/layers/app.ts:51-57`) reads the installation token
 provisioned in `pre` back via `GitHubToken.clientLayer()`, wrapped in
-`Layer.orDie` (`src/layers/app.ts:36`) — a missing or expired token in
+`Layer.orDie` (`src/layers/app.ts:39`) — a missing or expired token in
 `main` is a wiring defect, not a condition this action can act on, and
 `ActionRunOptions.layer` requires a `never` error channel. It is bound to a
-`const` (`client`, `src/layers/app.ts:36`) deliberately: `clientLayer()` is
+`const` (`client`, `src/layers/app.ts:39`) deliberately: `clientLayer()` is
 a parameterized factory and layers memoize **by reference**, so calling it
 at each composition site would build four independent clients.
 `GitCommit.layer`, `GitBranch.layer`, `PullRequest.layer` and
 `GitHubRepository.layer` are each built from that one client and merged
-with `Repo.layerFromConfig()` (`src/layers/app.ts:45-54`). No separate
+with `Repo.layerFromConfig()` (`src/layers/app.ts:48-57`). No separate
 GraphQL layer is needed — auto-merge is a `PullRequest` member now.
 
 **`Repo` is resolved per call, not captured at layer construction**
-(`src/layers/app.ts:38-44`): every resource method carries `Repo` in its
+(`src/layers/app.ts:41-47`): every resource method carries `Repo` in its
 requirements, which is what makes a scoped `Repo.provide` override work
 rather than silently do nothing.
 
