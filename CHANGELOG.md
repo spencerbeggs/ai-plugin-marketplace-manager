@@ -1,5 +1,31 @@
 # claude-code-marketplace-manager
 
+## 2.0.18
+
+### Bug Fixes
+
+- The `commit-url` output is now built from the runner's `GITHUB_SERVER_URL` rather than a hard-coded `https://github.com`, so it links to the right host on GitHub Enterprise Server.
+- An invalid `mode` or `auto-merge` value now fails with an error naming the input, the value given and the allowed values. [#197][#197]
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effect/platform-node | dependency | updated | ^4.0.7 | ~4.1.1 |
+| @effected/github | dependency | updated | ^0.26.0 | ^0.27.0 |
+| @effected/github-actions | dependency | updated | ^0.29.0 | ^0.30.0 |
+| @effected/jsonc | dependency | updated | ^0.21.0 | ^0.22.0 |
+| @effected/schemastore | dependency | updated | ^0.27.0 | ^0.28.0 |
+| effect | dependency | updated | ^4.0.7 | ~4.1.1 |
+
+[#197][#197]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/spencerbeggs) for their contributions!
+
+[#197]: https://github.com/spencerbeggs/ai-plugin-marketplace-manager/pull/197
+
 ## 2.0.17
 
 ### Dependencies
