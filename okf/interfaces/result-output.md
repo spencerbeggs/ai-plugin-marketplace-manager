@@ -7,11 +7,13 @@ resource: ../../schemas/2.0/output.json
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:08:46Z
-  body_sha256: f7a2a335c6d882f5f8431e3767a5e6e58f11474dbf76256351434cecadfc5ece
+  at: 2026-11-01T19:21:18Z
 tags:
   - architecture
   - observability
+integrity:
+  generated:
+    body: 08b1ee1df41ae298
 ---
 
 # Result Output
@@ -97,6 +99,11 @@ doesn't have to parse JSON for the common facts: `status`, `changed`
 across every touched manifest) (`src/program.ts`; declared in
 `action.yml`). Each of `commit-sha`/`commit-url`/`pr-url` falls back to
 `""` and `pr-number` to `""` when the corresponding struct is `null`.
+`commit-url` (and the `commit.url` it mirrors) is built by `land` from the
+runner's own server URL (`GITHUB_SERVER_URL`, read through
+`ActionEnvironment`) as `<server>/<owner>/<repo>/commit/<sha>`, so on GitHub
+Enterprise Server it points at the enterprise host, not `github.com`
+(`src/services/ManifestCommitter.ts`).
 
 ## Job summary
 

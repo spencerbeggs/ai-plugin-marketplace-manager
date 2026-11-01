@@ -1,6 +1,6 @@
 import type { ActionOutputsShape } from "@effected/github-actions";
 import { ActionOutputs, GitHubToken } from "@effected/github-actions";
-import { Array as Arr, Cause, Effect, Exit } from "effect";
+import { Array as Arr, Cause, Effect } from "effect";
 import type { ParsedInputs } from "./inputs.js";
 import { parseInputs } from "./inputs.js";
 import { MARKETPLACES, MARKETPLACE_ORDER } from "./marketplaces.js";
@@ -175,17 +175,10 @@ const runOrchestration = (outputs: ActionOutputsShape, inputs: ParsedInputs) =>
 export const program = Effect.gen(function* () {
 	const outputs = yield* ActionOutputs;
 
-	const inputsExit = yield* Effect.exit(parseInputs);
-	if (Exit.isFailure(inputsExit)) {
-		// Inputs never parsed; fall back to the commit-mode, non-dry-run defaults.
-		yield* emitFailure(outputs, "commit", false);
-		return yield* Effect.failCause(inputsExit.cause);
-	}
-	const inputs = inputsExit.value;
+	// Inputs never parsed; fall back to the commit-mode, non-dry-run defaults.
+	const inputs = yield* parseInputs.pipe(Effect.tapCause(() => emitFailure(outputs, "commit", false)));
 
-	const bodyExit = yield* Effect.exit(runOrchestration(outputs, inputs));
-	if (Exit.isFailure(bodyExit)) {
-		yield* emitFailure(outputs, inputs.mode, inputs.dryRun);
-		return yield* Effect.failCause(bodyExit.cause);
-	}
+	yield* runOrchestration(outputs, inputs).pipe(
+		Effect.tapCause(() => emitFailure(outputs, inputs.mode, inputs.dryRun)),
+	);
 });

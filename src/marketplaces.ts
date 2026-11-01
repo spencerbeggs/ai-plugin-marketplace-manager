@@ -1,5 +1,6 @@
 import type { ValidateFunction } from "ajv";
 import Ajv from "ajv";
+import { Predicate } from "effect";
 // JSON asset imports, not relative TS/JS module imports: the `.json` extension
 // is the real one and must survive the builder's `forceJsExtensions` rewrite.
 import claudeCodeSchema from "./schema/claude-code-marketplace.json" with { type: "json" };
@@ -35,7 +36,7 @@ export interface Marketplace {
 }
 
 const asRecord = (value: unknown): Readonly<Record<string, unknown>> | null =>
-	typeof value === "object" && value !== null && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
+	Predicate.isObject(value) ? (value as Record<string, unknown>) : null;
 
 const shaErrors = (name: string, s: Readonly<Record<string, unknown>>): ReadonlyArray<string> =>
 	typeof s.sha === "string" && SHA_RE.test(s.sha) ? [] : [`${name}: source.sha must be 40-hex lowercase`];

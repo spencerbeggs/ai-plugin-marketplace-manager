@@ -1,6 +1,7 @@
 import { assert, describe, it } from "@effect/vitest";
 import type { PullRequestInfo as PullRequestInfoType } from "@effected/github";
 import { GitBranch, GitCommit, PullRequest, PullRequestInfo, Repo, RepoRef } from "@effected/github";
+import { ActionEnvironment } from "@effected/github-actions";
 import { Effect, Layer, Option } from "effect";
 import type { Marketplace } from "../../src/marketplaces.js";
 import { CLAUDE_CODE, COPILOT } from "../../src/marketplaces.js";
@@ -72,9 +73,10 @@ const repoLayer = Layer.succeed(Repo, RepoRef.make({ owner: "test-owner", repo: 
  * `layerTest(overrides)` dies naming any member the code under test touches but
  * the test did not stub, so this arranges exactly the members `land` is
  * expected to use — which makes an unexpected extra call a loud failure rather
- * than a silently-served default. `branches` seeds the refs that already exist.
+ * than a silently-served default. `branches` seeds the refs that already exist;
+ * `env` overrides the runner variables the kit's `ActionEnvironment` double serves.
  */
-const harness = (branches: Record<string, string> = {}) => {
+const harness = (branches: Record<string, string> = {}, env: Record<string, string> = {}) => {
 	const refs = new Map<string, string>(Object.entries(branches));
 	const calls: Array<string> = [];
 	const trees: Array<{ readonly baseTree: string | undefined; readonly paths: ReadonlyArray<string> }> = [];
@@ -179,6 +181,7 @@ const harness = (branches: Record<string, string> = {}) => {
 			},
 		}),
 		repoLayer,
+		ActionEnvironment.layerTest(env),
 	);
 
 	return {
@@ -214,6 +217,14 @@ describe("land", () => {
 			assert.isNull(result.prUrl);
 			// No branch or PR machinery is touched at all in commit mode.
 			assert.deepStrictEqual(h.calls, ["commit.commitFiles"]);
+		}),
+	);
+
+	it.effect("builds the commit URL from the runner's server URL (GitHub Enterprise Server)", () =>
+		Effect.gen(function* () {
+			const h = harness({}, { GITHUB_SERVER_URL: "https://ghe.example.com" });
+			const result = yield* land({ mode: "commit", ...params }).pipe(Effect.provide(h.layer));
+			assert.strictEqual(result.commitUrl, "https://ghe.example.com/test-owner/test-repo/commit/direct-commit-sha");
 		}),
 	);
 

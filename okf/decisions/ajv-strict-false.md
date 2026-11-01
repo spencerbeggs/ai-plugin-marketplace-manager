@@ -16,10 +16,18 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T21:08:46Z
-  body_sha256: 33524b3ed0618fd0d9b33f9bf7eb1c781a42c48e0cfe5631a561efccd86574cc
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: 33524b3ed0618fd0
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 9446db26880e6519
 ---
 
 # ajv runs with strict false against the bundled SchemaStore schema

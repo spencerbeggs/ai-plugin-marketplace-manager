@@ -8,7 +8,6 @@ tags: [ci]
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
-  body_sha256: 048cec1e1a41c3786d8fd174a14d8b3a0201611af9f91b094150af67db43b27c
 sources:
   - id: manifest-editor
     resource: ../../src/services/ManifestEditor.ts
@@ -16,6 +15,9 @@ sources:
   - id: program
     resource: ../../src/program.ts
     last_modified: 2026-09-13T00:00:00Z
+integrity:
+  generated:
+    body: 048cec1e1a41c378
 ---
 
 # Checkout must be the base branch

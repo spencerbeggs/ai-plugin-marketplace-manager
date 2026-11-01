@@ -2,7 +2,7 @@
 type: Decision
 title: Multi-marketplace repins land as one commit, not one per file
 description: A run that touches both the Claude Code and Copilot manifests lands every change in a single commit (or a single PR head move); one commit per touched file was rejected because pr mode re-roots the head branch on every run.
-status: draft
+status: stable
 tags:
   - architecture
   - ci
@@ -22,7 +22,16 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T20:44:15Z
-  body_sha256: 26a7a1ac221e67a6640f69846aac9282623a565df47320b320d7ad2f0ac61b84
+verified:
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: 26a7a1ac221e67a6
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 51100dbe78653916
 ---
 
 # Multi-marketplace repins land as one commit, not one per file

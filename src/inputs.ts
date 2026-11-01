@@ -1,6 +1,6 @@
 import { ActionInput } from "@effected/github-actions";
 import type { Config } from "effect";
-import { Config as Cfg, Effect } from "effect";
+import { Config as Cfg, Effect, Predicate } from "effect";
 import { INPUT_DEFAULTS } from "./contract.js";
 import { InvalidInputError } from "./errors/errors.js";
 import type { PluginPatch } from "./schema/input.js";
@@ -38,11 +38,11 @@ const PATCH_SHAPE = '{"plugins":[{name,marketplace,sha,path?}]}';
  * one key, so it earns a message that says what v2 expects instead.
  */
 const rejectLegacyUrl = (parsed: unknown): Effect.Effect<void, InvalidInputError> => {
-	const plugins = typeof parsed === "object" && parsed !== null ? (parsed as { plugins?: unknown }).plugins : undefined;
+	const plugins = Predicate.isObject(parsed) ? (parsed as { plugins?: unknown }).plugins : undefined;
 	if (!Array.isArray(plugins)) {
 		return Effect.void;
 	}
-	const index = plugins.findIndex((p) => typeof p === "object" && p !== null && Object.hasOwn(p, "url"));
+	const index = plugins.findIndex((p) => Predicate.isObject(p) && Object.hasOwn(p, "url"));
 	return index === -1
 		? Effect.void
 		: Effect.fail(
@@ -159,10 +159,10 @@ export const parseInputs: Effect.Effect<ParsedInputs, InvalidInputError | Config
 		}
 		yield* rejectDuplicates(patches);
 
-		const modeRaw = yield* ActionInput.string("mode").pipe(Cfg.withDefault(INPUT_DEFAULTS.mode));
-		if (modeRaw !== "commit" && modeRaw !== "pr") {
-			return yield* Effect.fail(new InvalidInputError({ field: "mode", reason: `expected commit|pr, got ${modeRaw}` }));
-		}
+		// `literals` matches exactly and fails a value outside the set as a
+		// `ConfigError` naming the input, the value and the allowed set — never
+		// swallowed by the default, which covers only an absent or empty input.
+		const mode = yield* ActionInput.literals("mode", ["commit", "pr"]).pipe(Cfg.withDefault(INPUT_DEFAULTS.mode));
 
 		const baseBranch = emptyToNull(yield* ActionInput.string("base-branch").pipe(Cfg.withDefault("")));
 		const branch = yield* ActionInput.string("branch").pipe(Cfg.withDefault(INPUT_DEFAULTS.branch));
@@ -170,12 +170,9 @@ export const parseInputs: Effect.Effect<ParsedInputs, InvalidInputError | Config
 		const prTitle = emptyToNull(yield* ActionInput.string("pr-title").pipe(Cfg.withDefault("")));
 		const prBody = emptyToNull(yield* ActionInput.string("pr-body").pipe(Cfg.withDefault("")));
 
-		const autoMergeRaw = yield* ActionInput.string("auto-merge").pipe(Cfg.withDefault(INPUT_DEFAULTS["auto-merge"]));
-		if (autoMergeRaw !== "merge" && autoMergeRaw !== "squash" && autoMergeRaw !== "rebase") {
-			return yield* Effect.fail(
-				new InvalidInputError({ field: "auto-merge", reason: `expected merge|squash|rebase, got ${autoMergeRaw}` }),
-			);
-		}
+		const autoMerge = yield* ActionInput.literals("auto-merge", ["merge", "squash", "rebase"]).pipe(
+			Cfg.withDefault(INPUT_DEFAULTS["auto-merge"]),
+		);
 
 		// `ActionInput.boolean` fails a MALFORMED value rather than defaulting it:
 		// it builds its ConfigError carrying `actual`, which is what stops
@@ -185,13 +182,13 @@ export const parseInputs: Effect.Effect<ParsedInputs, InvalidInputError | Config
 
 		return {
 			patches,
-			mode: modeRaw,
+			mode,
 			baseBranch,
 			branch,
 			commitMessage,
 			prTitle,
 			prBody,
-			autoMerge: autoMergeRaw,
+			autoMerge,
 			dryRun,
 		};
 	},

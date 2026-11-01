@@ -9,7 +9,6 @@ tags: [ci, dx]
 generated:
   by: okfit/claude-code
   at: 2026-09-29T03:16:59Z
-  body_sha256: 68089e8d7034db10a9ff142ee68d2bbd3ec8528f674dae046721d8c7624ae296
 sources:
   - id: action-yml
     resource: ../../action.yml
@@ -19,6 +18,9 @@ sources:
     last_modified: 2026-09-13T00:00:00Z
   - id: silk-update-workflow
     resource: ../../.github/workflows/silk-update.yml
+integrity:
+  generated:
+    body: 68089e8d7034db10
 ---
 
 # src edits do nothing until dist is rebuilt

@@ -1,5 +1,5 @@
 import { Action, ActionState, GitHubToken } from "@effected/github-actions";
-import { Effect, Option } from "effect";
+import { Clock, Effect, Option } from "effect";
 import { PostLive } from "./layers/app.js";
 import { STATE_KEYS, StartTimeState } from "./state.js";
 
@@ -31,9 +31,9 @@ export const post = Effect.gen(function* () {
 	const state = yield* ActionState;
 	const startState = yield* state
 		.getOptional(STATE_KEYS.startTime, StartTimeState)
-		.pipe(Effect.catch(() => Effect.succeed(Option.none())));
+		.pipe(Effect.orElseSucceed(() => Option.none()));
 	if (Option.isSome(startState)) {
-		const duration = Date.now() - startState.value.startedAt;
+		const duration = (yield* Clock.currentTimeMillis) - startState.value.startedAt;
 		yield* Effect.logInfo(`Marketplace-manager completed in ${(duration / 1000).toFixed(2)}s`);
 	}
 }).pipe(

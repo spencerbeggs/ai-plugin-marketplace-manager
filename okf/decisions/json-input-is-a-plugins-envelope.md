@@ -16,10 +16,18 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-29T03:16:59Z
-  body_sha256: 47924d64502c96955c1a77f3479ec3c56d8c75362e1a98d8d493093bfe1a3a4e
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
+  - by: human:spencer
+    at: 2026-11-01T19:17:03Z
+integrity:
+  generated:
+    body: 47924d64502c9695
+  verified:
+    by: human:spencer
+    at: 2026-11-01T19:17:03Z
+    content: 14aac83062e2153f
 ---
 
 # The json input is a plugins envelope, not a bare array

@@ -16,7 +16,9 @@ sources:
 generated:
   by: okfit/claude-code
   at: 2026-09-23T20:44:15Z
-  body_sha256: c373473075213c08b23541cfa852bb18c5811154286ce0651a6fce5ed0d4abdc
+integrity:
+  generated:
+    body: c373473075213c08
 ---
 
 # `marketplace` looks like a manual-path signal and isn't

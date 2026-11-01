@@ -152,8 +152,13 @@ export const applyPatches = (
 export const readManifest = (m: Marketplace) =>
 	Effect.gen(function* () {
 		const fs = yield* FileSystem.FileSystem;
-		if (!(yield* fs.exists(m.path))) {
-			return yield* Effect.fail(new ManifestNotFoundError({ marketplace: m.id, path: m.path }));
-		}
-		return yield* fs.readFileString(m.path);
+		// One read, mapping only `NotFound`: no window between a check and the
+		// read, and every other platform failure still surfaces as itself.
+		return yield* fs
+			.readFileString(m.path)
+			.pipe(
+				Effect.catchReason("PlatformError", "NotFound", () =>
+					Effect.fail(new ManifestNotFoundError({ marketplace: m.id, path: m.path })),
+				),
+			);
 	});

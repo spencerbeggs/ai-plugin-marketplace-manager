@@ -6,6 +6,7 @@
  * @module layers/app
  */
 
+import { NodeCrypto } from "@effect/platform-node";
 import { GitBranch, GitCommit, GitHubApp, GitHubRepository, PullRequest, Repo } from "@effected/github";
 import { GitHubToken } from "@effected/github-actions";
 import { Layer } from "effect";
@@ -13,13 +14,15 @@ import { Layer } from "effect";
 /**
  * pre/post: minting and revoking the installation token.
  *
- * `GitHubApp.layer` requires nothing — it signs the app JWT itself. The three
- * layers this replaced (`GitHubAppLive` over `OctokitAuthAppLive` over
- * `FetchHttpClient.layer`) plus `NodeFileSystem.layer` all collapse into it:
+ * `GitHubApp.layer` signs the app JWT itself, through core's
+ * `Signature` service — which `ActionRuntime.layer` does not carry (it provides
+ * `Digest`, `Mac` and `SecureRandom`, not `Signature`), so it is provided here
+ * from `NodeCrypto.layerSignature`, which needs nothing further. The layer
+ * captures the service when built; the `GitHubApp` methods require nothing.
  * `ActionRuntime.layer` already provides `FileSystem`, `HttpClient`,
  * `ActionState` and `ActionOutputs` to anything `Action.run` runs.
  */
-export const PreLive = GitHubApp.layer;
+export const PreLive = GitHubApp.layer.pipe(Layer.provide(NodeCrypto.layerSignature));
 export const PostLive = PreLive;
 
 /**

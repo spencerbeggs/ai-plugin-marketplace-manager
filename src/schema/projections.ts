@@ -1,3 +1,4 @@
+import { Array as Arr } from "effect";
 import type { ChangeRecord } from "./marketplace.js";
 import { pluginKey } from "./marketplace.js";
 import type { ReportOutput, ResultStatus } from "./report-output.js";
@@ -42,9 +43,8 @@ const groupPlugins = (changes: ReadonlyArray<ChangeRecord>): ReadonlyArray<Chang
 };
 
 /** Distinct manifest paths the changes touched, first-seen order. */
-const touchedManifests = (changes: ReadonlyArray<ChangeRecord>): ReadonlyArray<string> => [
-	...new Set(changes.map((c) => c.path)),
-];
+const touchedManifests = (changes: ReadonlyArray<ChangeRecord>): ReadonlyArray<string> =>
+	Arr.dedupe(changes.map((c) => c.path));
 
 /** Project the applied-change set and land outcome into the `result` struct. Pure. */
 export const toReportOutput = (input: ProjectionInput): ReportOutput => {

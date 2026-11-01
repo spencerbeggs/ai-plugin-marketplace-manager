@@ -7,11 +7,13 @@ resource: ../../action.yml
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:08:46Z
-  body_sha256: 93fc6861293071de8f03cc2857e88cb789614a3432d3093766af66f549ffe98d
+  at: 2026-11-01T19:08:50Z
 tags:
   - architecture
   - dx
+integrity:
+  generated:
+    body: 99249b167e1d6a5a
 ---
 
 # Action Inputs
@@ -65,9 +67,9 @@ validation (the `sha` 40-hex pattern, the `marketplace` literal) and error
 shape as a `json` patch. Either path normalizes to `ParsedInputs.patches`,
 the one array the rest of the action reads.
 
-`JsonInput.plugins` is `Schema.Array(PluginPatch).check(Schema.isMinLength(1))`,
-not `Schema.NonEmptyArray` — see
-[nonemptyarray-blocked-in-published-schemas](../gotchas/nonemptyarray-blocked-in-published-schemas.md).
+`JsonInput.plugins` is `Schema.NonEmptyArray(PluginPatch)`: an empty
+`plugins: []` is rejected at decode, and the published
+`schemas/2.0/input.json` carries it as a plain `minItems: 1`.
 
 ## The marketplace input
 
@@ -83,13 +85,13 @@ There is no `url` input at all; only `path` and `sha` can be repinned — see
 
 | Input | Default | Behavior |
 | --- | --- | --- |
-| `mode` | `"commit"` | `commit` (direct to base branch) or `pr`; anything else is an `InvalidInputError` (`action.yml`; `src/contract.ts`; `src/inputs.ts`). |
+| `mode` | `"commit"` | `commit` (direct to base branch) or `pr`, read with `ActionInput.literals`; anything else is a `ConfigError` naming the input, the value, and the allowed set (`action.yml`; `src/contract.ts`; `src/inputs.ts`). |
 | `base-branch` | *(unset)* | Empty ⇒ resolved at runtime to the repository's default branch via `GitHubRepository.defaultBranch` (`action.yml`; `src/services/ManifestCommitter.ts`). |
 | `branch` | `"chore/repin-plugins"` | PR head branch (`pr` mode); force-reset onto base on every run (`action.yml`; `src/contract.ts`). |
 | `commit-message` | *(unset)* | Empty ⇒ generated from the applied changes across every touched manifest plus the DCO trailer (`action.yml`; `src/inputs.ts`; `src/program.ts`). |
 | `pr-title` | *(unset)* | Empty ⇒ generated `commitSubject` (`action.yml`; `src/inputs.ts`; `src/program.ts`). |
 | `pr-body` | *(unset)* | Empty ⇒ generated `messageBody` (`action.yml`; `src/inputs.ts`; `src/program.ts`). |
-| `auto-merge` | `"rebase"` | `merge`\|`squash`\|`rebase`, validated (`src/inputs.ts`); applied via a separate `PullRequest.setAutoMerge` call issued after `PullRequest.upsert`, so an auto-merge failure is never reported as though opening the PR had failed (`src/services/ManifestCommitter.ts`); has no effect in `commit` mode (`action.yml`; `src/contract.ts`). |
+| `auto-merge` | `"rebase"` | `merge`\|`squash`\|`rebase`, read with `ActionInput.literals`, so anything else is a `ConfigError` naming the input, the value, and the allowed set (`src/inputs.ts`); applied via a separate `PullRequest.setAutoMerge` call issued after `PullRequest.upsert`, so an auto-merge failure is never reported as though opening the PR had failed (`src/services/ManifestCommitter.ts`); has no effect in `commit` mode (`action.yml`; `src/contract.ts`). |
 | `dry-run` | `"false"` | Validate every targeted manifest and emit `summary`/`result`, but make no commit or PR (`action.yml`; `src/contract.ts`; `src/inputs.ts`). |
 | `app-client-id` | *(required)* | GitHub App client ID, read in `pre.ts` (`action.yml`; `src/pre.ts`). |
 | `app-private-key` | *(required)* | GitHub App private key (PEM), read via `ActionInput.redacted` and stays `Redacted` end to end (`action.yml`; `src/pre.ts`). |
@@ -98,3 +100,10 @@ There is no `url` input at all; only `path` and `sha` can be repinned — see
 in `src/contract.ts`'s `INPUT_DEFAULTS`, because they are the only ones whose
 manifest default is not the empty string — see
 [action-contract](../models/action-contract.md).
+
+`mode` and `auto-merge` are each read as
+`ActionInput.literals(name, [...]).pipe(Config.withDefault(INPUT_DEFAULTS.x))`
+(`src/inputs.ts`). The match is exact — no trimming, no case folding, so
+`PR` or `Squash` is rejected — and the default covers only an absent or
+empty input: a value outside the set fails as a `ConfigError` and is never
+swallowed into the default.

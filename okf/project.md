@@ -6,7 +6,9 @@ status: stable
 generated:
   by: okfit/claude-code
   at: 2026-09-23T20:44:15Z
-  body_sha256: 1a2d7a7e2a9514231c50cfda84e5730ece01bfeea9de7dee93656514ca8de51e
+integrity:
+  generated:
+    body: 1a2d7a7e2a951423
 ---
 
 # ai-plugin-marketplace-manager

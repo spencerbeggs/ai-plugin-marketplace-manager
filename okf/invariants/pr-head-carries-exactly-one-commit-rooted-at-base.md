@@ -15,8 +15,10 @@ sources:
     resource: ../../__test__/services/ManifestCommitter.test.ts
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: abbcf840644e74499e19af1633bb0d31ac2c5c5af364c365adf651747e142ea7
+  at: 2026-11-01T19:21:18Z
+integrity:
+  generated:
+    body: 264dd8442636be8e
 ---
 
 # A pr-mode head carries exactly one commit, rooted at base
@@ -60,7 +62,7 @@ alternatives and the rationale behind building the commit before moving
 the ref.
 
 [^manifest-committer]: The base-first build followed by the single
-    `GitBranch.upsert` is at `../../src/services/ManifestCommitter.ts:132-144`.
+    `GitBranch.upsert` is at `../../src/services/ManifestCommitter.ts:137-149`.
 [^manifest-committer-test]: "B5: a stale head branch is re-rooted at
     base's CURRENT tip, not stacked onto" is at
     `../../__test__/services/ManifestCommitter.test.ts:293-312`; "B5: a

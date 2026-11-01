@@ -26,8 +26,8 @@ ref→sha resolution.
   the lockfile, and re-pin the vendored source in `.repos/config.json` (which
   tracks the installed `effect` / `@effected/github-actions`) when they bump.
 - Bundled to a committed `dist/` by `@savvy-web/github-action-builder`.
-- Node ≥ 24.11; pnpm; Biome; Vitest (`@effected/yaml` is test-only — it parses
-  `action.yml`).
+- Node ≥ 24.11; pnpm; Biome; Vitest (`@effected/memfs` is test-only — the
+  in-memory checkout the filesystem tests run against).
 
 ## Commands
 
@@ -53,9 +53,8 @@ ref→sha resolution.
   defaulted `workflow_dispatch` choice input always supplies — and both paths
   normalize to `ParsedInputs.patches` (`@okf/interfaces/action-inputs.md`,
   `@okf/gotchas/marketplace-input-ignored-for-manual-path-detection.md`).
-  `JsonInput.plugins` is `Schema.Array(...).check(Schema.isMinLength(1))`,
-  not `Schema.NonEmptyArray`, because its Draft-07 lowering fails ajv's
-  strict gate (`@okf/gotchas/nonemptyarray-blocked-in-published-schemas.md`).
+  `JsonInput.plugins` is `Schema.NonEmptyArray(...)`, which lowers to a
+  plain `minItems: 1` since `@effected/schemastore` 0.28 (effected#818).
 - Validate the edited **result** before any commit; no-op guard skips validation
   and landing when a manifest's text is byte-stable. Both halves are
   **type-enforced**: `EditResult` is a `NoopEdit | ChangedEdit` union per
@@ -99,7 +98,8 @@ ref→sha resolution.
   an entry point in a test executes a real phase on a runner
   (`@okf/conventions/entry-point-guard-and-env-strip-are-a-pair.md`).
 - Test doubles must perform the transformations the real implementation
-  performs (the `ActionOutputs` `setJson` double encodes through the schema),
+  performs (outputs are recorded with the kit's `ActionOutputs.recording()`,
+  whose `setJson` encodes through the schema — never a hand-written override),
   and validation fixtures must be structurally valid except in the field under
   test. Both rules are load-bearing: a double that skipped the encode and a
   fixture that failed on the wrong field each kept a dead test green

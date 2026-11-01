@@ -6,8 +6,7 @@ description: Make a double perform the real transformation, make a fixture inval
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: 7c1ea90ee6002d4889014820ec1a28693e86e0590653be4ae82cc1231ab7d690
+  at: 2026-11-01T19:08:50Z
 tags:
   - testing
 sources:
@@ -17,6 +16,9 @@ sources:
     resource: ../../__test__/services/ManifestValidator.test.ts
   - id: post-test
     resource: ../../__test__/post.test.ts
+integrity:
+  generated:
+    body: de107ed34bf26997
 ---
 
 # Test doubles transform; fixtures isolate one field
@@ -25,20 +27,28 @@ Three rules, each pinned by the incident that made it load-bearing.
 
 ## A double must perform the transformation the real implementation performs
 
-The `ActionOutputs` `setJson` double in `__test__/program.test.ts` encodes
-its value through the schema it is handed, exactly as the real `setJson`
-does, and raises an encode failure as a defect via `Effect.orDie`.[^program-test]
-A double that accepted the schema and ignored it would leave every assertion
-built on it structurally incapable of catching a projection or schema drift:
-the real implementation would fail to encode, `program.ts` would swallow that
-into a `logWarning`, and the machine-readable `result` output would silently
+`__test__/program.test.ts` records outputs with the kit's
+`ActionOutputs.recording()` rather than a hand-written override: its
+`setJson` encodes the value through the schema it is handed, exactly as the
+real layer does, and records the encoded text.[^program-test] A double that
+accepted the schema and ignored it would leave every assertion built on it
+structurally incapable of catching a projection or schema drift: the real
+implementation would fail to encode, `program.ts` would swallow that into a
+`logWarning`, and the machine-readable `result` output would silently
 vanish in production with the suite still green.
 
-`orDie` here is deliberately stricter than production. Production degrades
-gracefully on an encode failure — losing `result` should not fail a run that
-already did its work — but in a test the same event is a contract bug and
-has to be loud, raised as a defect no `Effect.catch` in `program.ts` will
-absorb.[^program-test]
+Because the recording double behaves like production, a drift arrives as a
+typed `OutputEncodeError` that `program` degrades to a warning, exactly as
+it would on a runner — not as a defect. It is caught instead by the shape
+of the assertions: every test that reaches an emit asserts the `result`
+output is present, so a drift fails as a missing `result`.[^program-test]
+Reach for the kit's recording doubles first; a hand-written double has to
+re-implement the transformation and is where this rule gets broken. The
+same holds for the filesystem: `program.test.ts` and
+`services/ManifestEditor.test.ts` run on `@effected/memfs`
+(`MemoryFileSystem.layerWith({...})`), where the action's relative manifest
+paths resolve from the volume root `/` as they resolve from the checkout on
+a runner — no temp directories and no `process.chdir`.
 
 ## A validation fixture must be structurally valid except in the field under test
 
@@ -75,6 +85,6 @@ reordering, since `post` already catches those elsewhere; only a defect
 exposes whether revocation still runs first if someone reorders the two
 reads.[^post-test]
 
-[^program-test]: `../../__test__/program.test.ts:103-124`
+[^program-test]: `../../__test__/program.test.ts:86-153,194-206`
 [^manifest-validator-test]: `../../__test__/services/ManifestValidator.test.ts:18-37,78-100,102-113`
 [^post-test]: `../../__test__/post.test.ts:73-90`

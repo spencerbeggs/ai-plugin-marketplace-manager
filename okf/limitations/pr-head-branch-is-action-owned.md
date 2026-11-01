@@ -8,11 +8,13 @@ tags: [ci]
 generated:
   by: okfit/claude-code
   at: 2026-09-13T21:33:34Z
-  body_sha256: b68019384ee5dcae21cb36a188223dfc51a76000e1403ba175eb1a39de5594ae
 sources:
   - id: manifest-committer
     resource: ../../src/services/ManifestCommitter.ts
     last_modified: 2026-09-13T00:00:00Z
+integrity:
+  generated:
+    body: b68019384ee5dcae
 ---
 
 # The pr-mode head branch is action-owned
