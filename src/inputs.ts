@@ -1,6 +1,6 @@
 import { ActionInput } from "@effected/github-actions";
 import type { Config } from "effect";
-import { Config as Cfg, Effect } from "effect";
+import { Config as Cfg, Effect, Predicate } from "effect";
 import { INPUT_DEFAULTS } from "./contract.js";
 import { InvalidInputError } from "./errors/errors.js";
 import type { PluginPatch } from "./schema/input.js";
@@ -38,11 +38,11 @@ const PATCH_SHAPE = '{"plugins":[{name,marketplace,sha,path?}]}';
  * one key, so it earns a message that says what v2 expects instead.
  */
 const rejectLegacyUrl = (parsed: unknown): Effect.Effect<void, InvalidInputError> => {
-	const plugins = typeof parsed === "object" && parsed !== null ? (parsed as { plugins?: unknown }).plugins : undefined;
+	const plugins = Predicate.isObject(parsed) ? (parsed as { plugins?: unknown }).plugins : undefined;
 	if (!Array.isArray(plugins)) {
 		return Effect.void;
 	}
-	const index = plugins.findIndex((p) => typeof p === "object" && p !== null && Object.hasOwn(p, "url"));
+	const index = plugins.findIndex((p) => Predicate.isObject(p) && Object.hasOwn(p, "url"));
 	return index === -1
 		? Effect.void
 		: Effect.fail(

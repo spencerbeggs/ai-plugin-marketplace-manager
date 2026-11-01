@@ -31,7 +31,7 @@ export const post = Effect.gen(function* () {
 	const state = yield* ActionState;
 	const startState = yield* state
 		.getOptional(STATE_KEYS.startTime, StartTimeState)
-		.pipe(Effect.catch(() => Effect.succeed(Option.none())));
+		.pipe(Effect.orElseSucceed(() => Option.none()));
 	if (Option.isSome(startState)) {
 		const duration = Date.now() - startState.value.startedAt;
 		yield* Effect.logInfo(`Marketplace-manager completed in ${(duration / 1000).toFixed(2)}s`);
