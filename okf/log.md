@@ -3,6 +3,9 @@
 ## 2026-11-01
 
 * Updated marketplace-manager
+* Updated Action Inputs
+* Updated Effect Schemas
+* Updated Schema.NonEmptyArray no longer fails the ajv strict gate (resolved upstream)
 
 ## 2026-10-27
 

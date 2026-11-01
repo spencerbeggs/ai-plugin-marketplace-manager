@@ -7,11 +7,13 @@ resource: ../../action.yml
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T21:08:46Z
-  body_sha256: 93fc6861293071de8f03cc2857e88cb789614a3432d3093766af66f549ffe98d
+  at: 2026-11-01T18:59:10Z
 tags:
   - architecture
   - dx
+integrity:
+  generated:
+    body: 8bb36a8e27f80246
 ---
 
 # Action Inputs
@@ -65,9 +67,9 @@ validation (the `sha` 40-hex pattern, the `marketplace` literal) and error
 shape as a `json` patch. Either path normalizes to `ParsedInputs.patches`,
 the one array the rest of the action reads.
 
-`JsonInput.plugins` is `Schema.Array(PluginPatch).check(Schema.isMinLength(1))`,
-not `Schema.NonEmptyArray` — see
-[nonemptyarray-blocked-in-published-schemas](../gotchas/nonemptyarray-blocked-in-published-schemas.md).
+`JsonInput.plugins` is `Schema.NonEmptyArray(PluginPatch)`: an empty
+`plugins: []` is rejected at decode, and the published
+`schemas/2.0/input.json` carries it as a plain `minItems: 1`.
 
 ## The marketplace input
 

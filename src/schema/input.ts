@@ -100,14 +100,7 @@ export type PluginPatch = typeof PluginPatch.Type;
  * by tool-calling / structured-output validators that require an object root.
  */
 export const JsonInput = Schema.Struct({
-	// Not `Schema.NonEmptyArray`: its Draft-07 lowering (via @effected/schemastore)
-	// emits a 1-tuple `items` that ajv's strict-mode gate rejects
-	// (`"items" is 1-tuple, but minItems or maxItems/additionalItems are not
-	// specified or different`). `Schema.Array` + `isMinLength(1)` expresses the
-	// same runtime constraint and lowers to a plain `minItems: 1`.
-	plugins: Schema.Array(PluginPatch)
-		.check(Schema.isMinLength(1))
-		.annotate({ description: "Plugin patches; at least one." }),
+	plugins: Schema.NonEmptyArray(PluginPatch).annotate({ description: "Plugin patches; at least one." }),
 }).annotate({ identifier: "MarketplacePatchInput" });
 
 /** Decoded `json` input type. */

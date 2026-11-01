@@ -53,9 +53,8 @@ ref→sha resolution.
   defaulted `workflow_dispatch` choice input always supplies — and both paths
   normalize to `ParsedInputs.patches` (`@okf/interfaces/action-inputs.md`,
   `@okf/gotchas/marketplace-input-ignored-for-manual-path-detection.md`).
-  `JsonInput.plugins` is `Schema.Array(...).check(Schema.isMinLength(1))`,
-  not `Schema.NonEmptyArray`, because its Draft-07 lowering fails ajv's
-  strict gate (`@okf/gotchas/nonemptyarray-blocked-in-published-schemas.md`).
+  `JsonInput.plugins` is `Schema.NonEmptyArray(...)`, which lowers to a
+  plain `minItems: 1` since `@effected/schemastore` 0.28 (effected#818).
 - Validate the edited **result** before any commit; no-op guard skips validation
   and landing when a manifest's text is byte-stable. Both halves are
   **type-enforced**: `EditResult` is a `NoopEdit | ChangedEdit` union per

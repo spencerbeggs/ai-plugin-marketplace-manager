@@ -6,8 +6,7 @@ resource: ../../src/schema
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-29T03:16:59Z
-  body_sha256: cf9116dc6ac950e54b76a1bc4744f5f25edccfe525b0cda3bf0d6e6f7037c0fb
+  at: 2026-11-01T18:59:10Z
 sources:
   - id: input-schema
     resource: ../../src/schema/input.ts
@@ -24,6 +23,9 @@ sources:
 tags:
   - architecture
   - testing
+integrity:
+  generated:
+    body: f88bc9b387f43075
 ---
 
 # Effect Schemas
@@ -89,9 +91,8 @@ carries an in-band `SCHEMA_VERSION`/`schemaVersion` field at all** — see
 `PluginPatch` (`src/schema/input.ts`) gained `marketplace: MarketplaceId`
 (`Schema.Literals(["claude-code", "copilot"])`) and made `sha` required
 (40-hex lowercase); `url` was removed entirely. `JsonInput.plugins` is
-`Schema.Array(PluginPatch).check(Schema.isMinLength(1))`, not
-`Schema.NonEmptyArray` — see
-[nonemptyarray-blocked-in-published-schemas](../gotchas/nonemptyarray-blocked-in-published-schemas.md).
+`Schema.NonEmptyArray(PluginPatch)`, which lowers to a plain `minItems: 1`
+in `schemas/2.0/input.json`.
 `decodeJsonInput` decodes with `onExcessProperty: "error"`, so a stray key
 (a v1 payload's `url` above all) fails the decode rather than being
 silently stripped.
@@ -163,9 +164,11 @@ above); the published documents are deliberately the stricter default.
   pre-flight before anything is written — which is why the rename required
   rewriting `schemas/1.0/`'s committed `$id`s rather than leaving `1.0`
   tracked with stale ones.
-- `Schema.NonEmptyArray` in place of `Schema.Array(...).check(Schema.isMinLength(1))`
-  on a published document fails the ajv strict-mode gate in `schema:build`
-  (spencerbeggs/effected#818) rather than at decode time — see
+- A `@effected/schemastore` bump that changes how a construct lowers (for
+  example `Schema.NonEmptyArray`, whose 1-tuple lowering once failed the
+  ajv strict-mode gate until spencerbeggs/effected#818 was fixed) surfaces
+  as drift or a gate failure in `pnpm schema:check`, not at decode time —
+  see the retired
   [nonemptyarray-blocked-in-published-schemas](../gotchas/nonemptyarray-blocked-in-published-schemas.md).
 
 [^input-schema]: `../../src/schema/input.ts`
