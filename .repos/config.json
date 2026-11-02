@@ -2,7 +2,7 @@
 	"repos": {
 		"effect": {
 			"url": "https://github.com/Effect-TS/effect.git",
-			"ref": "effect@4.1.1",
+			"ref": "effect@4.1.2",
 			"purpose": "Read-only Effect v4 source pinned to the tag matching the installed effect release — the authority on what v4 actually exports, plus the v3→v4 migration notes.",
 			"sparse": [
 				"packages/effect",
@@ -13,7 +13,7 @@
 		},
 		"effected": {
 			"url": "https://github.com/spencerbeggs/effected.git",
-			"ref": "@effected/github-actions@0.30.0",
+			"ref": "@effected/github-actions@0.31.0",
 			"purpose": "Read-only source for @effected/github-actions, @effected/github and @effected/jsonc — the libraries this action is built on. Pin tracks the installed @effected/github-actions version.",
 			"sparse": [
 				"packages/github-actions",
