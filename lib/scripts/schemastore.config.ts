@@ -1,5 +1,5 @@
 /**
- * The `schemastore` CLI config: the two action JSON Schema documents, derived
+ * The `effected schema` config: the two action JSON Schema documents, derived
  * from their Effect Schema sources.
  *
  * @remarks
@@ -12,7 +12,7 @@
  * per-plugin patch envelope) are the single sources of truth. Everything else
  * — Draft-07 lowering, the structural lint, the ajv strict-mode gate, the
  * drift policy and the content-comparing write — belongs to
- * `@effected/schemastore` and its CLI.
+ * `@effected/schemastore` and `effected schema`.
  *
  * Each entry's identity — base URL, version labels, layout — is the
  * `HostedSchema` value `src/schema/input.ts` constructs once
@@ -43,15 +43,15 @@
  * frozen file.
  */
 
-import { defineConfig } from "@effected/schemastore";
+import { defineSchemastore } from "@effected/plugin";
 import { InputSchemaIdentity, JsonInput, OutputSchemaIdentity } from "../../src/schema/input.js";
 import { ReportOutput } from "../../src/schema/report-output.js";
 
-export default defineConfig({
+export default defineSchemastore({
 	// The config's identity: the base name of its catalog slice
 	// (`<catalogDir>/<name>.json`). No entry declares a `catalog` block (neither
 	// document is submitted to SchemaStore), so no slice or merged
-	// `catalog.json` is written — but `defineConfig` requires the name anyway.
+	// `catalog.json` is written — but `defineSchemastore` requires the name anyway.
 	name: "ai-plugin-marketplace-manager",
 	// Relative paths resolve against this file's directory, not the repo root.
 	outputDir: "../../schemas",

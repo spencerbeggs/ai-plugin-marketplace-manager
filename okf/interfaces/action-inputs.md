@@ -7,13 +7,13 @@ resource: ../../action.yml
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:08:50Z
+  at: 2026-11-05T23:25:35Z
 tags:
   - architecture
   - dx
 integrity:
   generated:
-    body: 99249b167e1d6a5a
+    body: 17e628fef6d07ab6
 ---
 
 # Action Inputs
@@ -55,7 +55,7 @@ before anything else runs.
   (`src/schema/input.ts`'s `decodeJsonInput`), so any other stray key fails
   the same way instead of being silently stripped. Its schema is
   `schemas/2.0/input.json` (generated from `src/schema/input.ts`'s
-  `JsonInput` by `@effected/schemastore-cli`), published at
+  `JsonInput` by `effected schema`), published at
   `https://raw.githubusercontent.com/spencerbeggs/ai-plugin-marketplace-manager/main/schemas/2.0/input.json`
   — `INPUT_SCHEMA_URL`; see [effect-schemas](../models/effect-schemas.md).
 

@@ -1,5 +1,15 @@
 # Log
 
+## 2026-11-05
+
+* Updated Action Inputs
+* Updated Bump the output schema version
+* Updated Commit calls carry no identity
+* Updated Effect Schemas
+* Updated Keep the Action Contract in Sync
+* Updated Version the JSON Schema documents under their own path per label
+* Updated marketplace-manager
+
 ## 2026-11-01
 
 * Updated marketplace-manager

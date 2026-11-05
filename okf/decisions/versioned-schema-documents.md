@@ -12,13 +12,13 @@ sources:
     title: "OUTPUT_SCHEMA_VERSION, OUTPUT_SCHEMA_VERSIONS, and the two HostedSchema identities"
   - id: schemastore-config
     resource: ../../lib/scripts/schemastore.config.ts
-    title: "the schemastore CLI target manifest"
+    title: "the effected schema target manifest"
   - id: contract-test
     resource: ../../__test__/action-contract.test.ts
     title: "Leg 3 — the prose that quotes the derived URLs"
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:08:50Z
+  at: 2026-11-05T23:25:35Z
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
@@ -26,13 +26,15 @@ verified:
     at: 2026-09-29T03:15:43Z
   - by: human:spencer
     at: 2026-11-01T19:17:03Z
+  - by: human:spencer
+    at: 2026-11-05T23:22:15Z
 integrity:
   generated:
-    body: 38fcfbd175d37db8
+    body: 5ebede4e31b84d0a
   verified:
     by: human:spencer
-    at: 2026-11-01T19:17:03Z
-    content: efafe8fbe1eb9171
+    at: 2026-11-05T23:22:15Z
+    content: f93e0e47caa975b5
 ---
 
 # Version the JSON Schema documents under their own path per label
@@ -76,10 +78,10 @@ values' `$id` getters (`src/schema/report-output.ts:14`,
 receives the same values as each entry's `hosted`
 (`lib/scripts/schemastore.config.ts:58-73`) — so the URL a payload carries
 and the `$id` the CLI writes are one derivation rather than two that must
-agree. `defineConfig` rejects an entry keyed by anything other than its
+agree. `defineSchemastore` rejects an entry keyed by anything other than its
 identity's `name`.
 
-Generation is `@effected/schemastore-cli` over that config: `pnpm
+Generation is `effected schema` over that config: `pnpm
 schema:build` writes, `pnpm schema:check` is the identical walk with no
 writes and the CI gate (`package.json:22`, `29-30`). Each entry carries
 `published`. A label consumers depend on is `published: true`, and the
