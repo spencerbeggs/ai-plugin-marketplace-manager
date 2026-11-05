@@ -1,7 +1,7 @@
 ---
 type: Runbook
 title: Bump the output schema version
-description: Respond to a contract change in a published JSON Schema label by bumping OUTPUT_SCHEMA_VERSION, keeping the old label frozen in OUTPUT_SCHEMA_VERSIONS, regenerating with the schemastore CLI, and updating the prose Leg 3 pins.
+description: Respond to a contract change in a published JSON Schema label by bumping OUTPUT_SCHEMA_VERSION, keeping the old label frozen in OUTPUT_SCHEMA_VERSIONS, regenerating with effected schema, and updating the prose Leg 3 pins.
 resource: ../../src/schema/input.ts
 status: stable
 tags:
@@ -14,15 +14,15 @@ sources:
   - id: schemastore-config
     resource: ../../lib/scripts/schemastore.config.ts
     title: "the published flag per entry"
-  - id: schemastore-cli-readme
-    resource: npm:@effected/schemastore-cli
+  - id: schemastore-readme
+    resource: npm:@effected/schemastore
     title: "drift policy, frozen labels, and exit codes"
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:08:50Z
+  at: 2026-11-05T23:25:35Z
 integrity:
   generated:
-    body: 29a605da745df846
+    body: a1ac8a2434b0c996
 ---
 
 # Bump the output schema version
@@ -36,7 +36,7 @@ Either of:
   `lib/scripts/schemastore.config.ts`[^schemastore-config] and the
   regenerated document's contract differs from the committed one. The error
   line names the `$id`, the change class, the current label, and the
-  suggested next label.[^schemastore-cli-readme]
+  suggested next label.[^schemastore-readme]
 - You have made a contract-shaped change to `ReportOutput`
   (`src/schema/report-output.ts`) or `JsonInput` (`src/schema/input.ts`) —
   adding, removing, or retyping a field, changing an enum's members, or
@@ -115,4 +115,4 @@ See also: [versioned-schema-documents](../decisions/versioned-schema-documents.m
 
 [^input-schema]: `../../src/schema/input.ts`
 [^schemastore-config]: `../../lib/scripts/schemastore.config.ts`
-[^schemastore-cli-readme]: `npm:@effected/schemastore-cli`
+[^schemastore-readme]: `npm:@effected/schemastore`

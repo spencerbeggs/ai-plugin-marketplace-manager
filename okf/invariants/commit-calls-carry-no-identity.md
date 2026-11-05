@@ -14,10 +14,10 @@ sources:
     resource: ../../__test__/services/ManifestCommitter.test.ts
 generated:
   by: okfit/claude-code
-  at: 2026-10-27T19:42:51Z
+  at: 2026-11-05T23:25:35Z
 integrity:
   generated:
-    body: 84baa83da5db5a74
+    body: bfa8b21584bcb6e3
 ---
 
 # Commit calls carry no identity
@@ -29,8 +29,9 @@ identity for it.
 
 **Mechanism.** `@effected/github`'s `GitCommitShape` interface — the only
 surface this repository's code has for building a commit — declares
-`get`, `createTree`, `createCommit`, and `commitFiles`. `createCommit`'s
-options are exactly `{ message, tree, parents }`; none of the four members
+`get`, `createTree`, `createCommit`, `createCommitWithUrl`, `commitFiles`, and
+`commitFilesWithUrl`. `createCommit`'s options are exactly
+`{ message, tree, parents }`; none of the six members
 accepts an author, committer, or signature parameter of any
 kind.[^git-commit-shape] There is no such parameter to omit by convention:
 the rule is structural, not a discipline a call site has to remember.
@@ -59,9 +60,9 @@ invariant makes structural.
 
 [^git-commit-shape]: `GitCommitShape.createCommit`'s three-field options
     type is declared at
-    `../../.repos/effected/packages/github/src/GitCommit.ts:80-84`, inside
+    `../../.repos/effected/packages/github/src/GitCommit.ts:97-101`, inside
     the wider interface at
-    `../../.repos/effected/packages/github/src/GitCommit.ts:71-110`.
+    `../../.repos/effected/packages/github/src/GitCommit.ts:88-139`.
 [^manifest-committer-test]: "B1: never passes an author, committer or
     signature field" is at
     `../../__test__/services/ManifestCommitter.test.ts:334-348`; the

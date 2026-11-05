@@ -13,7 +13,7 @@
 		},
 		"effected": {
 			"url": "https://github.com/spencerbeggs/effected.git",
-			"ref": "@effected/github-actions@0.31.0",
+			"ref": "@effected/github-actions@0.32.0",
 			"purpose": "Read-only source for @effected/github-actions, @effected/github and @effected/jsonc — the libraries this action is built on. Pin tracks the installed @effected/github-actions version.",
 			"sparse": [
 				"packages/github-actions",
@@ -37,15 +37,15 @@
 			"notes": [
 				{
 					"id": "n-d98f",
-					"date": "2026-10-27",
-					"ref": "@effected/github-actions@0.28.2",
+					"date": "2026-11-05",
+					"ref": "@effected/github-actions@0.32.0",
 					"note": "A fetch with `--recurse-submodules` (= yes) prints nine `Could not access submodule '.repos/<name>'` warnings and `Errors during submodule fetch: .repos/effected`, exit 1. This is EXPECTED and harmless — git descends into effected and warns for each of its nine nested gitlinks precisely because they are uninitialized, which is the state we want. Re-reproduced on git 2.56.0 at this pin: the fetch of origin and of both vendored submodules succeeds and nothing is left dirty. Do NOT try to fix it in this repo: verified against git 2.54.0 that `fetch.recurseSubmodules=false` and `submodule..repos/effected.fetchRecurseSubmodules=false` are both overridden by the explicit command-line flag, and adding `.gitmodules` to this entry's `sparse` changes nothing. `submodule..repos/effected.active=false` would silence it but makes `git submodule status` read uninitialized and every drift report claim missingWorktree — off-limits. `git fetch origin` and `--recurse-submodules=on-demand` are both silent, so the fix belongs in whatever client passes the flag (GitKraken's fetch-submodules setting). Separately: orphaned nested gitdirs can accumulate at `.git/modules/.repos/effected/modules/.repos/*` from some earlier recursive init — unversioned local metadata, safe to `rm -rf`, and NOT the cause of the warnings."
 				},
 				{
 					"id": "n-123b",
-					"date": "2026-11-01",
-					"ref": "@effected/github-actions@0.30.0",
-					"note": "The okf bundle cites this repo by LINE ANCHOR. Re-verified unchanged at this pin (`f71ba33`, the 0.28.2 -> 0.30.0 re-pin, Effect 4.1): `packages/github/src/GitBranch.ts:47-64` is the `@remarks` block on `upsert` (line 64 ends `on the bare target head.`, `readonly upsert` at 66); `okf/conventions/branch-on-github-error-kind.md` footnotes `GitHubError.ts:98,148,154,163,169`, `GitBranch.ts:42,219,222` and `PullRequest.ts:274-277` (`setAutoMerge`); `okf/invariants/commit-calls-carry-no-identity.md` footnotes `GitCommit.ts:71-110` (`GitCommitShape`) and `GitCommit.ts:80-84` (`createCommit`'s options). Verify with `grep -nF '<cited line text>' <file>`, never by eyeballing a `sed -n 'A,Bp'` range. Re-check every one on any re-pin. Separately, `git describe --tags` here reports a sibling package's tag, not this pin's; check the gitlink (`f71ba33`) via repos_inspect instead."
+					"date": "2026-11-05",
+					"ref": "@effected/github-actions@0.32.0",
+					"note": "The okf bundle cites this repo by LINE ANCHOR. Re-verified at this pin (`acfd885`, the 0.31.0 -> 0.32.0 re-pin, Effect 4.1; only the `GitCommit.ts` anchors moved): `packages/github/src/GitBranch.ts:47-64` is the `@remarks` block on `upsert` (line 64 ends `on the bare target head.`, `readonly upsert` at 66); `okf/conventions/branch-on-github-error-kind.md` footnotes `GitHubError.ts:98,148,154,163,169`, `GitBranch.ts:42,219,222` and `PullRequest.ts:274-277` (`setAutoMerge`); `okf/invariants/commit-calls-carry-no-identity.md` footnotes `GitCommit.ts:88-139` (`GitCommitShape`) and `GitCommit.ts:97-101` (`createCommit`'s options). Verify with `grep -nF '<cited line text>' <file>`, never by eyeballing a `sed -n 'A,Bp'` range. Re-check every one on any re-pin. Separately, `git describe --tags` here reports a sibling package's tag, not this pin's; check the gitlink (`acfd885`) via repos_inspect instead."
 				}
 			]
 		}

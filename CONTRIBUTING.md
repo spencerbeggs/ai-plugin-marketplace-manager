@@ -33,7 +33,7 @@ pnpm install
 | `pnpm lint:md` | Lint markdown files with `markdownlint-cli2` |
 | `pnpm lint:md:fix` | Auto-fix markdown lint issues |
 | `pnpm typecheck` | Type-check the workspace via Turbo (`tsc --noEmit`) |
-| `pnpm schema:build` | Regenerate the committed `schemas/<version>/{input,output}.json` JSON Schemas from the Effect Schemas via `@effected/schemastore-cli` |
+| `pnpm schema:build` | Regenerate the committed `schemas/<version>/{input,output}.json` JSON Schemas from the Effect Schemas via `effected schema` (`@effected/plugin`) |
 | `pnpm schema:check` | Verify the committed JSON Schemas are what `schema:build` would produce, without writing (the CI drift gate) |
 | `pnpm validate` | Validate `action.yml` via `github-action-builder validate` |
 

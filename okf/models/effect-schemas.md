@@ -1,12 +1,12 @@
 ---
 type: DataModel
 title: Effect Schemas
-description: The Effect Schema sources that generate the versioned JSON Schema documents under schemas/, the hosted identities that derive their URLs, and the schemastore CLI walk that keeps them current.
+description: The Effect Schema sources that generate the versioned JSON Schema documents under schemas/, the hosted identities that derive their URLs, and the effected schema walk that keeps them current.
 resource: ../../src/schema
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T18:59:10Z
+  at: 2026-11-05T23:25:35Z
 sources:
   - id: input-schema
     resource: ../../src/schema/input.ts
@@ -16,7 +16,7 @@ sources:
     title: "the per-marketplace Marketplace descriptors and their compiled ajv validators"
   - id: schemastore-config
     resource: ../../lib/scripts/schemastore.config.ts
-    title: "the schemastore CLI target manifest"
+    title: "the effected schema target manifest"
   - id: schemastore-types
     resource: npm:@effected/schemastore
     title: "StoreDocumentOptions.jsonSchema in index.d.ts — the closed-object default"
@@ -25,7 +25,7 @@ tags:
   - testing
 integrity:
   generated:
-    body: f88bc9b387f43075
+    body: 9143ac8b3d96ecd7
 ---
 
 # Effect Schemas
@@ -44,7 +44,7 @@ different roles:
 
 The two generated documents are never hand-edited. Their content comes from
 the Effect Schemas; their location and `$id` come from a `HostedSchema`
-identity; and `@effected/schemastore-cli` is what turns the one into the
+identity; and `effected schema` is what turns the one into the
 other. The two structural manifest schemas are JSON Schema, not Effect
 Schema, because each validates a third-party document this action does not
 own — see [ajv-strict-false](../decisions/ajv-strict-false.md).
@@ -100,12 +100,12 @@ silently stripped.
 ## What is derived from it
 
 `lib/scripts/schemastore.config.ts`[^schemastore-config] is the
-`@effected/schemastore-cli` target manifest: a `defineConfig` with the
+`effected schema` target manifest: a `defineSchemastore` with the
 required config `name` (`"ai-plugin-marketplace-manager"`, the base name of
 its catalog slice — none is written, since no entry declares a `catalog`
 block), `outputDir: "../../schemas"` (relative to the config file, not the
 repo root) and one entry per document, keyed by the identity's `name` and handed
-the identity as `hosted`. `defineConfig` rejects an entry keyed differently
+the identity as `hosted`. `defineSchemastore` rejects an entry keyed differently
 from its identity, so the `$id` the CLI writes and the `$schema` a payload
 carries are one derivation, not two that must agree. The config lives under
 `lib/scripts/` because `src/` is action source only, so the package scripts
@@ -134,7 +134,7 @@ above); the published documents are deliberately the stricter default.
 
 ## The commands
 
-- `pnpm schema:build` — `schemastore build lib/scripts/schemastore.config.ts`:
+- `pnpm schema:build` — `effected schema build lib/scripts/schemastore.config.ts`:
   lints each document, runs the ajv strict-mode gate, applies the drift
   policy, and writes only the documents whose content actually changed.
   Wired as the turbo `schema:build` task, which depends on `types:check`,

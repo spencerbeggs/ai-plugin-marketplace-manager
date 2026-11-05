@@ -6,13 +6,13 @@ status: stable
 stale_after: 2026-12-12T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:08:50Z
+  at: 2026-11-05T23:25:35Z
 tags:
   - dx
   - testing
 integrity:
   generated:
-    body: 72ab48b7ab811dae
+    body: ca9ab7eb86cfc2b9
 ---
 
 # Keep the Action Contract in Sync
@@ -42,7 +42,7 @@ Separately: after any change to an Effect Schema that feeds a published
 document (`ReportOutput` in `src/schema/report-output.ts`, `JsonInput` in
 `src/schema/input.ts`), run `pnpm schema:build` and never hand-edit
 `schemas/2.0/output.json` or `schemas/2.0/input.json` — both are generated
-by `@effected/schemastore-cli` from `lib/scripts/schemastore.config.ts`
+by `effected schema` from `lib/scripts/schemastore.config.ts`
 (`schemas/1.0/` is a frozen label the CLI checks but never regenerates), and
 `pnpm schema:check` (run before vitest by `pnpm ci:test`, `package.json:22`)
 fails CI on drift in either direction rather than silently tolerating a hand
