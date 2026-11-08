@@ -17,7 +17,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "turbo run build:prod --log-order=grouped",
-		"build:prod": "github-action-builder build",
+		"build:prod": "effected action build",
 		"ci:build": "CI=\"true\" turbo run build:prod --log-order=grouped --output-logs=full",
 		"ci:test": "effected schema check lib/scripts/schemastore.config.ts && CI=\"true\" vitest run --coverage",
 		"lint": "biome check --max-diagnostics=none",
@@ -32,8 +32,7 @@
 		"test:coverage": "vitest run --coverage --pass-with-no-tests",
 		"test:watch": "vitest --watch --pass-with-no-tests",
 		"typecheck": "turbo run types:check --log-prefix=none --log-order=grouped",
-		"types:check": "tsc --noEmit",
-		"validate": "github-action-builder validate"
+		"types:check": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@effect/platform-node": "catalog:effected",

@@ -5,10 +5,10 @@ description: What this project is, its boundaries, and its non-goals.
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-09-23T20:44:15Z
+  at: 2026-11-08T21:14:02Z
 integrity:
   generated:
-    body: 1a2d7a7e2a951423
+    body: 1729684ada28bfe1
 ---
 
 # ai-plugin-marketplace-manager
@@ -33,7 +33,7 @@ input/output contract.
 Built on Effect v4, `@effected/github-actions` (the runner) and
 `@effected/github` (the API), with `@effected/jsonc` for format-preserving
 manifest edits and `ajv` for manifest validation. Bundled into a committed
-`dist/` by `@savvy-web/github-action-builder`. Versions are pinned through
+`dist/` by `effected action build` (`@effected/plugin`). Versions are pinned through
 pnpm catalogs, not hardcoded here — read the installed version from the
 lockfile.
 
