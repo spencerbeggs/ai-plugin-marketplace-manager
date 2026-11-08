@@ -1,5 +1,27 @@
 # claude-code-marketplace-manager
 
+## 2.0.21
+
+### Build System
+
+- The committed `dist/` bundles are now built by `effected action build` from the `[action]` tables in `effected.toml`, replacing `@savvy-web/github-action-builder` and `action.config.ts`. The inputs, outputs and behaviour are unchanged, and each bundle is about 57 KB smaller. [#208][#208]
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effected/github | dependency | updated | ^0.29.0 | ^0.30.0 |
+| @effected/github-actions | dependency | updated | ^0.32.0 | ^0.32.1 |
+| @effected/schemastore | dependency | updated | ^0.30.0 | ^0.31.0 |
+
+[#208][#208]
+
+### Thanks
+
+Thanks to [@spencerbeggs](https://github.com/spencerbeggs) for their contributions!
+
+[#208]: https://github.com/spencerbeggs/ai-plugin-marketplace-manager/pull/208
+
 ## 2.0.20
 
 ### Bug Fixes
