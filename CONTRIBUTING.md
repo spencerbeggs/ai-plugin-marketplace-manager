@@ -21,7 +21,7 @@ pnpm install
 
 | Command | Description |
 | --- | --- |
-| `pnpm build` | Bundle `src/` into the committed `dist/` via Turbo + `github-action-builder` |
+| `pnpm build` | Bundle `src/` into the committed `dist/` via Turbo + `effected action build` (reads the `[action]` tables in `effected.toml`; also validates `action.yml`) |
 | `pnpm ci:build` | Same as `build`, run in CI mode with full log output |
 | `pnpm test` | Run the Vitest suite (no coverage) |
 | `pnpm test:coverage` | Run the Vitest suite with coverage enabled |
@@ -35,7 +35,6 @@ pnpm install
 | `pnpm typecheck` | Type-check the workspace via Turbo (`tsc --noEmit`) |
 | `pnpm schema:build` | Regenerate the committed `schemas/<version>/{input,output}.json` JSON Schemas from the Effect Schemas via `effected schema` (`@effected/plugin`) |
 | `pnpm schema:check` | Verify the committed JSON Schemas are what `schema:build` would produce, without writing (the CI drift gate) |
-| `pnpm validate` | Validate `action.yml` via `github-action-builder validate` |
 
 Run `pnpm build` before committing any change under `src/` — `dist/` is
 committed and must stay in sync with the source.

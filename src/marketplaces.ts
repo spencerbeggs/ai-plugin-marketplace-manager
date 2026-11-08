@@ -2,7 +2,8 @@ import type { ValidateFunction } from "ajv";
 import Ajv from "ajv";
 import { Predicate } from "effect";
 // JSON asset imports, not relative TS/JS module imports: the `.json` extension
-// is the real one and must survive the builder's `forceJsExtensions` rewrite.
+// is the real one (Biome's `useImportExtensions` keeps it), and the action
+// build inlines both schemas into the bundle.
 import claudeCodeSchema from "./schema/claude-code-marketplace.json" with { type: "json" };
 import copilotSchema from "./schema/copilot-marketplace.json" with { type: "json" };
 import type { MarketplaceId } from "./schema/input.js";

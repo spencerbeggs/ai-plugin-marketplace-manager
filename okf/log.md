@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-08
+
+* Updated ai-plugin-marketplace-manager
+
 ## 2026-11-05
 
 * Updated Action Inputs

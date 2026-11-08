@@ -25,7 +25,12 @@ ref→sha resolution.
 - Versions come from pnpm catalogs, not this file — read the installed one from
   the lockfile, and re-pin the vendored source in `.repos/config.json` (which
   tracks the installed `effect` / `@effected/github-actions`) when they bump.
-- Bundled to a committed `dist/` by `@savvy-web/github-action-builder`.
+- Bundled to a committed `dist/` by `effected action build` (`@effected/plugin`),
+  configured by the `[action]` tables in `effected.toml`. It validates
+  `action.yml` and import-checks each bundle as part of the build.
+  `@savvy-web/github-action-builder` stays a devDependency only for the
+  tsconfig preset `tsconfig.json` extends (the kit's `ecma.json` is not a
+  drop-in for an action: deferred to the tsconfig sweep).
 - Node ≥ 24.11; pnpm; Biome; Vitest (`@effected/memfs` is test-only — the
   in-memory checkout the filesystem tests run against).
 
@@ -38,7 +43,6 @@ ref→sha resolution.
 - `pnpm schema:build` / `pnpm schema:check` — regenerate / verify the committed
   `schemas/2.0/{input,output}.json` (`schema:check` runs first in `ci:test`).
   `schemas/1.0/` is a frozen label: checked for its `$id`, never regenerated.
-- `pnpm validate` — validate `action.yml`.
 
 ## Conventions & gotchas
 
