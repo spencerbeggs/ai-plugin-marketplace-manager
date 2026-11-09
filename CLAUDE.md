@@ -28,9 +28,9 @@ ref→sha resolution.
 - Bundled to a committed `dist/` by `effected action build` (`@effected/plugin`),
   configured by the `[action]` tables in `effected.toml`. It validates
   `action.yml` and import-checks each bundle as part of the build.
-  `@savvy-web/github-action-builder` stays a devDependency only for the
-  tsconfig preset `tsconfig.json` extends (the kit's `ecma.json` is not a
-  drop-in for an action: deferred to the tsconfig sweep).
+  `tsconfig.json` extends `@effected/plugin/tsconfig/action.json` (`noEmit`,
+  bundler resolution) — not the kit's `ecma.json`, which writes build info
+  into the committed `dist/`.
 - Node ≥ 24.11; pnpm; Biome; Vitest (`@effected/memfs` is test-only — the
   in-memory checkout the filesystem tests run against).
 

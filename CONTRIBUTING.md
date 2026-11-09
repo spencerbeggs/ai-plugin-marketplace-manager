@@ -51,7 +51,7 @@ place — see `okf/runbooks/bump-the-output-schema-version.md`.
 
 - **Formatter/Linter:** Biome, extending `@savvy-web/silk/biome`
 - **TypeScript:** strict mode, extending
-  `@savvy-web/github-action-builder/tsconfig/action.json`
+  `@effected/plugin/tsconfig/action.json`
 - **Effect:** Effect v4 (pinned through the `effect` catalog entry in
   `pnpm-workspace.yaml`) — follow the project's Effect v4 idioms
   (services/layers, Schema-first contracts)

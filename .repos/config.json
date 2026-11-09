@@ -13,7 +13,7 @@
 		},
 		"effected": {
 			"url": "https://github.com/spencerbeggs/effected.git",
-			"ref": "@effected/github-actions@0.32.1",
+			"ref": "@effected/github-actions@0.32.2",
 			"purpose": "Read-only source for @effected/github-actions, @effected/github and @effected/jsonc — the libraries this action is built on. Pin tracks the installed @effected/github-actions version.",
 			"sparse": [
 				"packages/github-actions",

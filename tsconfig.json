@@ -1,5 +1,4 @@
 {
-	"//": "Held on the old builder's preset until the kit ships one for actions (spencerbeggs/effected#1294, tracked in #207): @effected/plugin's ecma.json writes dist/.tsbuildinfo.lib into the committed dist/ and breaks the ajv import.",
 	"$schema": "https://json.schemastore.org/tsconfig.json",
-	"extends": "@savvy-web/github-action-builder/tsconfig/action.json"
+	"extends": "@effected/plugin/tsconfig/action.json"
 }
