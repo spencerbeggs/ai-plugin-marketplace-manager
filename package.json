@@ -47,9 +47,9 @@
 		"@effect/vitest": "catalog:effected",
 		"@effected/memfs": "catalog:effected",
 		"@effected/plugin": "catalog:effected",
-		"@okfit/plugin": "^0.5.30",
+		"@okfit/plugin": "^0.5.35",
 		"@savvy-web/silk": "^4.5.7",
-		"@vitest-agent/plugin": "^6.0.6"
+		"@vitest-agent/plugin": "^6.0.13"
 	},
 	"engines": {
 		"node": ">=24.11.0"
