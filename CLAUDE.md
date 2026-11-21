@@ -82,6 +82,10 @@ ref→sha resolution.
   it via `GitHubToken.provision` (App credentials passed explicitly; private key
   stays `Redacted`) and persists it to cross-phase state; `main` reads it back
   through `GitHubToken.clientLayer()` (`@okf/invariants/post-revokes-the-token-first.md`).
+- The mint **always names an owner** — `app-owner`, else
+  `GITHUB_REPOSITORY_OWNER` — and fails typed when neither exists. Never make
+  it optional: an ownerless mint works only while the App has exactly one
+  installation (`@okf/incidents/app-installation-owner.md`).
 - Failures arrive as a single `GitHubError` with a structured `kind` (plus
   `GitHubGraphQLError` on the auto-merge path). Branch on `kind` — never match
   error prose (`@okf/conventions/branch-on-github-error-kind.md`).

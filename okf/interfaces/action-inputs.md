@@ -7,13 +7,13 @@ resource: ../../action.yml
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-05T23:25:35Z
+  at: 2026-11-21T21:05:58Z
 tags:
   - architecture
   - dx
 integrity:
   generated:
-    body: 17e628fef6d07ab6
+    body: 1999bed32d48995c
 ---
 
 # Action Inputs
@@ -95,6 +95,7 @@ There is no `url` input at all; only `path` and `sha` can be repinned — see
 | `dry-run` | `"false"` | Validate every targeted manifest and emit `summary`/`result`, but make no commit or PR (`action.yml`; `src/contract.ts`; `src/inputs.ts`). |
 | `app-client-id` | *(required)* | GitHub App client ID, read in `pre.ts` (`action.yml`; `src/pre.ts`). |
 | `app-private-key` | *(required)* | GitHub App private key (PEM), read via `ActionInput.redacted` and stays `Redacted` end to end (`action.yml`; `src/pre.ts`). |
+| `app-owner` | *(unset)* | Account (user or organization) whose installation of the App the token is minted for. Empty ⇒ the owner of the repository the workflow runs in, read from `GITHUB_REPOSITORY_OWNER` (`action.yml`; `src/pre.ts`). |
 
 `mode`, `branch`, `auto-merge`, and `dry-run` are exactly the inputs mirrored
 in `src/contract.ts`'s `INPUT_DEFAULTS`, because they are the only ones whose
@@ -107,3 +108,17 @@ manifest default is not the empty string — see
 `PR` or `Squash` is rejected — and the default covers only an absent or
 empty input: a value outside the set fails as a `ConfigError` and is never
 swallowed into the default.
+
+## Which installation the token is minted for
+
+The token is always minted for one named account's installation of the App:
+`app-owner` when it is set, otherwise the owner of the repository the
+workflow runs in. A caller whose App is installed on the account that owns
+the repository passes nothing, however many other accounts the App is also
+installed on; `app-owner` is only for an App installed on a *different*
+account than that one. An empty `app-owner` is the same as an omitted one.
+If `app-owner` is unset and the runner supplies no
+`GITHUB_REPOSITORY_OWNER`, the run fails in `pre` before any token is
+minted — there is no fallback to letting the App pick its only
+installation, because that stops working the day the App gains a second
+one. See [app-installation-owner](../incidents/app-installation-owner.md).
