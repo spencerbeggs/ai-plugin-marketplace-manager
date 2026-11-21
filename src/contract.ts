@@ -43,6 +43,7 @@ export const INPUT_NAMES = [
 	"dry-run",
 	"app-client-id",
 	"app-private-key",
+	"app-owner",
 ] as const;
 
 /** Every output declared in `action.yml`. */

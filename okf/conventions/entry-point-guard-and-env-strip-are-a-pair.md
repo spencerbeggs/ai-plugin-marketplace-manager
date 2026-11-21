@@ -6,7 +6,7 @@ description: Keep each entry point's GITHUB_ACTIONS guard and vitest.setup.ts's 
 stale_after: 2027-03-13T00:00:00Z
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:21:18Z
+  at: 2026-11-21T21:05:58Z
 tags:
   - testing
   - ci
@@ -23,7 +23,7 @@ sources:
     resource: ../../__test__/env.test.ts
 integrity:
   generated:
-    body: 63ba258cc1341634
+    body: 0d243704af5a36b1
 ---
 
 # Keep the entry-point guard and the env strip together
@@ -54,7 +54,7 @@ assumption about the pool rather than a documented Vitest promise.
 that reason: to catch a regression in the propagation itself, not just in
 the deletion code.[^env-test]
 
-[^pre]: ../../src/pre.ts:56
+[^pre]: ../../src/pre.ts:82
 [^main]: ../../src/main.ts:6
 [^post]: ../../src/post.ts:44
 [^vitest-setup]: ../../vitest.setup.ts:6-24,26-52

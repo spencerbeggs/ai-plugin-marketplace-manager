@@ -73,6 +73,11 @@ inputs:
   app-private-key:
     description: "GitHub App private key (PEM format)."
     required: true
+  app-owner:
+    description: >-
+      Account (user or organization) whose installation of the GitHub App to mint the token for. Defaults to the owner of the repository the workflow runs in. Set it only when the App is installed on a different account than that one.
+    required: false
+    default: ""
 outputs:
   result:
     description: |

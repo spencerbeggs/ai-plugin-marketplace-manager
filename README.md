@@ -127,7 +127,7 @@ Commits are made through a GitHub App installation token, which is what makes th
 3. Store the App's client ID and private key (PEM) as repository or organization secrets.
 4. Pass them as `app-client-id` and `app-private-key`.
 
-The installation token is minted at the start of the run and revoked at the end.
+The installation token is minted at the start of the run and revoked at the end. It is minted for the App's installation on the account that owns the repository the workflow runs in, so an App installed on several accounts works without extra configuration. Pass `app-owner` to use the installation on a different account.
 
 ## Inputs
 
@@ -150,6 +150,7 @@ Provide changes in one of two mutually exclusive ways: the **manual** path (`nam
 | `dry-run` | no | `false` | Validate every targeted manifest and emit the summary and outputs, but make no commit or PR. |
 | `app-client-id` | yes | — | GitHub App client ID. |
 | `app-private-key` | yes | — | GitHub App private key (PEM). |
+| `app-owner` | no | repository owner | Account (user or organization) whose installation of the App to mint the token for. Set it only when the App is installed on a different account than the one that owns the repository the workflow runs in. |
 
 There is no `url` input. Only `path` and `sha` can be repinned.
 

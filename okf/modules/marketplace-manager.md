@@ -7,11 +7,11 @@ resource: ../../src
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-05T23:25:35Z
+  at: 2026-11-21T21:05:58Z
 tags: [architecture]
 integrity:
   generated:
-    body: 4daadb615005d402
+    body: df77712590952ea6
 ---
 
 # marketplace-manager
@@ -36,10 +36,24 @@ instead of failing mid-`main` on a bare 403. The App credentials
 (`app-client-id`, `app-private-key`) are explicit arguments to
 `GitHubToken.provision`; the private key is read with `ActionInput.redacted`
 and stays `Redacted` end to end — `provision` takes the wrapper directly, so
-it is never unwrapped in this module (`src/pre.ts:39-51`). The two reads
-live in the exported `readAppCredentials` (`src/pre.ts:22-29`), which `pre`
-yields and the contract test runs on its own to record them without minting
-a token.
+it is never unwrapped in this module (`src/pre.ts:56-79`). The three App
+input reads — the two credentials plus the optional `app-owner` — live in
+the exported `readAppCredentials` (`src/pre.ts:22-35`), which `pre` yields
+and the contract test runs on its own to record them without minting a
+token.
+
+**The mint always names an owner.** `resolveAppOwner` (`src/pre.ts:37-54`)
+returns `app-owner` when it is non-empty and otherwise reads
+`GITHUB_REPOSITORY_OWNER` from `ActionEnvironment`, and `pre` passes the
+result to `provision` as `owner` (`src/pre.ts:73-77`). Without an owner on
+the request, `GitHubApp` can only discover the installation when the App
+has exactly one, so an ownerless mint works until the day the App is
+installed on a second account. When neither value is available `pre` fails
+with a typed `ActionEnvironmentError` rather than falling back to an
+ownerless mint, and the runner variable is read only when the input is
+absent, so the override does not depend on the value it replaces.
+`__test__/pre.test.ts` pins all of it — see
+[app-installation-owner](../incidents/app-installation-owner.md).
 
 The installation token is always revoked in `post`, with no opt-out
 (`src/post.ts:10-16`): revocation runs first and is sequenced ahead of the
@@ -49,7 +63,7 @@ revocation, and the whole phase is wrapped in `Effect.catchDefect`
 out.
 
 Every entry point ends in `if (process.env.GITHUB_ACTIONS) { await
-Action.run(…) }` (`src/pre.ts:56-58`, `src/main.ts:6-8`, `src/post.ts:44-46`).
+Action.run(…) }` (`src/pre.ts:82-84`, `src/main.ts:6-8`, `src/post.ts:44-46`).
 This is a pair with `vitest.setup.ts`'s `globalSetup`, which strips the
 runner environment before the forks pool spawns — see
 [entry-point-guard-and-env-strip-are-a-pair](../conventions/entry-point-guard-and-env-strip-are-a-pair.md).

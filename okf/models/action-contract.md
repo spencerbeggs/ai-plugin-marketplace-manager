@@ -6,13 +6,13 @@ resource: ../../src/contract.ts
 status: stable
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:08:50Z
+  at: 2026-11-21T21:05:58Z
 tags:
   - architecture
   - testing
 integrity:
   generated:
-    body: f5e9748c7ada18b0
+    body: ae8834e0e496404e
 ---
 
 # Action Contract
@@ -22,23 +22,23 @@ integrity:
 `src/contract.ts` is deliberately dependency-free — "a description of the
 contract, not a participant in it". It holds four things:
 
-- `INPUT_NAMES` — every input declared in `action.yml`, fifteen entries:
+- `INPUT_NAMES` — every input declared in `action.yml`, sixteen entries:
   `name`, `marketplace`, `path`, `sha`, `json`, `mode`, `base-branch`, `branch`,
   `commit-message`, `pr-title`, `pr-body`, `auto-merge`, `dry-run`,
-  `app-client-id`, `app-private-key` (`src/contract.ts`). `url` was removed
+  `app-client-id`, `app-private-key`, `app-owner` (`src/contract.ts`). `url` was removed
   and `marketplace` added at v2 — see
   [url-and-schema-version-dropped](../decisions/url-and-schema-version-dropped.md).
 - `OUTPUT_NAMES` — every output declared in `action.yml`, nine entries:
   `result`, `status`, `changed`, `mode`, `commit-sha`, `commit-url`,
-  `pr-number`, `pr-url`, `plugins-updated` (`src/contract.ts:49-59`).
+  `pr-number`, `pr-url`, `plugins-updated` (`src/contract.ts:50-60`).
 - `InputName`/`OutputName` — the two names narrowed to their declared-set
-  union types (`src/contract.ts:61-65`).
+  union types (`src/contract.ts:62-66`).
 - `INPUT_DEFAULTS` — the inputs whose `action.yml` default is something
   other than `""`: `mode: "commit"`, `branch: "chore/repin-plugins"`,
-  `"auto-merge": "rebase"`, `"dry-run": "false"` (`src/contract.ts:81-86`).
+  `"auto-merge": "rebase"`, `"dry-run": "false"` (`src/contract.ts:82-87`).
   `dry-run` is deliberately spelled as the manifest's raw string; `inputs.ts`
   reads it through `ActionInput.boolean` and the contract test asserts the
-  two agree once parsed (`src/contract.ts:78-79`).
+  two agree once parsed (`src/contract.ts:79-80`).
 
 An omitted input arrives to the code as `""` regardless of what the manifest
 says, and `inputs.ts` treats `""` as "missing" uniformly — so mirroring an
@@ -46,7 +46,7 @@ empty default here would carry no information a reader needs. A *non-empty*
 default is a real behavioral decision that used to exist twice (once in the
 manifest, once as a literal in `inputs.ts`) with nothing keeping the two
 honest; `INPUT_DEFAULTS` is the one place that decision now lives
-(`src/contract.ts:67-80`).
+(`src/contract.ts:68-81`).
 
 ## What is derived from it
 
@@ -73,7 +73,8 @@ legs, plus a third leg that pins the schema URLs the prose quotes:
    `ActionInput.recording(ActionManifest.runnerInputs(manifest, supplied))`
    while `parseInputs` runs on the manual path with one valid patch, followed
    by `readAppCredentials` — the effect `src/pre.ts` exports and `pre` yields,
-   so the two credential reads are recorded without minting a token. Writes
+   so the three App input reads (`app-client-id`, `app-private-key`,
+   `app-owner`) are recorded without minting a token. Writes
    are recorded with `ActionOutputs.recording()` while `program` runs with no
    inputs at all: the XOR check fails first, and the failure path emits all
    nine outputs through the same `emit` the success path uses, with every

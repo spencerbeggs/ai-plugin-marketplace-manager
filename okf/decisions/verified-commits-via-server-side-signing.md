@@ -29,7 +29,7 @@ sources:
     title: savvy-web/silk-update-action as reference implementation
 generated:
   by: okfit/claude-code
-  at: 2026-11-01T19:25:35Z
+  at: 2026-11-21T21:05:58Z
 verified:
   - by: human:spencer
     at: 2026-09-17T19:22:49Z
@@ -39,7 +39,7 @@ verified:
     at: 2026-11-01T19:24:45Z
 integrity:
   generated:
-    body: 0085c71ffb420d06
+    body: 641331757db4ca7a
   verified:
     by: human:spencer
     at: 2026-11-01T19:24:45Z
@@ -64,7 +64,7 @@ hold together at once:
 
 1. **The token is a genuine GitHub App installation access token, not a
    PAT.** `pre` mints it with `GitHubToken.provision({ appId, privateKey,
-   required })`[^pre] and persists it to cross-phase state; `main` reads it
+   owner, required })`[^pre] and persists it to cross-phase state; `main` reads it
    back and builds the Octokit client from it via `GitHubToken.clientLayer()`,
    bound to a `const` so the parameterized factory is not called more than
    once per composition (layers memoize by reference)[^layers].
@@ -135,7 +135,7 @@ commit-direct-to-base mode additionally depends on fact 3 above, which
 - Dry-run needs no provisioned token, since `botIdentity()` is read only on
   the land path, after the dry-run guard.
 
-[^pre]: `pre.ts` — `GitHubToken.provision({ appId, privateKey, required })`
+[^pre]: `pre.ts` — `GitHubToken.provision({ appId, privateKey, owner, required })`
 [^layers]: `layers/app.ts` — `client = GitHubToken.clientLayer().pipe(Layer.orDie)`
 [^committer]: `services/ManifestCommitter.ts` — `land()`
 [^gitcommit-kit]: `@effected/github`'s `GitCommit.createCommit`/`commitFiles`

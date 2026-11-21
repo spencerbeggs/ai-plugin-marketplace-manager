@@ -1,5 +1,14 @@
 # Log
 
+## 2026-11-21
+
+* Updated Action Contract
+* Updated Action Inputs
+* Updated Keep the entry-point guard and the env strip together
+* Updated Verified commits via server-side signing
+* Updated marketplace-manager
+* Added pre failed for every consumer once the App gained a second installation
+
 ## 2026-11-08
 
 * Updated ai-plugin-marketplace-manager
