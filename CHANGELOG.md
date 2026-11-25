@@ -1,5 +1,13 @@
 # claude-code-marketplace-manager
 
+## 2.1.3
+
+### Dependencies
+
+| Dependency | Type | Action | From | To |
+| --- | --- | --- | --- | --- |
+| @effected/github-actions | dependency | updated | ^0.38.0 | ^0.38.1 |
+
 ## 2.1.2
 
 ### Dependencies
